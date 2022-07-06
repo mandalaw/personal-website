@@ -361,10 +361,15 @@
 
 .services {
     background: #141414;
-    display: flex;
+    display: inline-block;
+    justify-content: center;
+    flex-wrap: nowrap;
+    
+    display:flex;
     flex-direction: column;
     align-items: center;
-    height: 100vh;
+    flex-wrap: nowrap;
+    height: auto;
 }
 
 .services h1{
@@ -383,20 +388,23 @@ margin-bottom: 5rem;
 font-size: 2.5rem;
 -webkit-background-clip: text;
 -moz-background-clip: text;
+flex-wrap: nowrap;
 -webkit-text-fill-color: transparent;
 -moz-text-fill-color: transparent;
 }
 
 .services__container {
-    display: flex;
+    display: inline-block;
     justify-content: center;
     flex-wrap: nowrap;
 }
+
 
 .services__card {
     margin: 1rem;
     height: 525px;
     width: 850px;
+    flex-wrap: nowrap;
     display: inline-block;
     border-radius: 4px;
     background-image: linear-gradient(to bottom,
@@ -414,6 +422,7 @@ font-size: 2.5rem;
     margin: 1rem;
     height: 525px;
     width: 850px;
+    flex-wrap: nowrap;
     display: inline-block;
     border-radius: 4px;
     background-image: linear-gradient(to bottom,
@@ -422,7 +431,7 @@ font-size: 2.5rem;
      ),
     url('/images/pic3.jpg');
 
-    background-size: cover;
+    background-size: contain;
     position: relative;
     color: #fff;
 }
@@ -431,6 +440,7 @@ font-size: 2.5rem;
     margin: 1rem;
     height: 525px;
     width: 850px;
+    flex-wrap: nowrap;
     display: inline-block;
     border-radius: 4px;
     background-image: linear-gradient(to bottom,
@@ -448,6 +458,7 @@ font-size: 2.5rem;
     margin: 1rem;
     height: 525px;
     width: 850px;
+    flex-wrap: nowrap;
     display: inline-block;
     border-radius: 4px;
     background-image: linear-gradient(to bottom,
@@ -456,7 +467,7 @@ font-size: 2.5rem;
      ),
     url('/images/pic7.jpg');
 
-    background-size: cover;
+    background-size: contain;
     position: relative;
     color: #fff;
 }
@@ -613,26 +624,6 @@ font-size: 2.5rem;
         width: 300px;
     }
 }
-
-/* @media screen and (max-width: 240px) {   
-    .services {
-        height: 1200px;
-    }
-
-    .services h1 {
-        font-size: 0.6rem;
-    }
-
-    .services__card {
-        width: 150px;
-    }
-
-    
-    .services__card2 {
-        width: 150px;
-    }
-} */
-
 /* Footer CSS */
 .footer__container {
     background-color: #141414;
