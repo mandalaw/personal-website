@@ -608,19 +608,19 @@ flex-wrap: nowrap;
     }
 
     .services__card {
-        width: auto;
+        width: 500px;
     }
 
     .services__card2 {
-        width: auto;
+        width: 500px;
     }
 
     .services__card3 {
-        width: auto;
+        width: 500px;
     }
 
     .services__card4 {
-        width: auto;
+        width: 500px;
     }
 }
 /* Footer CSS */
