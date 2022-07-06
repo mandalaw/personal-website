@@ -193,6 +193,12 @@
 #mobile-menu.is-active .bar:nth-child(1) {
     transform: translateY(8px) rotate(45deg);
 }
+#mobile-menu.is-active .bar:nth-child(4) {
+    transform: translateY(8px) rotate(45deg);
+
+}#mobile-menu.is-active .bar:nth-child(5) {
+    transform: translateY(8px) rotate(45deg);
+}
 #mobile-menu.is-active .bar:nth-child(3) {
     transform: translateY(-8px) rotate(-45deg);
 }
@@ -412,7 +418,30 @@ font-size: 2.5rem;
     url('/images/pic3.jpg');
 
 }
+.services__card2 {
+    margin: 1rem;
+    height: 525px;
+    width: 850px;
+    border-radius: 4px;
+    background-image: linear-gradient(to bottom,
+     rgba(0,0,0,0) 0%,
+     rgba(17,17,17,0.6) 100%
+     ),
+    url('/images/pic6.jpg');
 
+    background-size: cover;
+    position: relative;
+    color: #fff;
+}
+
+.services__card2:nth-child(2){
+    background-image: linear-gradient(to bottom,
+     rgba(0,0,0,0) 0%,
+     rgba(17,17,17,0.6) 100%
+     ),
+    url('/images/pic7.jpg');
+
+}
 .services h2 {
     position: absolute;
     top: 350px;
@@ -424,8 +453,26 @@ font-size: 2.5rem;
     top: 400px;
     left: 90px;
 }
+.services__card2 p {
+    position: absolute;
+    top: 400px;
+    left: 90px;
+}
 
 .services__card button {
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    outline: none;
+    border-radius: 4px;
+    background: #f77062;
+    position: absolute;
+    top: 440px;
+    left: 30px;
+    font-size: 1rem;
+    cursor: pointer;
+}
+.services__card2 button {
     color: #fff;
     padding: 10px 20px;
     border: none;
@@ -445,6 +492,11 @@ font-size: 2.5rem;
     cursor: pointer;
 }
 
+.services__card2:hover {
+    transform: scale(1.075);
+    transition: 0.2s ease-in;
+    cursor: pointer;
+}
 
 @media screen and (max-width: 960px) {
     .services {
@@ -467,6 +519,11 @@ font-size: 2.5rem;
     }
 
     .services__card {
+        width: 300px;
+    }
+
+    
+    .services__card2 {
         width: 300px;
     }
 }
