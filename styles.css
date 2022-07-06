@@ -589,7 +589,7 @@ flex-wrap: nowrap;
 
 @media screen and (max-width: 960px) {
     .services {
-        height: 1600px;
+        height: auto;
     }
 
     .services h1 {
@@ -611,7 +611,6 @@ flex-wrap: nowrap;
         width: 300px;
     }
 
-    
     .services__card2 {
         width: 300px;
     }
