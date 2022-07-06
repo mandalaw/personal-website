@@ -306,7 +306,7 @@
 
 /* Mobile Responsive */
 
-@media screen and (max-width: 768px) {
+/* @media screen and (max-width: 768px) {
     .main__container{
         display: grid;
         grid-template-columns: auto;
@@ -355,7 +355,7 @@
         margin: 2.5rem 0;
     }
 
-}
+} */
 
 /* Services Section CSS */
 
