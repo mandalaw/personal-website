@@ -25,9 +25,9 @@ loginBtn.addEventListener("click", function() {
   loginPopup.style.display = "block";
 });
 
-closePopup.addEventListener("click", function() {
-  loginPopup.style.display = "none";
-});
+// closePopup.addEventListener("click", function() {
+//   loginPopup.style.display = "none";
+// });
 
 // Show All Data in Web from localStorage
 function show_L_data() {
