@@ -44,7 +44,18 @@
                 <li class="navbar__item">
                     <a href="/contact.html" class="navbar__links">Contact</a>
                 </li>
-                <li class="navbar__btn"><a href="/index2.html" class="button"> Sign Up </a></li>
+                <li class="navbar__btn"><a class="button" id="login-btn"> Sign in </a></li>
+                <div id="login-popup" class="popup">
+                    <form>
+                        <label for="username">Username:</label>
+                        <input type="text" id="username">
+                        <label for="password">Password:</label>
+                        <input type="password" id="password">
+                        <button type="submit">Submit</button>
+                    </form>
+                    <button id="close-popup">Close</button>
+                </div>
+
             </ul>
         </div>
     </nav>
