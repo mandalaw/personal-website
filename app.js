@@ -94,3 +94,18 @@ out.addEventListener("click", ()=>{
   sign.classList.remove("d-none")
   out.classList.add("d-none")
 })
+
+
+// Listen for Google Sign-In status changes
+gapi.auth2.getAuthInstance().isSignedIn.listen(updateSigninStatus);
+
+// Update UI according to Google Sign-In status
+function updateSigninStatus(isSignedIn) {
+  if (isSignedIn) {
+    // User is signed in, update UI accordingly
+    console.log('User is signed in.');
+  } else {
+    // User is not signed in, update UI accordingly
+    console.log('User is not signed in.');
+  }
+}
