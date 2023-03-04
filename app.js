@@ -29,20 +29,6 @@ loginBtn.addEventListener("click", function() {
 //   loginPopup.style.display = "none";
 // });
 
-
-gapi.load('auth2', initSigninV2);
-
-function initSigninV2() {
-    gapi.auth2.init({
-        client_id: '222067586540-090c5ubn4vf6487rcqg29it7n4eoc22h.apps.googleusercontent.com'
-    }).then(function (authInstance) {
-        // now auth2 is fully initialized
-    });
-}
-
-
-
-
 // Show All Data in Web from localStorage
 function show_L_data() {
   if (localStorage.getItem("infos")) {
@@ -108,18 +94,3 @@ out.addEventListener("click", ()=>{
   sign.classList.remove("d-none")
   out.classList.add("d-none")
 })
-
-
-// Listen for Google Sign-In status changes
-gapi.auth2.getAuthInstance().isSignedIn.listen(updateSigninStatus);
-
-// Update UI according to Google Sign-In status
-function updateSigninStatus(isSignedIn) {
-  if (isSignedIn) {
-    // User is signed in, update UI accordingly
-    console.log('User is signed in.');
-  } else {
-    // User is not signed in, update UI accordingly
-    console.log('User is not signed in.');
-  }
-}
