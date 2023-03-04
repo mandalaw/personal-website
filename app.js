@@ -116,7 +116,7 @@ var gapiPromise = (function(){
 
 var authInited = gapiPromise.then(function(){
   gapi.auth2.init({
-      client_id: 'filler_text_for_client_id.apps.googleusercontent.com'
+      client_id: '222067586540-090c5ubn4vf6487rcqg29it7n4eoc22h.apps.googleusercontent.com'
     });
 })
 
