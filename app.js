@@ -96,6 +96,49 @@ out.addEventListener("click", ()=>{
 })
 
 
+
+
+
+
+// Google gapi fix attempt Begin
+
+
+
+
+// promise that would be resolved when gapi would be loaded
+var gapiPromise = (function(){
+  var deferred = $.Deferred();
+  window.onLoadCallback = function(){
+    deferred.resolve(gapi);
+  };
+  return deferred.promise()
+}());
+
+var authInited = gapiPromise.then(function(){
+  gapi.auth2.init({
+      client_id: 'filler_text_for_client_id.apps.googleusercontent.com'
+    });
+})
+
+
+$('#btn').click(function(){
+  gapiPromise.then(function(){
+    // will be executed after gapi is loaded
+  });
+
+  authInited.then(function(){
+    // will be executed after gapi is loaded, and gapi.auth2.init was called
+  });
+});
+
+
+
+
+// Google gapi fix attempt End
+
+
+
+
 // Listen for Google Sign-In status changes
 gapi.auth2.getAuthInstance().isSignedIn.listen(updateSigninStatus);
 
