@@ -43,10 +43,6 @@ function initSigninV2() {
 
 
 
-
-
-
-
 // Show All Data in Web from localStorage
 function show_L_data() {
   if (localStorage.getItem("infos")) {
