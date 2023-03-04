@@ -29,6 +29,24 @@ loginBtn.addEventListener("click", function() {
 //   loginPopup.style.display = "none";
 // });
 
+
+gapi.load('auth2', initSigninV2);
+
+function initSigninV2() {
+    gapi.auth2.init({
+        client_id: '222067586540-090c5ubn4vf6487rcqg29it7n4eoc22h.apps.googleusercontent.com'
+    }).then(function (authInstance) {
+        // now auth2 is fully initialized
+    });
+}
+
+
+
+
+
+
+
+
 // Show All Data in Web from localStorage
 function show_L_data() {
   if (localStorage.getItem("infos")) {
@@ -94,49 +112,6 @@ out.addEventListener("click", ()=>{
   sign.classList.remove("d-none")
   out.classList.add("d-none")
 })
-
-
-
-
-
-
-// Google gapi fix attempt Begin
-
-
-
-
-// promise that would be resolved when gapi would be loaded
-var gapiPromise = (function(){
-  var deferred = $.Deferred();
-  window.onLoadCallback = function(){
-    deferred.resolve(gapi);
-  };
-  return deferred.promise()
-}());
-
-var authInited = gapiPromise.then(function(){
-  gapi.auth2.init({
-      client_id: '222067586540-090c5ubn4vf6487rcqg29it7n4eoc22h.apps.googleusercontent.com'
-    });
-})
-
-
-$('#btn').click(function(){
-  gapiPromise.then(function(){
-    // will be executed after gapi is loaded
-  });
-
-  authInited.then(function(){
-    // will be executed after gapi is loaded, and gapi.auth2.init was called
-  });
-});
-
-
-
-
-// Google gapi fix attempt End
-
-
 
 
 // Listen for Google Sign-In status changes
