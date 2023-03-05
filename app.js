@@ -34,32 +34,35 @@ loginBtn.addEventListener("click", function() {
 function show_L_data() {
   if (localStorage.getItem("infos")) {
     let infosLparse = JSON.parse(localStorage.getItem("infos"))
+ 
+    info.classList.remove("d-none")
+    sign.classList.add("d-none")
+    out.classList.remove("d-none")
+ 
+    fullname.innerHTML = infosLparse.fullnameL
+    photo.src = infosLparse.photo_linkL
+    first.innerHTML = infosLparse.firstL
+    last.innerHTML = infosLparse.lastL
+    mail.innerHTML = infosLparse.mailL
+    id_num.innerHTML = infosLparse.id_numL
 
-    // Update the text content of the sign-in button
-    loginBtn.textContent = "Signed in with Google";
-
-    // Hide the login button
-    loginBtn.style.display = "none";
-
-    // Show the navigation bar items
+    // Show navbar items
     navbarItems.forEach(item => {
       item.style.display = "block";
-    });
+    })
     
   } else {
-    // Reset the text content of the sign-in button
-    loginBtn.textContent = "Sign in";
+    info.classList.add("d-none")
+    sign.classList.remove("d-none")
+    out.classList.add("d-none")
 
-    // Show the login button
-    loginBtn.style.display = "block";
-
-    // Hide the navigation bar items
+    // Hide navbar items
     navbarItems.forEach(item => {
       item.style.display = "none";
-    });
+    })
   }
+ 
 }
-
 
 window.addEventListener("load",show_L_data())
 
