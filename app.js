@@ -49,6 +49,7 @@ function show_L_data() {
     // Show navbar items
     navbarItems.forEach(item => {
       item.style.display = "block";
+      loginBtn.textContent = "Signed In";
     })
     
   } else {
@@ -59,6 +60,7 @@ function show_L_data() {
     // Hide navbar items
     navbarItems.forEach(item => {
       item.style.display = "none";
+      loginBtn.textContent = "Sign In";
     })
   }
  
@@ -91,7 +93,7 @@ function handleCredentialResponse(response) {
   show_L_data()
   
     // Update the text content of the sign-in button
-    loginBtn.textContent = "Signed In";
+    // loginBtn.textContent = "Signed In";
 }
 
 
