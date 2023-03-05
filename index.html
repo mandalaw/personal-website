@@ -124,7 +124,7 @@
 
                 </h1>
                 <button class="main__btn"><a href="https://github.com/mandalaw">Get Started</a></button>
-                <h2><i class="fa-solid fa-laptop-code"></i> Welcome to my personal website </h2>
+                <h2><i class="fa-solid fa-laptop-code"></i> Please sign in to view/download current Resume </h2>
                 <p>
                     <i class="fa-solid fa-code"></i>
                     <i class="fa-brands fa-java"></i>
@@ -267,6 +267,51 @@
             </div>
         </div>
     </div>
+    <script>
+        // This function updates the label of the sign-in button based on the user's sign-in status
+        function updateSignInButton() {
+            const user = gapi.auth2.getAuthInstance().currentUser.get();
+            const signedIn = user.isSignedIn();
+
+            const signInButton = document.getElementById('login-btn');
+
+            if (signedIn) {
+                signInButton.innerText = 'Signed in';
+            } else {
+                signInButton.innerText = 'Sign in';
+            }
+        }
+
+        // This function is called when the Google Sign-In API is loaded
+        function onGoogleSignInLoad() {
+            // Initialize the Google Sign-In API
+            gapi.load('auth2', function () {
+                gapi.auth2.init({
+                    client_id: '222067586540-090c5ubn4vf6487rcqg29it7n4eoc22h.apps.googleusercontent.com'
+                });
+
+                // Attach a click event listener to the sign-in button
+                const signInButton = document.getElementById('login-btn');
+                signInButton.addEventListener('click', function () {
+                    // If the user is not signed in, show the Google sign-in popup
+                    const auth2 = gapi.auth2.getAuthInstance();
+                    if (!auth2.isSignedIn.get()) {
+                        auth2.signIn().then(updateSignInButton);
+                    }
+                });
+
+                // Update the sign-in button label based on the user's sign-in status
+                updateSignInButton();
+            });
+        }
+
+        // Load the Google Sign-In API
+        const script = document.createElement('script');
+        script.src = 'https://apis.google.com/js/platform.js?onload=onGoogleSignInLoad';
+        script.async = true;
+        script.defer = true;
+        document.body.appendChild(script);
+    </script>
 
     <script src="app.js"></script>
 </body>
