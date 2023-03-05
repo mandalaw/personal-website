@@ -89,6 +89,9 @@ function handleCredentialResponse(response) {
   localStorage.setItem("infos",infosL)
 
   show_L_data()
+  
+    // Update the text content of the sign-in button
+    loginBtn.textContent = "Signed In";
 }
 
 
