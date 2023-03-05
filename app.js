@@ -1,5 +1,6 @@
 const menu = document.querySelector('#mobile-menu');
 const menuLinks = document.querySelector('.navbar__menu');
+const navbarItems = document.querySelectorAll('.navbar__item');
 let fullname = document.getElementById("fullname")
 let first = document.getElementById("first")
 let last = document.getElementById("last")
@@ -44,11 +45,21 @@ function show_L_data() {
     last.innerHTML = infosLparse.lastL
     mail.innerHTML = infosLparse.mailL
     id_num.innerHTML = infosLparse.id_numL
+
+    // Show navbar items
+    navbarItems.forEach(item => {
+      item.style.display = "block";
+    })
     
   } else {
     info.classList.add("d-none")
     sign.classList.remove("d-none")
     out.classList.add("d-none")
+
+    // Hide navbar items
+    navbarItems.forEach(item => {
+      item.style.display = "none";
+    })
   }
  
 }
@@ -93,4 +104,9 @@ out.addEventListener("click", ()=>{
   info.classList.add("d-none")
   sign.classList.remove("d-none")
   out.classList.add("d-none")
+
+  // Hide navbar items
+  navbarItems.forEach(item => {
+    item.style.display = "none";
+  })
 })
