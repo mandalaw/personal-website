@@ -760,8 +760,8 @@ width: 100%
   z-index: 1;
   top: 50%;
   left: 50%;
-  width: 500px;
-  height: 750px;
+  width: 700px;
+  height: 900px;
   overflow: auto;
   background: rgba(15, 0, 0,0.94); /* Discord's background color */
   justify-content: center;
@@ -893,7 +893,7 @@ width: 100%
 
 
 #sign {
-    font-size: 0.5rem;
+    font-size: 1rem;
     padding: 5px 10px;
     border: none;
     border-radius: 3px;
@@ -906,6 +906,6 @@ width: 100%
 }
 
 .SigninData{
-    font-size: 0.5rem;
+    font-size: 1rem;
     font-family: 'Kumbh Sans' , sans-serif;
 }
