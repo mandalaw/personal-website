@@ -38,6 +38,7 @@ function show_L_data() {
  
     info.classList.remove("d-none")
     sign.classList.add("d-none")
+    sign.classList.remove("g_id_signin")
     out.classList.remove("d-none")
  
     fullname.innerHTML = infosLparse.fullnameL
@@ -53,17 +54,16 @@ function show_L_data() {
       loginBtn.textContent = "Signed In";
 
     // Show the card element
-    sign.classList.remove("none")
     info.style.display = "display";
     out.style.display = "display";
     })
     
   } else {
     // User is not signed in
+
     info.classList.add("d-none")
     sign.classList.remove("d-none")
     out.classList.add("d-none")
-
     // Hide navbar items
     navbarItems.forEach(item => {
       item.style.display = "none";
