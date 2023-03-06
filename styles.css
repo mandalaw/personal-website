@@ -763,16 +763,18 @@ width: 100%
   width: 350px;
   height: 550px;
   overflow: auto;
-  background: rgba(1000, 10, 70,0.4); /* Discord's background color */
+  background: rgba(1000, 70, 70,0.2); /* Discord's background color */
   justify-content: center;
   align-items: center;
   text-align: center;
   transform: translate(-50%, -50%);
   color: #FFFFFF; /* Discord's font color */
   padding: 3em;
-  border-radius: 50px;
+  border: 2px solid transparent;
+  border-color: rgba(1000, 1000, 1000,0.8);
+  border-radius: 30px;
   font-family: "Whitney", sans-serif; /* Use Discord's font */
-  box-shadow: 0 0 100px rgba(1000, 10, 70,0.6);
+  box-shadow: 0 0 100px rgba(1000, 70, 70,0.5);
 }
 
 .popup form {
@@ -782,11 +784,14 @@ width: 100%
     height: auto;
     overflow: hidden;
     transform: translate(-50%, -50%);
+    background: rgba(1000, 70, 70,0.1); /* Discord's background color */
     border-radius: 10px;
     font-family: "Whitney", sans-serif; /* Use Discord's font */
     position: relative;
     top: 50%;
     left: 50%;
+    box-shadow: 0 0 10000px rgba(10000, 70, 70,0.5);
+
   }
   
 .popup label {
@@ -812,13 +817,14 @@ width: 100%
     color: #fff;
     padding: 10px 20px;
     border-radius: 4px;
-    background: #f77062;
+    border-color: rgba(1000, 70, 70,0.3);
+    background-image: linear-gradient(to top, #f77062 0%, #fe5196 100%);
     font-size: 1rem;
     cursor: pointer;
 }
 
 #close-popup:hover{
-    background: rgba(1000, 10, 70,0.2);
+    background: #4837ff;
     transition: all 0.3s ease;
 }
 
@@ -888,35 +894,14 @@ width: 100%
 
 #sign {
     font-size: 1rem;
-    background-image: linear-gradient(to top, #f77062 0%, #fe5196 100%);
+    /* background-image: linear-gradient(to top, #f77062 0%, #fe5196 100%); */
     padding: 5px 10px;
     border: none;
-    border-radius: 15px;
+    border-radius: 3px;
     color:#fff;
     margin-top: 2 rem;
     cursor: pointer;
     position: relative;
     transition: all 0.35s;
     outline: none;
-}
-
-#sign::after {
-    position: absolute;
-    content: '';
-    top: 0;
-    left: 0;
-    width: 0;
-    height: 100%;
-    overflow: hidden;
-    background: rgba(1000, 10, 70,0.3);
-    transition: all 0.35s;
-    border-radius: 4px;
-}
-
-#sign:hover {
-    color: #fff;    
-}
-
-#sign:hover::after {
-    width: 100%;    
 }
