@@ -893,8 +893,7 @@ width: 100%
 
 
 #sign {
-    font-size: 1rem;
-    /* background-image: linear-gradient(to top, #f77062 0%, #fe5196 100%); */
+    font-size: auto;
     padding: 5px 10px;
     border: none;
     border-radius: 3px;
@@ -904,4 +903,9 @@ width: 100%
     position: relative;
     transition: all 0.35s;
     outline: none;
+}
+
+.SigninData{
+    font-size: auto;
+    font-family: 'Kumbh Sans' , sans-serif;
 }
