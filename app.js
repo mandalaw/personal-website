@@ -53,8 +53,10 @@ function show_L_data() {
       loginBtn.textContent = "Signed In";
 
     // Show the card element
+    sign.classList.remove("none")
     info.style.display = "display";
     out.style.display = "display";
+    refreshSection();
     })
     
   } else {
@@ -138,3 +140,7 @@ function myFunction() {
   element.classList.toggle("dark-mode");
 }
 
+function refreshSection() {
+  const section = document.querySelector('.container');
+  section.innerHTML = section.innerHTML;
+}
