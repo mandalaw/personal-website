@@ -893,7 +893,7 @@ width: 100%
 
 
 #sign {
-    font-size: 1rem;
+    font-size: 0.5rem;
     padding: 5px 10px;
     border: none;
     border-radius: 3px;
@@ -906,6 +906,6 @@ width: 100%
 }
 
 .SigninData{
-    font-size: 1rem;
+    font-size: 0.5rem;
     font-family: 'Kumbh Sans' , sans-serif;
 }
