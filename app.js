@@ -56,7 +56,6 @@ function show_L_data() {
     sign.classList.remove("none")
     info.style.display = "display";
     out.style.display = "display";
-    refreshSection();
     })
     
   } else {
@@ -138,9 +137,4 @@ window.addEventListener('load', function () {
 function myFunction() {
   var element = document.body;
   element.classList.toggle("dark-mode");
-}
-
-function refreshSection() {
-  const section = document.querySelector('.container');
-  section.innerHTML = section.innerHTML;
 }
