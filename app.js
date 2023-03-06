@@ -53,7 +53,8 @@ function show_L_data() {
       loginBtn.textContent = "Signed In";
 
     // Show the card element
-
+    info.style.display = "display";
+    out.style.display = "display";
     })
     
   } else {
