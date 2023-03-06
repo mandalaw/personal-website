@@ -763,7 +763,7 @@ width: 100%
   width: 350px;
   height: 550px;
   overflow: auto;
-  background: rgba(1000, 70, 70,0.2); /* Discord's background color */
+  background: rgba(5, 0, 0,0.97); /* Discord's background color */
   justify-content: center;
   align-items: center;
   text-align: center;
@@ -771,7 +771,7 @@ width: 100%
   color: #FFFFFF; /* Discord's font color */
   padding: 3em;
   border: 2px solid transparent;
-  border-color: rgba(1000, 1000, 1000,0.8);
+  border-color: rgba(9000, 1000, 1000,0.4);
   border-radius: 30px;
   font-family: "Whitney", sans-serif; /* Use Discord's font */
   box-shadow: 0 0 100px rgba(1000, 70, 70,0.5);
