@@ -760,30 +760,33 @@ width: 100%
   z-index: 1;
   top: 50%;
   left: 50%;
-  width: 20%;
-  height: 50%;
+  width: 350px;
+  height: 550px;
   overflow: auto;
-  background-color: #141414; /* Discord's background color */
+  background: rgba(1000, 10, 70,0.4); /* Discord's background color */
   justify-content: center;
   align-items: center;
   text-align: center;
   transform: translate(-50%, -50%);
   color: #FFFFFF; /* Discord's font color */
-  border: 1px solid #4F545C; /* Discord's border color */
-  border-radius: 5px;
-  padding: 20px;
+  padding: 3em;
+  border-radius: 50px;
   font-family: "Whitney", sans-serif; /* Use Discord's font */
-  box-shadow: 0 0 10px rgba(10000, 10000, 10000, 10000);
+  box-shadow: 0 0 100px rgba(1000, 10, 70,0.6);
 }
 
 .popup form {
-    padding: 20px 40px;
-    border-radius: 20px;
-    box-shadow: 20 20 20px rgba(0,0,0,0.5);
+    padding: auto;
+    border-radius: 10px;
+    width: auto;
+    height: auto;
+    overflow: hidden;
+    transform: translate(-50%, -50%);
+    border-radius: 10px;
+    font-family: "Whitney", sans-serif; /* Use Discord's font */
     position: relative;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%);
   }
   
 .popup label {
@@ -815,14 +818,14 @@ width: 100%
 }
 
 #close-popup:hover{
-    background: #4837ff;
+    background: rgba(1000, 10, 70,0.2);
     transition: all 0.3s ease;
 }
 
 @media (max-width: 767px) {
     .popup {
-      width: 80%;
-      height: 80%;
+        width: 300px;
+        height: 500px;
     }
   }
 
@@ -858,7 +861,7 @@ width: 100%
   }
   
   .info__btn:hover {
-    background-color: #4837ff;
+    background-color: rgba(1000, 10, 70,0.4);
   }
 
   .SigninData {
@@ -876,6 +879,44 @@ width: 100%
 }
 
 #out:hover{
-    background: #4837ff;
+    background: rgba(1000, 10, 70,0.4);
     transition: all 0.3s ease;
+}
+
+
+
+
+#sign {
+    font-size: 1rem;
+    background-image: linear-gradient(to top, #f77062 0%, #fe5196 100%);
+    padding: 5px 10px;
+    border: none;
+    border-radius: 15px;
+    color:#fff;
+    margin-top: 2 rem;
+    cursor: pointer;
+    position: relative;
+    transition: all 0.35s;
+    outline: none;
+}
+
+#sign::after {
+    position: absolute;
+    content: '';
+    top: 0;
+    left: 0;
+    width: 0;
+    height: 100%;
+    overflow: hidden;
+    background: rgba(1000, 10, 70,0.3);
+    transition: all 0.35s;
+    border-radius: 4px;
+}
+
+#sign:hover {
+    color: #fff;    
+}
+
+#sign:hover::after {
+    width: 100%;    
 }
