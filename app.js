@@ -33,6 +33,7 @@ loginBtn.addEventListener("click", function() {
 // Show All Data in Web from localStorage
 function show_L_data() {
   if (localStorage.getItem("infos")) {
+        // User is signed in
     let infosLparse = JSON.parse(localStorage.getItem("infos"))
  
     info.classList.remove("d-none")
@@ -50,9 +51,13 @@ function show_L_data() {
     navbarItems.forEach(item => {
       item.style.display = "block";
       loginBtn.textContent = "Signed In";
+
+    // Show the card element
+
     })
     
   } else {
+    // User is not signed in
     info.classList.add("d-none")
     sign.classList.remove("d-none")
     out.classList.add("d-none")
@@ -61,7 +66,12 @@ function show_L_data() {
     navbarItems.forEach(item => {
       item.style.display = "none";
       loginBtn.textContent = "Sign In";
-    })
+
+    // Hide the card element
+    info.style.display = "none";
+    out.style.display = "none";
+    }
+    )
   }
  
 }
