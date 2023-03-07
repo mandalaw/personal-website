@@ -110,7 +110,7 @@ function handleCredentialResponse(response) {
   show_L_data()
   // Reload the window to update the UI
   window.location.reload();
-  // location.reload();
+  loginBtn.click()
 }
 
 
