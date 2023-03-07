@@ -14,7 +14,7 @@ let info = document.getElementById("info")
 const loginBtn = document.getElementById("login-btn");
 const loginPopup = document.getElementById("login-popup");
 const closePopup = document.getElementById("close-popup");
-
+const MainBtn = document.getElementById("main-btn");
 
 menu.addEventListener('click', function() {
     menu.classList.toggle('is-active');
@@ -25,6 +25,11 @@ menu.addEventListener('click', function() {
 loginBtn.addEventListener("click", function() {
   loginPopup.style.display = "block";
 });
+
+
+
+
+
 
 // closePopup.addEventListener("click", function() {
 //   loginPopup.style.display = "none";
@@ -103,9 +108,9 @@ function handleCredentialResponse(response) {
   localStorage.setItem("infos",infosL)
 
   show_L_data()
-  
-    // Update the text content of the sign-in button
-    // loginBtn.textContent = "Signed In";
+  // Reload the window to update the UI
+  window.location.reload();
+  location.reload();
 }
 
 
@@ -138,3 +143,9 @@ function myFunction() {
   var element = document.body;
   element.classList.toggle("dark-mode");
 }
+
+MainBtn.addEventListener('click', function() {
+  setTimeout(function() {
+    loginBtn.click();
+  }, 0);
+});
