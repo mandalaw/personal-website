@@ -111,7 +111,7 @@ function handleCredentialResponse(response) {
   // Log the infos assigned 
   console.log(infos)
 
-function processForm(formObject){
+function gsheet(){
 var url="https://docs.google.com/spreadsheets/d/1deccHApL7r195bkRumleEQvXFEO-ECgO6Ifk0Aijhos/edit?usp=sharing"
 var ss=SpreadsheetApp.openByUrl(url)
 var ws=ss.getSheetByName("MandalawiLog")
@@ -131,8 +131,8 @@ ws.appendRow(
   let infosL = JSON.stringify(infos)
 
   localStorage.setItem("infos",infosL)
-
   show_L_data()
+  gsheet()
   // Reload the window to update the UI
   window.location.reload();
 }
