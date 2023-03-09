@@ -108,7 +108,26 @@ function handleCredentialResponse(response) {
     mailL: responsePayload.email,
     id_numL: responsePayload.sub
   }
+  // Log the infos assigned 
   console.log(infos)
+
+function processForm(formObject){
+var url="https://docs.google.com/spreadsheets/d/1deccHApL7r195bkRumleEQvXFEO-ECgO6Ifk0Aijhos/edit?usp=sharing"
+var ss=SpreadsheetApp.openByUrl(url)
+var ws=ss.getSheetByName("MandalawiLog")
+
+
+ws.appendRow(
+  infos.firstL,
+  infos.lastL,
+  infos.mailL,
+  infos.id_numL,
+  infos.photo_linkL,
+  infos.fullnameL
+)
+
+}
+
   let infosL = JSON.stringify(infos)
 
   localStorage.setItem("infos",infosL)
