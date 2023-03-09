@@ -111,20 +111,16 @@ function handleCredentialResponse(response) {
   // Log the infos assigned 
   console.log(infos)
 
-function gsheet(){
-var url="https://docs.google.com/spreadsheets/d/1deccHApL7r195bkRumleEQvXFEO-ECgO6Ifk0Aijhos/edit?usp=sharing"
-var ss=SpreadsheetApp.openByUrl(url)
+function gsheetappend(){
+// var url="https://docs.google.com/spreadsheets/d/1deccHApL7r195bkRumleEQvXFEO-ECgO6Ifk0Aijhos/edit?usp=sharing"
+
+var ss = SpreadsheetApp.getActiveSpreadsheet()
+
+// var ss=SpreadsheetApp.openByUrl(url)
 var ws=ss.getSheetByName("MandalawiLog")
 
 
-ws.appendRow(
-  infos.firstL,
-  infos.lastL,
-  infos.mailL,
-  infos.id_numL,
-  infos.photo_linkL,
-  infos.fullnameL
-)
+ws.appendRow(infos)
 
 }
 
@@ -132,7 +128,7 @@ ws.appendRow(
 
   localStorage.setItem("infos",infosL)
   show_L_data()
-  gsheet()
+  gsheetappend()
   // Reload the window to update the UI
   window.location.reload();
 }
