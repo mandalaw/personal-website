@@ -47,17 +47,17 @@ function show_L_data() {
     out.classList.remove("d-none")
  
     fullname.innerHTML = infosLparse.fullnameL
-    console.log( "fullname.innerHTML" )
+    console.log(fullname.innerHTML)
     photo.src = infosLparse.photo_linkL
-    console.log( "photo.src" )
+    console.log(photo.src)
     first.innerHTML = infosLparse.firstL
-    console.log( "first.innerHTML" )
+    console.log(first.innerHTML)
     last.innerHTML = infosLparse.lastL
-    console.log( "last.innerHTML" )
+    console.log(last.innerHTML)
     mail.innerHTML = infosLparse.mailL
-    console.log( "mail.innerHTML" )
+    console.log(mail.innerHTML)
     id_num.innerHTML = infosLparse.id_numL
-    console.log( "id_num.innerHTML" )
+    console.log(id_num.innerHTML)
 
     // Show navbar items
     navbarItems.forEach(item => {
