@@ -111,24 +111,10 @@ function handleCredentialResponse(response) {
   // Log the infos assigned 
   console.log(infos)
 
-function gsheetappend(){
-// var url="https://docs.google.com/spreadsheets/d/1deccHApL7r195bkRumleEQvXFEO-ECgO6Ifk0Aijhos/edit?usp=sharing"
-
-var ss = SpreadsheetApp.getActiveSpreadsheet()
-
-// var ss=SpreadsheetApp.openByUrl(url)
-var ws=ss.getSheetByName("MandalawiLog")
-
-
-ws.appendRow(infos)
-
-}
-
   let infosL = JSON.stringify(infos)
 
   localStorage.setItem("infos",infosL)
   show_L_data()
-  gsheetappend()
   // Reload the window to update the UI
   window.location.reload();
 }
@@ -170,3 +156,60 @@ MainBtn.addEventListener('click', function() {
   }, 0);
 });
 
+
+  // Google Sheet API Method: spreadsheets.values.append (Begin)
+
+src="https://apis.google.com/js/api.js"
+  /**
+   * Sample JavaScript code for sheets.spreadsheets.values.append
+   * See instructions for running APIs Explorer code samples locally:
+   * https://developers.google.com/explorer-help/code-samples#javascript
+   */
+
+  function authenticate() {
+    return gapi.auth2.getAuthInstance()
+        .signIn({scope: "https://www.googleapis.com/auth/drive https://www.googleapis.com/auth/drive.file https://www.googleapis.com/auth/spreadsheets"})
+        .then(function() { console.log("Sign-in successful"); },
+              function(err) { console.error("Error signing in", err); });
+  }
+  function loadClient() {
+    gapi.client.setApiKey("AIzaSyCUi5ramQkN12uHW6jbPmQalJEZTGb11i4");
+    return gapi.client.load("https://sheets.googleapis.com/$discovery/rest?version=v4")
+        .then(function() { console.log("GAPI client loaded for API"); },
+              function(err) { console.error("Error loading GAPI client for API", err); });
+  }
+  // Make sure the client is loaded and sign-in is complete before calling this method.
+  function execute() {
+    return gapi.client.sheets.spreadsheets.values.append({
+      "spreadsheetId": "1deccHApL7r195bkRumleEQvXFEO-ECgO6Ifk0Aijhos",
+      "range": "MandalawiLog",
+      "includeValuesInResponse": false,
+      "insertDataOption": "INSERT_ROWS",
+      "responseDateTimeRenderOption": "SERIAL_NUMBER",
+      "responseValueRenderOption": "FORMATTED_VALUE",
+      "valueInputOption": "USER_ENTERED",
+      "resource": {
+        "majorDimension": "rows",
+        "values": [
+          [
+            "Ahmed",
+            "Mandalawi",
+            "Mandaalwi@mail.com",
+            "198844949949",
+            "www.helloworld.com/pic",
+            "Ahmed Mandalawi"
+          ]
+        ]
+      }
+    })
+        .then(function(response) {
+                // Handle the results here (response.result has the parsed body).
+                console.log("Response", response);
+              },
+              function(err) { console.error("Execute error", err); });
+  }
+  gapi.load("client:auth2", function() {
+    gapi.auth2.init({client_id: "222067586540-090c5ubn4vf6487rcqg29it7n4eoc22h.apps.googleusercontent.com"});
+  });
+
+  // Google Sheet API Method: spreadsheets.values.append (End)
