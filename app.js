@@ -108,7 +108,7 @@ function handleCredentialResponse(response) {
     mailL: responsePayload.email,
     id_numL: responsePayload.sub
   }
-
+  console.log(infos)
   let infosL = JSON.stringify(infos)
 
   localStorage.setItem("infos",infosL)
