@@ -15,6 +15,12 @@ const loginBtn = document.getElementById("login-btn");
 const loginPopup = document.getElementById("login-popup");
 const closePopup = document.getElementById("close-popup");
 const MainBtn = document.getElementById("main-btn");
+  // Google Sheet API Method: spreadsheets.values.append (Begin)
+
+src="https://apis.google.com/js/api.js"
+
+    // Google Sheet API Method: spreadsheets.values.append (End)
+
 
 menu.addEventListener('click', function() {
     menu.classList.toggle('is-active');
@@ -28,12 +34,6 @@ loginBtn.addEventListener("click", function() {
 
 
 
-
-
-
-// closePopup.addEventListener("click", function() {
-//   loginPopup.style.display = "none";
-// });
 
 // Show All Data in Web from localStorage
 function show_L_data() {
@@ -158,8 +158,6 @@ MainBtn.addEventListener('click', function() {
 
 
   // Google Sheet API Method: spreadsheets.values.append (Begin)
-
-src="https://apis.google.com/js/api.js"
   /**
    * Sample JavaScript code for sheets.spreadsheets.values.append
    * See instructions for running APIs Explorer code samples locally:
