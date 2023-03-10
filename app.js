@@ -13,7 +13,6 @@ let info = document.getElementById("info")
 
 const loginBtn = document.getElementById("login-btn");
 const loginPopup = document.getElementById("login-popup");
-const closePopup = document.getElementById("close-popup");
 const MainBtn = document.getElementById("main-btn");
   // Google Sheet API Method: spreadsheets.values.append (Begin)
 
@@ -21,6 +20,11 @@ src="https://apis.google.com/js/api.js"
 
     // Google Sheet API Method: spreadsheets.values.append (End)
 
+document.getElementById("close-popup").addEventListener("click", function(event) {
+      event.preventDefault();
+      loginPopup.style.display = "none";
+      // your code to close the popup
+    });
 
 menu.addEventListener('click', function() {
     menu.classList.toggle('is-active');
