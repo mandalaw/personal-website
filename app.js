@@ -48,8 +48,8 @@ function show_L_data() {
     let infosLparse = JSON.parse(localStorage.getItem("infos"))
  
     info.classList.remove("d-none")
-    sign.classList.add("d-none")
-    sign.classList.remove("g_id_signin")
+    // sign.classList.add("d-none")
+    // sign.classList.remove("g_id_signin")
     out.classList.remove("d-none")
  
     fullname.innerHTML = infosLparse.fullnameL
@@ -79,7 +79,7 @@ function show_L_data() {
     // User is not signed in
 
     info.classList.add("d-none")
-    sign.classList.remove("d-none")
+    // sign.classList.remove("d-none")
     // out.classList.add("d-none")
     // Hide navbar items
     navbarItems.forEach(item => {
