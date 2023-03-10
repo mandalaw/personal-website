@@ -7,7 +7,7 @@ let last = document.getElementById("last")
 let mail = document.getElementById("email")
 let photo = document.getElementById("photo")
 let id_num = document.getElementById("id_num")
-let sign = document.getElementById("sign")
+// let sign = document.getElementById("sign")
 let out = document.getElementById("out")
 let info = document.getElementById("info")
 
@@ -136,11 +136,11 @@ function decodeJwtResponse(data) {
 out.addEventListener("click", (event)=>{
   event.preventDefault();
   localStorage.clear();
-  sign.classList.add("d-none");
   loginBtn.textContent = "Sign In";
   out.classList.remove("d-none")
   out.style.display = "none";
   info.style.display = "none";
+  // g_id_onload.style.display = "display";
 
   // Hide navbar items
   navbarItems.forEach(item => {
