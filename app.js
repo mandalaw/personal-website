@@ -143,7 +143,7 @@ out.addEventListener("click", (event)=>{
   info.style.display = "none";
 
   // Hide navbar items
-  navbarItems.forEach(item => {s
+  navbarItems.forEach(item => {
     item.style.display = "none";
   }
   
