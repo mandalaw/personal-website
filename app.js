@@ -28,6 +28,10 @@ document.getElementById("close-popup").addEventListener("click", function(event)
 
     document.getElementById("out").addEventListener("click", function(event) {
       event.preventDefault();
+      localStorage.clear();
+      info.classList.add("d-none");
+      sign.classList.remove("d-none");
+      out.classList.add("d-none");
       // loginPopup.style.display = "none";
       // your code to close the popup
     });
