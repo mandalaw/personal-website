@@ -139,7 +139,6 @@ out.addEventListener("click", (event)=>{
   out.classList.remove("d-none")
   out.style.display = "none";
   info.style.display = "none";
-  sign.classList.add("d-none")
   sign.classList.add("g_id_signin")
   // g_id_onload.style.display = "display";
 
