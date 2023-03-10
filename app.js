@@ -211,3 +211,5 @@ MainBtn.addEventListener('click', function() {
   });
 
   // Google Sheet API Method: spreadsheets.values.append (End)
+  authenticate().then(loadClient)
+  execute()
