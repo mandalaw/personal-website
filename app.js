@@ -136,9 +136,11 @@ out.addEventListener("click", (event)=>{
   event.preventDefault();
   localStorage.clear();
   loginBtn.textContent = "Sign In";
-  out.classList.remove("d-none")
   out.style.display = "none";
   info.style.display = "none";
+  info.classList.add("d-none")
+  sign.classList.remove("d-none")
+  out.classList.add("d-none")
   resetSignIn(); // Reset Google Sign-In button
   // g_id_onload.style.display = "display";
 
