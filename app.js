@@ -211,5 +211,7 @@ MainBtn.addEventListener('click', function() {
   });
 
   // Google Sheet API Method: spreadsheets.values.append (End)
-  authenticate().then(loadClient)
+
+  Promise.resolve(window.gapi.auth2.getAuthInstance().signIn())
+  .then(() => { loadClient })
   execute()
