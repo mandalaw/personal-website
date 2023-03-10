@@ -7,7 +7,6 @@ let last = document.getElementById("last")
 let mail = document.getElementById("email")
 let photo = document.getElementById("photo")
 let id_num = document.getElementById("id_num")
-// let sign = document.getElementById("sign")
 let out = document.getElementById("out")
 let info = document.getElementById("info")
 
@@ -48,8 +47,8 @@ function show_L_data() {
     let infosLparse = JSON.parse(localStorage.getItem("infos"))
  
     info.classList.remove("d-none")
-    // sign.classList.add("d-none")
-    // sign.classList.remove("g_id_signin")
+    sign.classList.add("d-none")
+    sign.classList.remove("g_id_signin")
     out.classList.remove("d-none")
  
     fullname.innerHTML = infosLparse.fullnameL
@@ -140,6 +139,8 @@ out.addEventListener("click", (event)=>{
   out.classList.remove("d-none")
   out.style.display = "none";
   info.style.display = "none";
+  sign.classList.add("d-none")
+  sign.classList.add("g_id_signin")
   // g_id_onload.style.display = "display";
 
   // Hide navbar items
