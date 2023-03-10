@@ -133,7 +133,8 @@ function decodeJwtResponse(data) {
 }
 
 // Sign Out
-out.addEventListener("click", ()=>{
+out.addEventListener("click", (event)=>{
+  event.preventDefault();
   localStorage.clear();
   info.classList.add("d-none");
   sign.classList.remove("d-none");
@@ -142,14 +143,17 @@ out.addEventListener("click", ()=>{
   // Hide navbar items
   navbarItems.forEach(item => {
     item.style.display = "none";
-  })
+  }
+  
+  )
 })
 
 
 window.addEventListener('load', function () {
   var element = document.body;
   element.classList.add("dark-mode");
-});
+}
+);
 
 function myFunction() {
   var element = document.body;
