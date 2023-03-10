@@ -141,10 +141,11 @@ out.addEventListener("click", (event)=>{
   loginBtn.textContent = "Sign In";
   sign.classList.add("g_id_signin")
   out.classList.remove("d-none")
+  out.style.display = "none";
+
   // Hide navbar items
   navbarItems.forEach(item => {
     item.style.display = "none";
-    out.style.display = "none";
   }
   
   )
