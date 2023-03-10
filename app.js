@@ -80,11 +80,11 @@ function show_L_data() {
 
     info.classList.add("d-none")
     sign.classList.remove("d-none")
-    out.classList.add("d-none")
+    // out.classList.add("d-none")
     // Hide navbar items
     navbarItems.forEach(item => {
       item.style.display = "none";
-      loginBtn.textContent = "Sign In";
+      // loginBtn.textContent = "Sign In";
 
     // Hide the card element
     info.style.display = "none";
@@ -139,7 +139,7 @@ out.addEventListener("click", (event)=>{
   info.classList.add("d-none");
   sign.classList.remove("d-none");
   out.classList.add("d-none");
-
+  loginBtn.textContent = "Sign In";
   // Hide navbar items
   navbarItems.forEach(item => {
     item.style.display = "none";
