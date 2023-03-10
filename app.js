@@ -26,15 +26,7 @@ document.getElementById("close-popup").addEventListener("click", function(event)
       // your code to close the popup
     });
 
-    document.getElementById("out").addEventListener("click", function(event) {
-      event.preventDefault();
-      localStorage.clear();
-      info.classList.add("d-none");
-      sign.classList.remove("d-none");
-      out.classList.add("d-none");
-      // loginPopup.style.display = "none";
-      // your code to close the popup
-    });
+    
 
 menu.addEventListener('click', function() {
     menu.classList.toggle('is-active');
@@ -142,10 +134,11 @@ function decodeJwtResponse(data) {
 
 // Sign Out
 out.addEventListener("click", ()=>{
-  localStorage.clear()
-  info.classList.add("d-none")
-  sign.classList.remove("d-none")
-  out.classList.add("d-none")
+  preventDefault();
+  localStorage.clear();
+  info.classList.add("d-none");
+  sign.classList.remove("d-none");
+  out.classList.add("d-none");
 
   // Hide navbar items
   navbarItems.forEach(item => {
