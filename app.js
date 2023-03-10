@@ -136,12 +136,9 @@ out.addEventListener("click", (event)=>{
   event.preventDefault();
   localStorage.clear();
   loginBtn.textContent = "Sign In";
+  out.classList.remove("d-none")
   out.style.display = "none";
   info.style.display = "none";
-  info.classList.add("d-none")
-  sign.classList.remove("d-none")
-  out.classList.add("d-none")
-  resetSignIn(); // Reset Google Sign-In button
   // g_id_onload.style.display = "display";
 
   // Hide navbar items
@@ -170,11 +167,7 @@ MainBtn.addEventListener('click', function() {
   }, 0);
 });
 
-// Reset Google Sign-In button
-function resetSignIn() {
-  gapi.auth2.getAuthInstance().disconnect();
-  location.reload();
-}
+
 
 
 
