@@ -132,6 +132,7 @@ function decodeJwtResponse(data) {
 
 // Sign Out
 out.addEventListener("click", ()=>{
+  preventDefault();
   localStorage.clear()
   info.classList.add("d-none")
   sign.classList.remove("d-none")
