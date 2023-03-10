@@ -136,17 +136,14 @@ function decodeJwtResponse(data) {
 out.addEventListener("click", (event)=>{
   event.preventDefault();
   localStorage.clear();
-  sign.classList.remove("d-none");
+  sign.classList.add("d-none");
   loginBtn.textContent = "Sign In";
   out.classList.remove("d-none")
   out.style.display = "none";
   info.style.display = "none";
-  sign.style.display = "display";
-
-
 
   // Hide navbar items
-  navbarItems.forEach(item => {
+  navbarItems.forEach(item => {s
     item.style.display = "none";
   }
   
