@@ -761,7 +761,7 @@ width: 100%
     }
 }
 .popup {
-  display: none;
+  display: flex;
   position: fixed;
   z-index: 1;
   top: 50%;
@@ -900,6 +900,8 @@ width: 100%
 
 #sign {
     font-size: 1rem;
+    margin: 0 auto;
+    display: block;
     padding: 10% 0;
     border: none;
     border-radius: 3px;
