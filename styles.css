@@ -928,7 +928,7 @@ width: 100%
   }
   
   /* Dark mode styles for the Google Sign-In popup window */
-  #credential-picker-container {
+  #g_id_onload {
     background-color: #333;
     color: #fff;
   }
