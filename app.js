@@ -136,8 +136,11 @@ out.addEventListener("click", (event)=>{
   event.preventDefault();
   localStorage.clear();
   loginBtn.textContent = "Sign In";
-  out.classList.remove("d-none")
-  location.reload();
+  out.classList.remove("d-none");
+  out.style.display = "none";
+  info.style.display = "none";
+  sign.classList.remove("d-none");
+  sign.classList.add("g_id_signin");
   // g_id_onload.style.display = "display";
 
   // Hide navbar items
