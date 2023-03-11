@@ -48,7 +48,7 @@ function show_L_data() {
   if (localStorage.getItem("infos")) {
         // User is signed in
     let infosLparse = JSON.parse(localStorage.getItem("infos"))
- 
+    console.log(infosLparse)
     info.classList.remove("d-none")
     sign.classList.add("d-none")
     sign.classList.remove("g_id_signin")
@@ -118,11 +118,8 @@ function handleCredentialResponse(response) {
     mailL: responsePayload.email,
     id_numL: responsePayload.sub
   }
-  // Log the infos assigned 
-  // console.log(infos)
 
   let infosL = JSON.stringify(infos)
-  console.log(infosL)
   localStorage.setItem("infos",infosL)
   show_L_data()
   // Reload the window to update the UI
