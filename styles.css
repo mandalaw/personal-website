@@ -761,7 +761,7 @@ width: 100%
     }
 }
 .popup {
-  display: flex;
+  display: none;
   position: fixed;
   z-index: 1;
   top: 50%;
