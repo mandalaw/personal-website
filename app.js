@@ -15,10 +15,6 @@ const loginPopup = document.getElementById("login-popup");
 const MainBtn = document.getElementById("main-btn");
 
 
-// Get the elements by their IDs
-const gIdOnloadEl = document.getElementById('g_id_onload');
-const signEl = document.getElementById('sign');
-
 
   // Google Sheet API Method: spreadsheets.values.append (Begin)
 
@@ -57,9 +53,7 @@ function show_L_data() {
     sign.classList.add("d-none")
     sign.classList.remove("g_id_signin")
     out.classList.remove("d-none")
-    gIdOnloadEl.style.display = "none";
-    signEl.style.display = "none";
-
+    document.getElementById("g_id_onload").setAttribute("data-auto_prompt", "false");
 
 
     fullname.innerHTML = infosLparse.fullnameL
