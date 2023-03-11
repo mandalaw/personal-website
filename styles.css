@@ -899,21 +899,7 @@ width: 100%
 
 
 #sign {
-    font-size: 1rem;
-    margin: 0 auto;
-    display: block;
-    padding: 10% 0;
-    border: none;
-    border-radius: 3px;
-    color:#fff;
-    margin-top: 2 rem;
-    cursor: pointer;
-    position: relative;
-    transition: all 0.35s;
-    outline: none;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
+    padding: 10%;
 }
 
 .SigninData{
@@ -924,3 +910,5 @@ width: 100%
 #g_id_onload {
 display: none;
   }
+
+  
