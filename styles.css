@@ -922,9 +922,5 @@ width: 100%
 }
 
 #g_id_onload {
-    background-color: #333; /* set the background color to a dark shade */
-    color: #fff; /* set the text color to white */
-    border: 1px solid #fff; /* add a white border */
-    padding: 20px; /* add some padding to the content */
-    box-shadow: 0 0 10px rgba(255, 255, 255, 0.5); /* add a white box shadow */
+display: none;
   }
