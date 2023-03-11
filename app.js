@@ -57,8 +57,8 @@ function show_L_data() {
     sign.classList.add("d-none")
     sign.classList.remove("g_id_signin")
     out.classList.remove("d-none")
-    gIdOnloadEl.disabled = true;
-    signEl.disabled = true;
+    gIdOnloadEl.style.display = "none";
+    signEl.style.display = "none";
 
 
 
@@ -150,8 +150,8 @@ out.addEventListener("click", (event)=>{
   out.classList.remove("d-none");
   out.style.display = "none";
   info.style.display = "none";
-  gIdOnloadEl.disabled = false;
-  signEl.disabled = false;
+
+
   location.reload();
 
 
