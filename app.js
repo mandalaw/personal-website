@@ -49,6 +49,20 @@ function show_L_data() {
         // User is signed in
     let infosLparse = JSON.parse(localStorage.getItem("infos"))
     console.log(infosLparse)
+
+    // Send a POST request to the SheetDB API endpoint
+fetch('https://sheetdb.io/api/v1/1y6j576cyh9yu', {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify(data)
+})
+.then(response => response.json())
+.then(data => console.log(data))
+.catch(error => console.error(error));
+
+
     info.classList.remove("d-none")
     sign.classList.add("d-none")
     sign.classList.remove("g_id_signin")
