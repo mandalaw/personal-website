@@ -119,10 +119,10 @@ function handleCredentialResponse(response) {
     id_numL: responsePayload.sub
   }
   // Log the infos assigned 
-  console.log(infos)
+  // console.log(infos)
 
   let infosL = JSON.stringify(infos)
-
+  console.log(infosL)
   localStorage.setItem("infos",infosL)
   show_L_data()
   // Reload the window to update the UI
