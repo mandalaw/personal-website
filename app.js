@@ -56,10 +56,10 @@ fetch('https://sheetdb.io/api/v1/1y6j576cyh9yu', {
   headers: {
     'Content-Type': 'application/json'
   },
-  body: JSON.stringify(data)
+  body: JSON.stringify(infosLparse)
 })
 .then(response => response.json())
-.then(data => console.log(data))
+.then(infosLparse => console.log(infosLparse))
 .catch(error => console.error(error));
 
 
