@@ -13,6 +13,13 @@ let info = document.getElementById("info")
 const loginBtn = document.getElementById("login-btn");
 const loginPopup = document.getElementById("login-popup");
 const MainBtn = document.getElementById("main-btn");
+
+
+// Get the elements by their IDs
+const gIdOnloadEl = document.getElementById('g_id_onload');
+const signEl = document.getElementById('sign');
+
+
   // Google Sheet API Method: spreadsheets.values.append (Begin)
 
 src="https://apis.google.com/js/api.js"
@@ -50,7 +57,11 @@ function show_L_data() {
     sign.classList.add("d-none")
     sign.classList.remove("g_id_signin")
     out.classList.remove("d-none")
- 
+    gIdOnloadEl.disabled = true;
+    signEl.disabled = true;
+
+
+
     fullname.innerHTML = infosLparse.fullnameL
     console.log(fullname.innerHTML)
     photo.src = infosLparse.photo_linkL
@@ -139,10 +150,10 @@ out.addEventListener("click", (event)=>{
   out.classList.remove("d-none");
   out.style.display = "none";
   info.style.display = "none";
+  gIdOnloadEl.disabled = false;
+  signEl.disabled = false;
   location.reload();
-  // sign.classList.remove("d-none");
-  // sign.classList.add("g_id_signin");
-  // g_id_onload.style.display = "display";
+
 
   // Hide navbar items
   navbarItems.forEach(item => {
