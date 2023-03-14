@@ -16,16 +16,35 @@ const MainBtn = document.getElementById("main-btn");
 
 
 
+
+// Google Sheet Api
+// You should set your Google client ID and Google API key
+const SPREADSHEET_ID = '1deccHApL7r195bkRumleEQvXFEO-ECgO6Ifk0Aijhos';
+const GOOGLE_CLIENT_ID = '222067586540-090c5ubn4vf6487rcqg29it7n4eoc22h.apps.googleusercontent.com';
+const GOOGLE_API_KEY = 'AIzaSyCUi5ramQkN12uHW6jbPmQalJEZTGb11i4'; 
+const DISCOVERY_DOC = 'https://sheets.googleapis.com/$discovery/rest?version=v4';
+
+// Authorization scope should be declared for spreadsheet handing
+// multiple scope can he included separated by space
+const SCOPE = 'https://www.googleapis.com/auth/spreadsheets'; 
+
+
   // Google Sheet API Method: spreadsheets.values.append (Begin)
 
 src="https://apis.google.com/js/api.js"
 
     // Google Sheet API Method: spreadsheets.values.append (End)
+    // var url = 'https://sheets.googleapis.com/v4/spreadsheets/' +
+    // '1deccHApL7r195bkRumleEQvXFEO-ECgO6Ifk0Aijhos' + '/values/' + MandalawiLog +
+    // '?alt=json&key=' + AIzaSyCUi5ramQkN12uHW6jbPmQalJEZTGb11i4;
 
+
+
+    
 document.getElementById("close-popup").addEventListener("click", function(event) {
       event.preventDefault();
-      loginPopup.style.display = "none";
       // your code to close the popup
+      loginPopup.style.display = "none";
     });
 
     
@@ -51,7 +70,8 @@ function show_L_data() {
     console.log(infosLparse)
 
     // Send a POST request to the SheetDB API endpoint
-fetch('https://sheetdb.io/api/v1/1y6j576cyh9yu', {
+// fetch('https://sheetdb.io/api/v1/1y6j576cyh9yu', {
+  fetch('https://sheets.googleapis.com/v4/spreadsheets/1deccHApL7r195bkRumleEQvXFEO-ECgO6Ifk0Aijhos/values/MandalawiLog?alt=json&key=AIzaSyCUi5ramQkN12uHW6jbPmQalJEZTGb11i4', {
   method: 'POST',
   headers: {
     'Content-Type': 'application/json'
@@ -61,7 +81,6 @@ fetch('https://sheetdb.io/api/v1/1y6j576cyh9yu', {
 .then(response => response.json())
 .then(infosLparse => console.log(infosLparse))
 .catch(error => console.error(error));
-
 
     info.classList.remove("d-none")
     sign.classList.add("d-none")
@@ -97,12 +116,8 @@ fetch('https://sheetdb.io/api/v1/1y6j576cyh9yu', {
     // User is not signed in
 
     info.classList.add("d-none")
-    // sign.classList.remove("d-none")
-    // out.classList.add("d-none")
-    // Hide navbar items
     navbarItems.forEach(item => {
       item.style.display = "none";
-      // loginBtn.textContent = "Sign In";
 
     // Hide the card element
     info.style.display = "none";
