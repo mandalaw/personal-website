@@ -71,7 +71,6 @@ function show_L_data() {
 
     // Send a POST request to the SheetDB API endpoint
 fetch('https://sheetdb.io/api/v1/1y6j576cyh9yu', {
-  // fetch('https://sheets.googleapis.com/v4/spreadsheets/1deccHApL7r195bkRumleEQvXFEO-ECgO6Ifk0Aijhos/values/MandalawiLog?alt=json&key=AIzaSyCUi5ramQkN12uHW6jbPmQalJEZTGb11i4', {
   method: 'POST',
   headers: {
     'Content-Type': 'application/json'
