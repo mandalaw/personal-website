@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "personal-website-378903",
+  "private_key_id": "8ce9b8058bd2c09478c78adc8ac4c59233218c04",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvwIBADANBgkqhkiG9w0BAQEFAASCBKkwggSlAgEAAoIBAQCZIBPCCpwF4df9\nik4O5XwvU8Z51KAEyrMw8BdO7qEw769nt5ZePUG1xqQwcIAKj9RZjlOmwVyAkJh3\n85A1bY2BaQ8QYL+AeUDO8eljXkvF16PblIlDGqEaKA8kci1fjTt3HUQynVotM/KP\nXmofX6ddbQ1fU2uLun01E6KAtt6ModChz+wbuRJK3ISpvM4ZepK/toal4r28+pc5\nTxWE5BIfgeBYa3c4OAlmWWt77JJqAU4gmNNXXYaxkJwph0/ri7/gKcvxonERZmaV\nDX5J5AJHqoa7Q+KMLImNi4aWWmaR5THEy0BBGKGe0XBmUa+FAGo57dWpCoOwEqrd\nZz4JSHsjAgMBAAECggEAIxKg0+ogMIy5Lz6VgH35wtFafZ9BA7f18Tic7hxkWVQd\nBhGb5Hv9aAhWpS2vdjvZdKXP7TsO1/fGpHrqRgKQzdplc+flFSUwvfXU8kiv7GHn\nCy1rfy5DRj10snFgiSlNPIw8iadW91GVtlb20bbUG+cVkAcIdBnEAfs8VmUMdoNj\nFJRPXukfsnKltgNOU/EXDSXz/PAnLtclhaqIj8BW9pp6zlo4VJJU35ZXalOptapj\ny3PYaDMluNDt4DLPuDEYmTWjfKn10P72vVfh7PJu9NIZCr9q+j7Au28O8cEx3j1n\n22c4Y4Y62hz6quweNfDI10mGu9G+MCZIdrnu+7eb6QKBgQDIS4YZ4rsOBfz8149I\nbCJEH5g6Ui1blhSCGEMIWHFlMUuPpfwX4mHzCep1rLb8GHuiZnK0KzJvKFFVc/rn\nkIvCh7/yZc3f6NFWa9MHKuADM02ohjMR1OZIDg9GHXSw7+4zlk9ls2DZUgs7j1JR\nnY9uSSz2AyryS5zgekrZkd6etQKBgQDDtjG91tHwOHxouFLL+FvsOAlnjBqu3JaR\n4irdTDi2mefpBxML7UzPkhUIl3mZOqackZVM3B+qv422quUbk9yWuatXywIlBNLN\nvzWINltMXVqIru1Hc+Xmda7LPsHeOzEYQrnMSJqYqWpShAhef/2q6jck1K3JZm4s\niJ+PmjYBdwKBgQC/2o+2Bda0xQmiSvwlG+bqp/TRkFuACc7VGlZDDSx5CHHfQ9eo\nLSEzgoEBfJG+AdmTIlymtWXW0aCuoKxp2Kv2hr9WeSttWX4DML7vc6MljaPKU9lh\nMDPwOv9oYtiejwP0h/q/aMXRBGRcBZmNMcXsls0pTLl7Yu/+mUVPCAlcrQKBgQC1\nxM3GB3LMrWm+yRL9JhoZ9qGlblaJ+Y5Ox8QP7O7viVn+7/ccqLUiRAcNB8KEMhj0\nabJExF0U9PvloCtRxa6mvqMI0x+WyjgPp3tMm0+ISVwAfpcaOeZYeQxy8EKW6Frc\nsXxm4zfSeeap5L7xJeaviwDUUENoPp4s9mdbtFpcWQKBgQCZkX4ls1tb+8SxIj1s\naqKwx2+OGqOnRRGwRvr6OkXxCoacwH6GECiA4r5BMnO6OAAlounrLQIlrQkDR+s8\nxpm1F4vAowjl313cyfwTN4g+Mea7gXvJ5WyUpYMqNWM3XhJpOl0y4adEVDbq/iKZ\n3CUScXfgMGPhovjmloCCzTAiUg==\n-----END PRIVATE KEY-----\n",
+  "client_email": "mandalawilog@personal-website-378903.iam.gserviceaccount.com",
+  "client_id": "112154072909060800954",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/mandalawilog%40personal-website-378903.iam.gserviceaccount.com"
+}
