@@ -914,6 +914,10 @@ width: 100%
 display: none;
   }
 
+
+
+
+/* Test Page Begin  */
 .main-title{
     text-align: center;
     margin-top: 4rem;
@@ -1053,7 +1057,7 @@ svg{
             font-size: 6rem;
             text-transform: uppercase;
             font-weight: 800;
-            color: #555;
+            color: #414141;
         }
         
         .main-title h2{
@@ -1225,3 +1229,4 @@ svg{
 
     }
 
+/* Test Page End  */
