@@ -926,23 +926,37 @@
   text-align: center;
   margin-top: 4rem;
   margin-bottom: 8rem;
-  text-shadow: 1px 0px 1px #ccc, 0px 1px 1px #eee, 2px 1px 1px #ccc,
-    1px 2px 1px #eee, 3px 2px 1px #ccc, 2px 3px 1px #eee, 4px 3px 1px #ccc,
-    3px 4px 1px #eee, 5px 4px 1px #ccc, 4px 5px 1px #eee, 6px 5px 1px #ccc,
-    5px 6px 1px #eee, 7px 6px 1px #ccc;
+  text-shadow: 1px 0px 1px #666, 0px 1px 1px #888, 2px 1px 1px #666,
+    1px 2px 1px #888, 3px 2px 1px #666, 2px 3px 1px #888, 4px 3px 1px #666,
+    3px 4px 1px #888, 5px 4px 1px #666, 4px 5px 1px #888, 6px 5px 1px #666,
+    5px 6px 1px #888, 7px 6px 1px #666;
 }
 
+/* Default styles for h1 and h2 */
 .main-title h1 {
   font-size: 7rem;
   text-transform: uppercase;
   font-weight: 800;
-  color: #555;
+  color: #666;
 }
 
 .main-title h2 {
   font-size: 4rem;
   font-weight: 300;
+  color: #141414;
   text-transform: uppercase;
+}
+
+/* Styles for smaller screens */
+@media screen and (max-width: 600px) {
+  .main-title h1 {
+    font-size: 4rem;
+    font-weight: 600;
+  }
+
+  .main-title h2 {
+    font-size: 2.5rem;
+  }
 }
 
 .svg-img {
