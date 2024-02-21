@@ -1,1240 +1,1083 @@
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-  font-family: "Kumbh Sans", sans-serif;
-}
 
-@media (prefers-color-scheme: dark) {
-  body {
-    background-color: #1f1f1f;
-    color: #f2f2f2;
-  }
-}
 
-.navbar {
-  background: #131313;
-  height: 80px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 1.2rem;
-  position: sticky;
-  top: 0;
-  z-index: 999;
-}
 
-.navbar__container {
-  display: flex;
-  justify-content: space-between;
-  height: 80px;
-  z-index: 1;
-  width: 100%;
-  max-width: 1300px;
-  margin: 0 auto;
-  padding: 0 50px;
-}
-
-#navbar__logo {
-  background-color: #ff8177;
-  background-image: linear-gradient(to top, #ff0844 0%, #ffb199 100%);
-  background-size: 100%;
-  -webkit-background-clip: text;
-  -moz-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  -moz-text-fill-color: transparent;
-  display: flex;
-  align-items: center;
-  cursor: pointer;
-  text-decoration: none;
-  font-size: 2rem;
-}
-
-.fa-gem {
-  margin-right: 0.5rem;
-}
-
-.navbar__menu {
-  display: flex;
-  align-items: center;
-  list-style: none;
-  text-align: center;
-}
-
-.navbar__item {
-  height: 80px;
-}
-
-.navbar__links {
-  color: #fff;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-decoration: none;
-  padding: 0 1rem;
-  height: 100%;
-}
-
-.navbar__btn {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 0 1rem;
-  width: 100%;
-}
-
-.button {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-decoration: none;
-  padding: 10px 20px;
-  height: 100%;
-  width: 100%;
-  border: none;
-  outline: none;
-  border-radius: 4px;
-  background: #f77062;
-  color: #fff;
-}
-
-.button:hover {
-  background: #4837ff;
-  transition: all 0.3s ease;
-}
-
-.navbar__links:hover {
-  color: #f77062;
-  transition: all 0.3s ease;
-}
-
-@media screen and (max-width: 960px) {
-  .navbar__container {
-    display: flex;
-    justify-content: space-between;
-    height: 80px;
-    z-index: 1;
+/* Ensure the section covers full width */
+.full-width-background {
     width: 100%;
-    max-width: 1300px;
-    padding: 0;
-  }
+    display: block;
+}
 
-  .navbar__menu {
-    display: grid;
-    grid-template-columns: auto;
-    margin: 0;
+/* Styles for the container within each section */
+
+.container {
+    max-width: 1200px; /* or any other max-width you prefer */
+    margin: auto; /* this will center your container */
+    padding: 0 15px; /* this adds some padding on the sides */
+    text-align: center; /* Center-align inline or inline-block elements */
+
+}
+
+/* Apply the container class to the main content areas */
+.main, .section-content, footer {
     width: 100%;
+}
+
+/* Ensure full-width sections like header and footer are not constrained */
+header, footer {
+    max-width: 100%;
+}
+
+/* Responsive Design Adjustments */
+@media (max-width: 1200px) {
+    .container {
+        padding: 0 30px; /* you can adjust the padding for smaller screens */
+    }
+}
+
+
+/* Logo styling */
+/* Logo styling to match the mandalawi.ca website */
+/* Logo styling to match the mandalawi.ca website */
+/* Logo styling to match the mandalawi.ca website */
+.logo {
+    display: inline-flex;
+    align-items: center;
+    font-size: 2rem; /* Adjust the size as needed */
+    background-color: #ff8177;
+    background-image: linear-gradient(to top, #ff0844 0%, #ffb199 100%);
+    background-size: 100%;
+    -webkit-background-clip: text;
+    -moz-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    -moz-text-fill-color: transparent;
+    text-decoration: none; /* Remove underline from link */
+}
+
+.logo .logo-icon {
+    /* Align icon size with the text, optional */
+    font-size: 1.5em; /* Adjust based on your preference */
+    margin-right: 0.5rem; /* Space between icon and text */
+}
+
+/* Logo and Navigation Links: Ensuring Color Consistency in Dark Mode */
+.logo, .nav-links a {
+    transition: color 0.3s ease; /* Smooth transition for color changes */
+}
+/* Base styles for section titles */
+h2 {
+    font-size: 2.5rem; /* Size of the titles */
+    margin-bottom: 40px;
+    text-transform: uppercase;
+    padding: 15px 30px; /* Padding inside titles */
+    position: relative; /* Enables absolute positioning of pseudo-elements */
+    display: inline-block; /* Necessary for positioning */
+    background: rgba(255, 255, 255, 0.5); /* Semi-transparent background for contrast */
+    border-radius: 10px; /* Rounded corners */
+    z-index: 2; /* Ensures text is above the background */
+    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth transition for hover effects */
+}
+
+/* Adjusted 3D text shadow for depth */
+h2 {
+    text-shadow: 
+        1px 1px 0 rgba(0,0,0,0.6),
+        2px 2px 0 rgba(0,0,0,0.4),
+        3px 3px 0 rgba(0,0,0,0.3);
+}
+
+/* Background effect */
+h2::before {
+    content: '';
     position: absolute;
-    top: -1000px;
-    opacity: 0;
-    transition: all 0.5s ease;
-    height: 50vh;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
     z-index: -1;
-    background: #131313;
-  }
+    background: linear-gradient(145deg, rgba(255, 255, 255, 0.2), rgba(0, 0, 0, 0.2));
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    transition: box-shadow 0.3s ease; /* Smooth transition for the shadow */
+}
 
-  .navbar__menu.active {
-    background: #131313;
-    top: 100%;
-    opacity: 1;
-    transition: all 0.5s ease;
-    z-index: 99;
-    height: 50vh;
-    font-size: 1.6rem;
-  }
+/* Matching text and background colors for each section */
+#about h2, #about h2::before { background-color: #ff6277; color: #ff6277; }
+#services h2, #services h2::before { background-color: #ff5177; color: #ff5177; }
+#portfolio h2, #portfolio h2::before { background-color: #ff7599; color: #ff7599; }
+#testimonials h2, #testimonials h2::before { background-color: #ff999c; color: #ff999c; }
+#blog h2, #blog h2::before { background-color: #ffb199; color: #ffb199; }
+#contact h2, #contact h2::before { background-color: #ff7e5f; color: #ff7e5f; }
 
-  #navbar__logo {
-    padding-left: 25px;
-  }
+/* Styles for the About Me image */
+#about-img {
+    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth transition for scaling and shadow */
+    border-radius: 10px; /* Optional: rounds the corners of the image */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+}
 
-  .navbar__toggle .bar {
-    width: 25px;
-    height: 3px;
-    margin: 5px auto;
-    transition: all 0.3 ease-in-out;
-    background: #fff;
-  }
+/* Hover effect */
+#about-img:hover {
+    transform: scale(1.05); /* Slightly enlarges the image */
+    box-shadow: 0 0 20px rgba(255, 194, 194, 0.787), /* Soft glow in the theme color */
+                 0 0 30px rgba(255, 147, 111, 0.75); /* Secondary glow color */
+}
 
-  .navbar__item {
+/* Dark Mode Adjustments */
+body.dark-mode #about-img {
+    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Ensures smooth transitions in dark mode */
+}
+
+body.dark-mode #about-img:hover {
+    transform: scale(1.05); /* Maintains the scale effect */
+    box-shadow: 0 0 20px rgba(255, 84, 68, 0.6), /* Adjusted glow intensity for dark mode */
+                 0 0 30px rgba(255, 177, 153, 0.6); /* Slightly more intense for visibility */
+}
+
+/* Subtle glow effect for each section */
+h2 {
+    box-shadow: 0 0 8px rgba(0,0,0,0.2);
+}
+
+/* 3D popping and shadow hover effect */
+h2:hover {
+    transform: scale(1.05); /* Slightly larger scale for a popping effect */
+    box-shadow: 0 0 15px rgba(0,0,0,0.3); /* More pronounced shadow for depth */
+}
+
+h2:hover::before {
+    box-shadow: 0 5px 15px rgba(0,0,0,0.4); /* More pronounced shadow for a 3D effect */
+}
+
+/* Dark mode adjustments for h2, keeping original text colors */
+body.dark-mode h2 {
+    background: rgba(0, 0, 0, 0.5); /* Darker background for contrast */
+    /* No change to text color here to keep original colors */
+    text-shadow: 
+        1px 1px 0 rgba(255,255,255,0.2),
+        2px 2px 0 rgba(255,255,255,0.15),
+        3px 3px 0 rgba(255,255,255,0.1);
+}
+
+body.dark-mode h2::before {
+    background: linear-gradient(145deg, rgba(0, 0, 0, 0.4), rgba(255, 255, 255, 0.1));
+    box-shadow: 0 2px 4px rgba(255, 255, 255, 0.2);
+}
+
+/* Dark mode matching text and background colors for each section */
+body.dark-mode #about h2, body.dark-mode #about h2::before { background-color: #374785; color: #ff6277; }
+body.dark-mode #services h2, body.dark-mode #services h2::before { background-color: #5C4B51; color: #ff5177; }
+body.dark-mode #portfolio h2, body.dark-mode #portfolio h2::before { background-color: #233B6E; color: #ff7599; }
+body.dark-mode #testimonials h2, body.dark-mode #testimonials h2::before { background-color: #423F8D; color: #ff999c; }
+body.dark-mode #blog h2, body.dark-mode #blog h2::before { background-color: #34262f; color: #ffb199; } /* Adjusted for better visibility */
+body.dark-mode #contact h2, body.dark-mode #contact h2::before { background-color: #34262f; color: #ff7e5f; } /* Adjusted for better visibility */
+
+/* Dark Mode Specific Section Styles */
+/* Dark Mode Styles */
+
+
+/* Specific Colors for Navigation Links Matching Section Titles (Light Mode) */
+.nav-links a[href="#about"] { color: #ff6277;; }
+.nav-links a[href="#services"] { color: #ff5177;  }
+.nav-links a[href="#portfolio"] { color: #ff7599; }
+.nav-links a[href="#testimonials"] { color: #ff9c9e; }
+.nav-links a[href="#blog"] { color: #ffb199; }
+.nav-links a[href="#contact"] { color: #ff7e5f; }
+
+/* Dark Mode Styles - Ensuring colors remain consistent */
+body.dark-mode .logo {
+    color: #007aff; /* Explicitly setting the logo color for dark mode */
+}
+
+/* Applying specific colors to nav links in dark mode to match their light mode appearances */
+body.dark-mode .nav-links a[href="#about"] { color: #ff6277;; }
+body.dark-mode .nav-links a[href="#services"] { color: #ff5177;  }
+body.dark-mode .nav-links a[href="#portfolio"] { color: #ff7599; }
+body.dark-mode .nav-links a[href="#testimonials"] { color: #ff9c9e; }
+body.dark-mode .nav-links a[href="#blog"] { color: #ffb199; }
+body.dark-mode .nav-links a[href="#contact"] { color: #ff7e5f; }
+
+/* Ensure these styles are placed after all other link and logo color styles to maintain specificity */
+
+
+
+/* portfolio window styling  */
+
+/* portfolio window styling */
+
+/* Ensure base state has a perspective set for 3D effect */
+.portfolio-window {
+    transition: transform 0.5s ease, box-shadow 0.5s ease;
+    transform: translateZ(0);
+    display: block;
+    margin: 20px auto;
+    border: 3px solid #ff7599;
+    box-sizing: border-box;
+    max-width: 1240px;
     width: 100%;
-  }
+    aspect-ratio: 16 / 9; /* Adjust based on the preferred aspect ratio */
+}
 
-  .navbar__links {
-    text-align: center;
-    padding: 2rem;
+.portfolio-window {
+    zoom: 0.8;
+    -moz-transform: scale(0.8);
+    -o-transform: scale(0.8);
+    -webkit-transform: scale(0.8);
+    transform: scale(0.8);
+}
+
+.portfolio-window:hover {
+    transform: scale(1) translateZ(50px); /* Scales up and moves towards the user */
+    box-shadow: 0 20px 30px rgba(0,0,0,0.5); /* Enhances depth with shadow */
+}
+
+
+/* Responsive Design Adjustments */
+
+
+/* Navigation Link Styling */
+
+.nav-links a {
+    transition: transform 0.3s ease, color 0.3s ease; /* Smooth transition for transform and color */
+    /* Ensuring enough space around the text for the 3D effect */
+    margin-left: 4px; /* Add a small margin to the left of each link */
+    display: inline-block; /* Ensures that margin and transform are applied correctly */
+    
+}
+
+.nav-links a:hover {
+    transform: scale(1.1); /* Slightly scale up the link */
+    opacity: 0.5; /* Optional: Slightly reduce the opacity */
+}
+
+
+.nav-links a:hover {
+    /* Basic hover effect settings */
+    opacity: 0.9;
+
+    /* 3D effect with adjusted shadows */
+    transform: translateZ(0) translateY(-2px) scale(1.05); /* Adding translateZ for better layer handling */
+    text-shadow:
+        1px 1px 2px rgba(255, 8, 68, 0.7), /* Shadow for depth */
+        -1px -1px 2px rgba(255, 177, 153, 0.7), /* Lighter shadow for contrast */
+        0 0 5px rgba(255, 8, 68, 0.5), /* Additional depth */
+        0 0 7px rgba(255, 177, 153, 0.5); /* Additional light shadow for contrast */
+
+    transition: transform 0.3s ease, text-shadow 0.3s ease, opacity 0.3s ease; /* Smooth transition for the effects */
+    position: relative; /* Ensuring the element is positioned relatively */
+    z-index: 1; /* Raising the z-index to ensure it's above other elements */
+    overflow: visible; /* Ensuring that no part of the text or effect is hidden */
+}
+
+
+
+
+/* Ensure the logo retains its color in dark mode */
+body.dark-mode .logo .logo-icon {
+    color: #ff4500 !important; /* Specific color for the logo icon */
+}
+
+/* ... [rest of your styles] ... */
+
+
+/* ... [remaining styles including responsive adjustments] ... */
+/* General Styles */
+body {
+    font-family: 'Arial', sans-serif;
+    overflow-x: hidden; /* Prevent horizontal overflow */
+    background-color:  #ff7e5f;
+
+      }
+      svg {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100vh;
+    }
+     
+    .links {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        font-size: 18px;
+        font-family: sans-serif;
+    }
+    a {
+        text-decoration: none;
+        color: black;
+        margin-left: 1em;
+    }
+    a:hover {
+        text-decoration: underline;
+    }
+    a img.icon {
+        display: inline-block;
+        height: 1em;
+        margin: 0 0 -0.1em 0.3em;
+    }
+
+    /* background-color: #f9f9f9;
+    background-color: #f9f9f9;
+    background-image: repeating-radial-gradient(circle at 0 0, transparent 0, rgba(249, 249, 249, 0.6) 29px), repeating-linear-gradient(rgba(196, 126, 133, 0.33), rgba(196, 126, 133, 0.6));
+} */
+/* ... other global styles ... */
+  
+  /* Continue with your existing CSS styles without altering the new background pattern */
+  
+
+/* ... other styles for nav and .nav-container ... */
+
+p, a {
+    font-size: 16px;
+    line-height: 1.6;
+    color: #333;
+}
+
+a {
+    text-decoration: none;
+    transition: color 0.2s ease-in-out;
+}
+
+a:hover {
+    color: #007aff;
+}
+
+/* Header and Navigation Styles */
+header {
     width: 100%;
-    display: table;
-  }
+    background-color: rgba(10, 1, 1, 0.65); /* Light grey with some transparency */
+    backdrop-filter: blur(10px); /* Blurring any content behind the header */
+    color: #333; /* Dark grey text color */
+    box-shadow: 0 8px 10px rgba(0, 0, 0, 0.1), /* Adding a subtle shadow for depth */
+                 0 0 20px rgba(0, 0, 0, 0.1), /* Additional shadow for 3D effect */
+                 inset 0 -1px 2px rgba(0, 0, 0, 0.1); /* Inset shadow for more depth */
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    padding: 0.5em 1em;
+    border-bottom: 2px solid rgba(0, 0, 0, 0.1); /* Thin bottom border for subtle edge */
+}
 
-  #mobile-menu {
+
+header nav {
+    display: flex; /* Flexbox layout for the navigation */
+    justify-content: space-between; /* Spreads out nav items and toggle container */
+    align-items: center; /* Vertically centers the items in the nav */
+}
+
+.nav-container {
+    display: flex; /* Flexbox for direct children (links and toggle container) */
+    justify-content: space-between; /* Spreads children across the full width */
+    align-items: center; /* Aligns children vertically in the center */
+    width: 100%; /* Full width of the header */
+}
+
+.nav-links {
+    list-style: none; /* Removes default list bullets */
+    display: flex; /* Displays the navigation links in a row */
+    margin: 0; /* Resets default margin */
+    padding: 0; /* Resets default padding */
+}
+
+.nav-links li {
+    margin-right: 20px; /* Right margin for each list item */
+    display: inline-block; /* Displays list items in line */
+}
+
+.nav-links li:last-child {
+    margin-right: 0; /* Removes margin from the last list item */
+}
+
+.nav-links li a {
+    color: #333; /* Text color for links */
+    font-weight: bold; /* Makes the font weight bold */
+    text-decoration: none; /* Removes underline from links */
+    transition: color 0.3s ease-in-out; /* Smooth transition for color change */
+}
+
+/* Full-Screen Section Styles */
+
+/* CSS Adjustments for Full-Screen Sections */
+
+/* General Reset (if not already present) */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box; /* Ensures padding doesn't affect overall width/height */
+}
+
+
+html, body {
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden; /* Prevent horizontal scrolling */
+    /* scroll-behavior: smooth; Smooth scrolling effect for anchor links */
+    height: 100%; /* Full height of the viewport */
+}
+
+body {
+    scroll-snap-type: y mandatory; /* Enables vertical scroll snapping */
+}
+
+section {
+    min-height: 100vh; /* Each section takes up minimum 100% of viewport height */
+    scroll-snap-align: start; /* Aligns the start of each section at the start of the viewport */
+    display: flex; /* Flexbox layout for content within each section */
+    flex-direction: column; /* Stacks content vertically */
+    align-items: center; /* Centers content horizontally */
+    justify-content: center; /* Centers content vertically */
+    padding: 15px; /* Padding within each section */
+    text-align: center; /* Centers text within each section */
+}
+/* Enhanced 3D Effect for Active Navigation Link in Light Mode */
+.nav-links a.active {
+    font-weight: 900; /* Extra bold font weight */
+    text-shadow: 
+        0 1px 0 rgba(0, 0, 0, 0.7),
+        0 2px 0 rgba(0, 0, 0, 0.6),
+        0 3px 0 rgba(0, 0, 0, 0.5),
+        0 4px 0 rgba(0, 0, 0, 0.4),
+        0 5px 0 rgba(0, 0, 0, 0.3),
+        0 6px 0 rgba(0, 0, 0, 0.2),
+        0 7px 0 rgba(0, 0, 0, 0.1),
+        0 8px 10px rgba(255, 255, 255, 0.4),
+        0 10px 20px rgba(255, 255, 255, 0.3),
+        0 15px 30px rgba(255, 255, 255, 0.2); /* Enhanced shadow for dark mode */
+    transition: transform 0.3s ease, text-shadow 0.3s ease;
+}
+
+/* Smooth Interaction Effect on Hover in Light Mode */
+.nav-links a.active:hover {
+    transform: translateY(-2px) scale(1.03); /* Gentle lift and scale for a subtle pop */
+}
+
+
+/* Adjusting for dark mode */
+
+
+
+/* Animation on Scroll (Fade-in effect) */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); } /* Start state of animation */
+    to { opacity: 1; transform: translateY(0); } /* End state of animation */
+}
+
+section {
+    animation: fadeIn 1s ease-out; /* Applies fade-in animation to each section */
+    visibility: visible; /* Ensures sections are visible */
+}
+
+
+/* Dark Mode Toggle Switch */
+.toggle-container {
+    display: flex;
+    align-items: center;
+}
+
+.mode-icon {
+    display: inline-block;
+    margin: 0 5px;
+}
+
+#toggle-dark-mode {
+    height: 0;
+    width: 0;
+    visibility: hidden;
+}
+
+.toggle-label {
+    cursor: pointer;
+    text-indent: -9999px;
+    width: 50px;
+    height: 25px;
+    background: grey;
+    display: block;
+    border-radius: 100px;
+    position: relative;
+}
+
+.toggle-label:after {
+    content: '';
     position: absolute;
-    top: 20%;
-    right: 5%;
-    transform: translate(5%, 20%);
-  }
+    top: 2px;
+    left: 2px;
+    width: 21px;
+    height: 21px;
+    background: #fff;
+    border-radius: 90px;
+    transition: 0.3s; /* Ensure smooth transition */
+}
 
-  .navbar__btn {
-    padding-bottom: 2rem;
-  }
 
-  .button {
+#toggle-dark-mode:checked + .toggle-label:after {
+    left: 27px; /* Adjust to the correct position */
+    transform: translateX(0); /* Remove unnecessary transform */
+}
+
+/* Full-Screen Section Styles */
+section {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 15px;
+    text-align: center;
+    transition: transform 0.5s ease, opacity 0.5s ease;
+}
+
+section {
+    animation: fadeIn 1s ease-out;
+    visibility: visible;
+}
+
+/* Section Specific Styles for Personalization */
+/* Section Specific Styles for Light Mode */
+/* Using lighter shades for a professional look */
+/* Additional styles for the #about section */
+#about {
+    /* Ensure the section has enough space at the top */
+    padding-top: 100px; /* Adjust this value as necessary */
+    /* Any other specific styling you want for this section */
+}
+
+/* --section-background-light: rgba(255, 255, 255, 0.8); Light mode with reduced transparency */
+/* --section-background-dark: rgba(0, 0, 0, 0.8); Dark mode with reduced transparency */
+
+
+/* Define default light mode variables */
+:root {
+    /* Section colors matching the navigation bar */
+    --color-about: #ff6277;
+    --color-services: #ff5177;
+    --color-portfolio: #ff7599;
+    --color-testimonials: #ff9c9e;
+    --color-blog: #ffb199;
+    --color-contact: #ff7e5f;
+
+    /* Light theme colors */
+    --text-color: #830000d0; /* Default text color */
+    --background-color: #fff; /* Default background color */
+
+    /* Dark theme colors */
+    --text-color-dark: #ff7f7f; /* White text for dark mode */
+    --background-color-dark: #333; /* Dark background for dark mode */
+
+}
+/* Apply unique gradient backgrounds to each section with an extremely transparent spotlight */
+#about {
+    background: radial-gradient(circle at center, rgba(255, 98, 119, 0.2) 50%, transparent 70%);
+}
+#services {
+    background: radial-gradient(circle at center, rgba(255, 81, 119, 0.2) 50%, transparent 70%);
+}
+#portfolio {
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 80%;
-    height: 80px;
-    margin: 0;
-  }
-
-  .navbar__toggle .bar {
-    display: block;
-    cursor: pointer;
-  }
-
-  #mobile-menu.is-active .bar:nth-child(2) {
-    opacity: 0;
-  }
-
-  #mobile-menu.is-active .bar:nth-child(1) {
-    transform: translateY(8px) rotate(45deg);
-  }
-
-  #mobile-menu.is-active .bar:nth-child(4) {
-    transform: translateY(8px) rotate(45deg);
-  }
-
-  #mobile-menu.is-active .bar:nth-child(5) {
-    transform: translateY(8px) rotate(45deg);
-  }
-
-  #mobile-menu.is-active .bar:nth-child(3) {
-    transform: translateY(-8px) rotate(-45deg);
-  }
+    flex-direction: column;
+    overflow: visible;
+    border-radius: 0;
 }
 
-/* Hero Section CSS */
-
-.main {
-  background-color: #141414;
+#testimonials {
+    background: radial-gradient(circle at center, rgba(255, 156, 158, 0.2) 50%, transparent 70%);
+}
+#blog {
+    background: radial-gradient(circle at center, rgba(255, 177, 153, 0.2) 50%, transparent 70%);
+}
+#contact {
+    background: radial-gradient(circle at center, rgba(255, 126, 95, 0.2) 50%, transparent 70%);
 }
 
-.main__container {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  align-items: center;
-  justify-self: center;
-  margin: 0 auto;
-  height: 90vh;
-  background-color: #141414;
-  z-index: 1;
-  width: 100%;
-  max-width: 1300px;
-  padding: 0 50px;
-}
 
-.main__content h1 {
-  font-size: 3rem;
-  background-color: #ff8177;
-  background-image: linear-gradient(to top, #ff0844 0%, #ffb199 100%);
-  background-size: 100%;
-  -webkit-background-clip: text;
-  -moz-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  -moz-text-fill-color: transparent;
-}
 
-.main__content h2 {
-  font-size: 1.5rem;
-  background-color: #ff8177;
-  background-image: linear-gradient(to top, #b721ff 0%, #21d4fd 100%);
-  background-size: 100%;
-  -webkit-background-clip: text;
-  -moz-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  -moz-text-fill-color: transparent;
-}
-
-.main__content p {
-  margin-top: 1rem;
-  font-size: 2rem;
-  font-weight: 700;
-  color: #fff;
-}
-
-.main__btn {
-  font-size: 1rem;
-  background-image: linear-gradient(to top, #f77062 0%, #fe5196 100%);
-  padding: 14px 32px;
-  border: none;
-  color: #fff;
-  margin-top: 2 rem;
-  cursor: pointer;
-  position: relative;
-  transition: all 0.35s;
-  outline: none;
-}
-
-.main__btn a {
-  position: relative;
-  z-index: 2;
-  color: #fff;
-  text-decoration: none;
-}
-
-.main__btn::after {
-  position: absolute;
-  content: "";
-  top: 0;
-  left: 0;
-  width: 0;
-  height: 100%;
-  background: #4837ff;
-  transition: all 0.35s;
-  border-radius: 4px;
-}
-
-.main__btn:hover {
-  color: #fff;
-}
-
-.main__btn:hover::after {
-  width: 100%;
-}
-
-.main__img--container {
-  text-align: center;
-}
-
-#main__img {
-  height: 80%;
-  width: 80%;
-}
-
-/* Mobile Responsive */
-
-@media screen and (max-width: 768px) {
-  .main__container {
-    display: grid;
-    grid-template-columns: auto;
+/* Additional CSS for sections */
+section {
+    position: relative;
+    overflow: hidden;
+    padding: 10px 20px; /* Adjust padding as needed */
+    display: flex;
+    flex-direction: column;
     align-items: center;
-    justify-self: center;
+    justify-content: center;
+    text-align: center;
+    border-radius: 50000px; /* Rounded corners for each section */
+    margin: 20px 0; /* Space between sections */
+    transition: all 0.3s ease; /* Smooth transition for interactions */
+}
+
+/* Dark Mode Adjustments */
+body.dark-mode #about,
+body.dark-mode #services,
+body.dark-mode #portfolio,
+body.dark-mode #testimonials,
+body.dark-mode #blog,
+body.dark-mode #contact {
+    background-color: var(--section-background-dark); /* Adjust if you want a specific dark mode behavior */
+}
+
+/* Ensure text colors and other elements inside sections are styled appropriately */
+section h2, section p {
+    color: var(--text-color);
+    /* Rest of your p styles */
+}
+
+/* Light Mode Styles */
+p {
+    position: relative;
+    padding: 5px 0; /* Adjust padding as needed */
+    transition: color 0.3s ease, text-shadow 0.3s ease;
+    cursor: default; /* Assuming the custom cursor is omitted for simplicity */
+    background-image: linear-gradient(to right, rgba(255, 255, 255, 0), rgba(255, 84, 68, 0.75), rgba(255, 255, 255, 0)); /* Intense central gradient for a brighter effect */
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent; /* Hide the text color, showing the gradient */
+    text-shadow: none; /* Start without text-shadow */
+}
+
+p:hover {
+    background-image: linear-gradient(to right, rgba(255, 255, 255, 0), rgba(255, 84, 68, 0.75) 50%, rgba(255, 255, 255, 0)); /* Brighter gradient */
+    text-shadow: 
+        0 0 10px rgba(255, 255, 255, 1), /* Ultra-bright white glow */
+        0 0 20px rgb(253, 125, 113, 1), /* Intense red glow */
+        0 0 30px rgb(248, 155, 147, 1), /* More pronounced red glow */
+        0 0 40px rgba(255, 177, 153, 1), /* Bright peach glow */
+        0 0 50px rgba(255, 177, 153, 1); /* Maximum brightness peach glow */
+}
+
+/* Adjusting for a Brighter Dark Mode Glow */
+/* Dark Mode Adjustments for a Subtler Effect */
+body.dark-mode p {
+    background-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(255, 132, 68, 0.5), rgba(0, 0, 0, 0)); /* Dark mode start color */
+}
+
+body.dark-mode p:hover {
+    background-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(255, 177, 153, 0.5) 50%, rgba(0, 0, 0, 0)); /* Dark mode end color */
+    text-shadow: 
+        0 0 5px rgba(255, 132, 68, 0.5), /* Subtler glowing effect for dark mode */
+        0 0 8px rgba(255, 132, 68, 0.5), /* Less pronounced glow for dark mode */
+        0 0 11px #ff0844, /* Soft glow for dark mode */
+        0 0 14px #ffb199; /* Soft and subtle glow for dark mode */
+}
+
+/* Light Mode Styles */
+h3 {
+    color: rgb(255, 52, 34); /* Darker color for light mode */
+    transition: color 0.3s ease; /* Smooth transition for color changes */
+    position: relative;
+    padding: 5px 0; /* Adjust padding as needed */
+    transition: color 0.3s ease, text-shadow 0.3s ease;
+    cursor: default; /* Assuming the custom cursor is omitted for simplicity */
+    background-image: linear-gradient(to right, rgba(255, 255, 255, 0), rgba(255, 84, 68, 0.75), rgba(255, 255, 255, 0)); /* Intense central gradient for a brighter effect */
+    -webkit-background-clip: text;
+    background-clip: text;
+    transition: color 0.3s ease;
+    text-shadow: none; /* Start without text-shadow */
+}
+
+h3:hover {
+    background-image: linear-gradient(to right, rgba(255, 255, 255, 0), rgba(255, 84, 68, 0.75) 50%, rgba(255, 255, 255, 0)); /* Brighter gradient */
+    text-shadow: 
+        0 0 10px rgba(255, 255, 255, 1), /* Ultra-bright white glow */
+        0 0 20px rgb(253, 125, 113, 1), /* Intense red glow */
+        0 0 30px rgb(248, 155, 147, 1), /* More pronounced red glow */
+        0 0 40px rgba(255, 177, 153, 1), /* Bright peach glow */
+        0 0 50px rgba(255, 177, 153, 1); /* Maximum brightness peach glow */
+}
+
+/* Adjusting for a Brighter Dark Mode Glow */
+/* Dark Mode Adjustments for a Subtler Effect */
+body.dark-mode h3 {
+    background-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(255, 132, 68, 0.5), rgba(0, 0, 0, 0)); /* Dark mode start color */
+    color: rgb(255, 177, 153); /* Lighter color for dark mode */
+}
+
+body.dark-mode h3:hover {
+    background-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(255, 177, 153, 0.5) 50%, rgba(0, 0, 0, 0)); /* Dark mode end color */
+    text-shadow: 
+        0 0 5px rgba(255, 132, 68, 0.5), /* Subtler glowing effect for dark mode */
+        0 0 8px rgba(255, 132, 68, 0.5), /* Less pronounced glow for dark mode */
+        0 0 11px #ff0844, /* Soft glow for dark mode */
+        0 0 14px #ffb199; /* Soft and subtle glow for dark mode */
+}
+
+
+/* Further adjustments can be added here for responsiveness and other styling as needed */
+
+/* Light Mode Section Backgrounds with Textures */
+/* section#about {
+    background-image: url('/backgrounds/light_full-bloom.png');
+    background-repeat: repeat; 
+    background-size: auto;
+}
+
+section#services {
+    background-image: url('/backgrounds/light_wavy-dots.png');
+    background-repeat: repeat; 
+    background-size: auto;}
+
+section#portfolio {
+    background-image: url('/backgrounds/light_so-serious-white.png');
+    background-repeat: repeat; 
+    background-size: auto;}
+
+section#testimonials {
+    background-image: url('/backgrounds/light_fabric_1.png');
+    background-repeat: repeat; 
+    background-size: auto;}
+
+section#blog {
+    background-image: url('/backgrounds/light_45degreee_fabric.png');
+    background-repeat: repeat; 
+    background-size: auto;}
+
+section#contact {
+    background-image: url('/backgrounds/light_seamless_paper_texture.png');
+    background-repeat: repeat; 
+    background-size: auto;}
+
+body.dark-mode section#about {
+    background-image: url('/backgrounds/dark_footer_lodyas.png');
+    background-repeat: repeat; 
+    background-size: auto;}
+
+body.dark-mode section#services {
+    background-image: url('/backgrounds/dark_tactile_noise.png');
+    background-repeat: repeat; 
+    background-size: auto;}
+
+body.dark-mode section#portfolio {
+    background-image: url('/backgrounds/dark_micro_carbon.png');
+    background-repeat: repeat; 
+    background-size: auto;}
+
+body.dark-mode section#testimonials {
+    background-image: url('/backgrounds/dark_triangles.png');
+    background-repeat: repeat; 
+    background-size: auto;}
+
+body.dark-mode section#blog {
+    background-image: url('/backgrounds/dark_leather.png');
+    background-repeat: repeat; 
+    background-size: auto;}
+
+body.dark-mode section#contact {
+    background-image: url('/backgrounds/dark_zig zag wool.png');
+    background-repeat: repeat; 
+    background-size: auto;} */
+
+
+/* ... [Rest of the existing styles for animations, responsiveness, etc.] ... */
+
+/* Adjusted Media Query for Responsive Design */
+@media (max-width: 768px) {
+    /* Navigation items layout for smaller screens */
+    .nav-links li {
+        margin: 10px 0;
+    }
+    /* ... other responsive styles ... */
+}
+
+
+/* ... [other existing styles] ... */
+
+/* Contact Form Styles */
+#contact form {
+    position: relative; /* Needed for absolute positioning of the button */
+    max-width: 600px;
+    margin: auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* Create two columns */
+    grid-gap: 20px; /* Space between the columns */
+    margin-top: 50px; /* Adjust this value to control the amount of upward movement */
+}
+
+#contact form input[type="text"],
+#contact form input[type="email"] {
+    width: 100%; /* Full width of the grid column */
+}
+
+#contact form textarea {
+    grid-column: 1 / -1; /* Span across both columns */
     width: 100%;
-    margin: 0 auto;
-    height: auto;
-  }
+    height: 150px; /* Adjust height as needed */
+    resize: vertical;
+}
 
-  .main__content {
+#send-message {
+    position: absolute; /* Absolute position */
+    right: 0; /* Align to the right */
+    bottom: -50px; /* Position below the form */
+}
+/* ... [other existing styles] ... */
+
+/* Style for Character Counter */
+#message-info {
+    font-size: 0.8em; /* Smaller font size */
+    color: #888; /* Faded grey color */
+    margin-right: 0px; /* Add right margin to push it leftward */
+    align-self: flex-end; /* Align at the end of the flex container */
+    /* Other styles */
+}
+
+/* ... [other existing styles] ... */
+
+
+
+/* Responsive adjustments for smaller screens */
+@media (max-width: 768px) {
+    #contact form {
+        grid-template-columns: 1fr; /* Single column layout for smaller screens */
+    }
+    #send-message {
+        position: static; /* Reset position on smaller screens */
+    }
+}
+
+/* ... [other existing styles] ... */
+
+/* Content within sections */
+.section-content {
+    opacity: 0; /* Start elements as invisible */
+    transform: translateY(20px); /* Start elements slightly below their final position */
+    transition: opacity 0.5s ease-out, transform 0.5s ease-out; /* Smooth transition for opacity and position */
+}
+
+
+/* When elements are in view, animate them to their final state */
+.animate-on-scroll {
+    opacity: 1; /* Fully visible */
+    transform: translateY(0); /* Move to final position */
+}
+
+/* Example of subtle background movement on scroll */
+section {
+    background-attachment: fixed; /* Keep the background fixed to create a parallax-like effect */
+}
+/* Light mode section backgrounds */
+section {
+    background-color: var(--section-background-light);
+}
+
+/* Dark mode section backgrounds */
+body.dark-mode section {
+    background-color: var(--section-background-dark);
+}
+/* Heading Styles within Sections */
+
+
+/* Paragraph Styles within Sections */
+section p {
+    font-size: 1.2em;
+    line-height: 1.6;
+    margin-bottom: 20px;
+}
+
+/* Image Styles within Sections */
+section img {
+    max-width: 60%;
+    height: auto;
+    border-radius: 10px;
+}
+
+/* Additional Section Styles */
+/* ... Add any specific styles for your sections ... */
+
+/* Footer Styles */
+footer {
+    background-color: #333;
+    color: white;
     text-align: center;
-    margin-bottom: 4rem;
-  }
-
-  .main__content h1 {
-    font-size: 2.5rem;
-    margin-top: 2rem;
-  }
-
-  .main__content h2 {
-    font-size: 3rem;
-  }
-
-  .main__content p {
-    margin-top: 1rem;
-    font-size: 1.5rem;
-  }
+    padding: 1.5em 0;
+    clear: both; /* Clear any floating elements */
+    position: relative; /* Adjust position */
+    width: 100%; /* Full width */
+}
+/* Responsive Design Adjustments */
+@media (max-width: 768px) {
+    /* Your existing responsive styles */
 }
 
-@media screen and (max-width: 480px) {
-  .main__content h1 {
-    font-size: 2rem;
-    margin-top: 3rem;
-  }
 
-  .main__content h2 {
-    font-size: 2rem;
-  }
-
-  .main__content p {
-    margin-top: 2rem;
-    font-size: 1.5rem;
-  }
-
-  .main__btn {
-    padding: 12px 36px;
-    margin: 2.5rem 0;
-  }
+/* Dark Mode Styles */
+body.dark-mode .logo,
+body.dark-mode .nav-links a {
+    color: inherit; /* This keeps the color the same as in light mode */
 }
 
-/* Services Section CSS */
-
-.services {
-  background: #141414;
-  display: inline-block;
-  justify-content: center;
-  flex-wrap: nowrap;
-
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  flex-wrap: nowrap;
-  height: auto;
+/* Ensure hover effects for nav links are consistent in dark mode */
+body.dark-mode .nav-links a:hover {
+    /* Here, you can add the same hover effect as in light mode or adjust as needed */
+    transform: scale(1.1); /* Slightly scale up the link on hover */
+    opacity: 0.8; /* Slightly reduce the opacity to give a hover feedback */
+    transition: transform 0.3s ease, opacity 0.3s ease; /* Smooth transition */
 }
 
-.services h1 {
-  background-color: #ff8177;
-  background-image: linear-gradient(
-    to right,
-    #ff8177 0%,
-    #ff867a 0%,
-    #ff8c7f 21%,
-    #f99185 52%,
-    #cf556c 78%,
-    #b12a5b 100%
-  );
-  background-size: 100%;
-
-  margin-bottom: 5rem;
-  font-size: 2.5rem;
-  -webkit-background-clip: text;
-  -moz-background-clip: text;
-  flex-wrap: nowrap;
-  -webkit-text-fill-color: transparent;
-  -moz-text-fill-color: transparent;
+/* To keep the colors of the nav bar words matching their respective sections,
+   ensure you have defined the specific colors for each link in both light and dark modes. */
+/* Example for a specific nav link matching the 'About' section color */
+body.dark-mode .nav-links a[href="#about"] {
+    color: #ff6277;; /* Adjust the color to match the 'About' section title color */
+}
+body.dark-mode {
+    /* Apply dark theme variables */
+    --text-color: var(--text-color-dark);
+    --background-color: var(--background-color-dark);
 }
 
-.services__container {
-  display: inline-block;
-  justify-content: center;
-  flex-wrap: nowrap;
-}
-
-.services__card {
-  margin: 1rem;
-  height: 525px;
-  width: 850px;
-  flex-wrap: nowrap;
-  display: inline-block;
-  border-radius: 4px;
-  background-image: linear-gradient(
-      to bottom,
-      rgba(0, 0, 0, 0) 0%,
-      rgba(17, 17, 17, 0.6) 100%
-    ),
-    url("/images/pic5.jpg");
-
-  background-size: cover;
-  position: relative;
-  color: #fff;
-}
-
-.services__card2 {
-  margin: 1rem;
-  height: 525px;
-  width: 850px;
-  flex-wrap: nowrap;
-  display: inline-block;
-  border-radius: 4px;
-  background-image: linear-gradient(
-      to bottom,
-      rgba(0, 0, 0, 0) 0%,
-      rgba(17, 17, 17, 0.6) 100%
-    ),
-    url("/images/pic3.jpg");
-
-  background-size: cover;
-  position: relative;
-  color: #fff;
-}
-
-.services__card3 {
-  margin: 1rem;
-  height: 525px;
-  width: 850px;
-  flex-wrap: nowrap;
-  display: inline-block;
-  border-radius: 4px;
-  background-image: linear-gradient(
-      to bottom,
-      rgba(0, 0, 0, 0) 0%,
-      rgba(17, 17, 17, 0.6) 100%
-    ),
-    url("/images/pic6.jpg");
-
-  background-size: cover;
-  position: relative;
-  color: #fff;
-}
-
-.services__card4 {
-  margin: 1rem;
-  height: 525px;
-  width: 850px;
-  flex-wrap: nowrap;
-  display: inline-block;
-  border-radius: 4px;
-  background-image: linear-gradient(
-      to bottom,
-      rgba(0, 0, 0, 0) 0%,
-      rgba(17, 17, 17, 0.6) 100%
-    ),
-    url("/images/pic7.jpg");
-
-  background-size: contain;
-  position: relative;
-  color: #fff;
-}
-
-.services h2 {
-  position: absolute;
-  top: 350px;
-  left: 30px;
-}
-
-.services__card p {
-  position: absolute;
-  top: 400px;
-  left: 90px;
-  display: inline-block;
-}
-
-.services__card2 p {
-  position: absolute;
-  top: 400px;
-  left: 90px;
-  display: inline-block;
-}
-
-.services__card3 p {
-  position: absolute;
-  top: 400px;
-  left: 90px;
-  display: inline-block;
-}
-
-.services__card4 p {
-  position: absolute;
-  top: 400px;
-  left: 90px;
-  display: inline-block;
-}
-
-.services__card button {
-  color: #fff;
-  padding: 10px 20px;
-  border: none;
-  outline: none;
-  border-radius: 4px;
-  background: #f77062;
-  position: absolute;
-  top: 440px;
-  left: 30px;
-  font-size: 1rem;
-  cursor: pointer;
-}
-
-.services__card2 button {
-  color: #fff;
-  padding: 10px 20px;
-  border: none;
-  outline: none;
-  border-radius: 4px;
-  background: #f77062;
-  position: absolute;
-  top: 440px;
-  left: 30px;
-  font-size: 1rem;
-  cursor: pointer;
-}
-
-.services__card3 button {
-  color: #fff;
-  padding: 10px 20px;
-  border: none;
-  outline: none;
-  border-radius: 4px;
-  background: #f77062;
-  position: absolute;
-  top: 440px;
-  left: 30px;
-  font-size: 1rem;
-  cursor: pointer;
-}
-
-.services__card4 button {
-  color: #fff;
-  padding: 10px 20px;
-  border: none;
-  outline: none;
-  border-radius: 4px;
-  background: #f77062;
-  position: absolute;
-  top: 440px;
-  left: 30px;
-  font-size: 1rem;
-  cursor: pointer;
-}
-
-.services__card:hover {
-  transform: scale(1.075);
-  transition: 0.2s ease-in;
-  cursor: pointer;
-  display: inline-block;
-}
-
-.services__card2:hover {
-  transform: scale(1.075);
-  transition: 0.2s ease-in;
-  cursor: pointer;
-  display: inline-block;
-}
-
-.services__card3:hover {
-  transform: scale(1.075);
-  transition: 0.2s ease-in;
-  cursor: pointer;
-  display: inline-block;
-}
-
-.services__card4:hover {
-  transform: scale(1.075);
-  transition: 0.2s ease-in;
-  cursor: pointer;
-  display: inline-block;
-}
-
-@media screen and (max-width: 960px) {
-  .services {
-    height: auto;
-  }
-
-  .services h1 {
-    font-size: 2rem;
-    margin-top: 12rem;
-  }
-}
-
-@media screen and (max-width: 480px) {
-  .services {
-    height: auto;
-  }
-
-  .services h1 {
-    font-size: 1.2rem;
-  }
-
-  .services__card {
-    width: 400px;
-  }
-
-  .services__card2 {
-    width: 400px;
-  }
-
-  .services__card3 {
-    width: 400px;
-  }
-
-  .services__card4 {
-    width: 400px;
-  }
-}
-
-/* Footer CSS */
-.footer__container {
-  background-color: #141414;
-  padding: 5rem 0;
-  display: inline-block;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
-
-#footer__logo {
-  color: #fff;
-  display: flex;
-  align-items: center;
-  cursor: pointer;
-  text-decoration: none;
-  font-size: 2.3rem;
-  margin: 40px 80px 25px 10px;
-}
-
-.footer__links {
-  width: 100%;
-  max-width: 1000px;
-  display: flex;
-  justify-content: center;
-}
-
-.footer__link--wrapper {
-  display: flex;
-}
-
-.footer__link--items {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  margin: 16px;
-  text-align: left;
-  width: 160px;
-  box-sizing: border-box;
-}
-
-.footer__link--items h2 {
-  color: #fff;
-  margin-bottom: 16px;
-}
-
-.footer__link--items a {
-  color: #fff;
-  text-decoration: none;
-  margin-bottom: 0.5rem;
-}
-
-.footer__link--items a:hover {
-  color: #e9e9e9;
-  transition: 0.3s ease-out;
-}
-
-/* Social Icons */
-
-.social__icon--link {
-  color: #fff;
-  font-size: 24px;
-}
-
-.social__media {
-  max-width: 1000px;
-  width: 100%;
-}
-
-.social__media--wrap {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  width: 90%;
-  max-width: 1000px;
-  margin: 40px auto 0 auto;
-}
-
-.social__icons {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  width: 200px;
-  margin: 0px 50px 60px 22px;
-}
-
-.social__logo {
-  color: #fff;
-  justify-self: flex-start;
-  margin-left: 20px;
-  cursor: pointer;
-  text-decoration: none;
-  font-size: 2rem;
-  display: flex;
-  align-items: center;
-  margin-bottom: 16px;
-}
-
-.website__rights {
-  color: #fff;
-  margin: auto;
-}
-
-@media screen and (max-width: 820px) {
-  .footer__links {
-    padding-top: 2rem;
-  }
-
-  #footer__logo {
-    margin-bottom: 2rem;
-  }
-
-  .website__rights {
-    margin-bottom: 2rem;
-  }
-
-  .footer__link--wrapper {
-    flex-direction: column;
-  }
-
-  .social__media--wrap {
-    flex-direction: column;
-  }
-}
-
-@media screen and (max-width: 480px) {
-  .footer__link--items {
-    margin: 0;
-    padding: 10px;
+body.dark-mode header {
     width: 100%;
-  }
+    background-color: rgba(10, 1, 1, 0.65); /* Light grey with some transparency */
+    backdrop-filter: blur(10px); /* Blurring any content behind the header */
+    color: #333; /* Dark grey text color */
+    box-shadow: 0 8px 10px rgba(0, 0, 0, 0.1), /* Adding a subtle shadow for depth */
+                 0 0 20px rgba(0, 0, 0, 0.1), /* Additional shadow for 3D effect */
+                 inset 0 -1px 2px rgba(0, 0, 0, 0.1); /* Inset shadow for more depth */
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    padding: 0.5em 1em;
+    border-bottom: 2px solid rgba(0, 0, 0, 0.1); /* Thin bottom border for subtle edge */
 }
 
-.popup {
-  display: none;
-  position: fixed;
-  z-index: 1;
-  top: 50%;
-  left: 50%;
-  width: 400px;
-  height: 550px;
-  overflow: auto;
-  background: rgba(15, 0, 0, 0.94);
-  /* Discord's background color */
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  transform: translate(-50%, -50%);
-  color: #ffffff;
-  /* Discord's font color */
-  padding: 3em;
-  border: 2px solid transparent;
-  border-color: rgba(900, 150, 150, 0.4);
-  border-radius: 30px;
-  font-family: "Whitney", sans-serif;
-  /* Use Discord's font */
-  box-shadow: 0 0 1000px rgba(1000, 70, 70, 0.3);
+body.dark-mode nav ul li a {
+    /* Remove background-color to avoid box-like sections for each link */
+    color: #fff; /* White text color for navigation links */
+    /* Other styles for navigation links */
 }
 
-.popup form {
-  padding: auto;
-  border-radius: 10px;
-  width: auto;
-  height: auto;
-  overflow: hidden;
-  transform: translate(-50%, -50%);
-  background: transparent;
-  border-radius: 10px;
-  font-family: "Whitney", sans-serif;
-  /* Use Discord's font */
-  position: relative;
-  top: 50%;
-  left: 50%;
-  /* box-shadow: 0 0 10000px rgba(10000, 70, 70,0.5); */
+/* Additional styles for the header and navigation bar might include */
+
+body.dark-mode .navbar, body.dark-mode .nav-container {
+    /* Ensure these containers do not have a separate background color */
+    background-color: transparent;
 }
 
-.popup label {
-  display: block;
-  margin-bottom: 10px;
+/* Ensure the navbar is also transparent in dark mode */
+body.dark-mode .navbar {
+    background-color: transparent;
 }
 
-.popup input {
-  width: 100%;
-  padding: 10px;
-  margin-bottom: 20px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
+
+/* Dark Mode Styles for Inputs and Buttons */
+body.dark-mode input[type="text"],
+body.dark-mode input[type="email"],
+body.dark-mode textarea {
+    background-color: #666; /* Dark background for input fields */
+    color: #fff; /* White text color for input fields */
+    border: 1px solid #777; /* Subtle border for input fields */
 }
 
-.popup button:hover {
-  background: #4837ff;
-  transition: all 0.3s ease;
+body.dark-mode button {
+    background-color: #777; /* Dark background for buttons */
+    color: #fff; /* White text color for buttons */
+    border-color: #888; /* Subtle border color for buttons */
 }
 
-#close-popup {
-  color: #fff;
-  padding: 10px 20px;
-  border-radius: 4px;
-  border-color: rgba(1000, 70, 70, 0.3);
-  background-image: linear-gradient(to top, #f77062 0%, #fe5196 100%);
-  font-size: 1rem;
-  cursor: pointer;
+/* ... [remaining styles including responsive adjustments] ... */
+
+/* Additional Dark Mode Adjustments as Needed */
+/* ... [previous styles] ... */
+
+/* Responsive Design Adjustments for Smaller Screens */
+@media (max-width: 768px) {
+    /* Navigation items layout for smaller screens */
+    nav ul li {
+        display: block; /* Stack navigation items vertically */
+        margin: 10px 0; /* Add space between each item */
+    }
+
+    /* Adjusting the navigation links to stack vertically */
+    .nav-links {
+        flex-direction: column; /* Change layout to vertical */
+    }
+
+    /* Adjusting the spacing for each navigation link */
+    .nav-links li {
+        margin-bottom: 10px; /* Add space below each link */
+    }
+
+    /* Increasing the font size of navigation links for better readability */
+    .nav-links li a {
+        font-size: 1.2em; /* Make the font size larger */
+    }
+/* Hamburger Menu Icon */
+/* Always hide the menu icon by default */
+/* Initial state: Display navigation links on large screens, hide menu icon */
+.nav-links {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
 }
 
-#close-popup:hover {
-  background: #4837ff;
-  transition: all 0.3s ease;
+/* Ensuring the menu icon is hidden by default, and only shown on smaller screens */
+.site-header .menu-icon {
+    display: none !important;
+    cursor: pointer;
+    /* Style your menu icon here */
 }
 
-@media (max-width: 767px) {
-  .popup {
-    width: 400px;
-    height: 500px;
-  }
+
+@media (max-width: 768px) {
+    .nav-container .menu-icon {
+        display: block !important; /* Show the menu icon on smaller screens */
+        position: absolute;
+        right: 20px;
+        top: 20px;
+        cursor: pointer;
+    }
+
+    .nav-container .nav-links {
+        display: flex; /* Ensure the container is ready for animation */
+        flex-direction: column;
+        position: absolute;
+        top: 57px; /* Adjust based on your header size */
+        left: 50%;
+        transform: translateX(-50%) translateY(-100%); /* Start off-screen */
+        width: 90%;
+        background-color: #00000096; /* Semi-transparent background color */
+        transition: transform 0.5s ease; /* Animation effect */
+        visibility: hidden; /* Hide the menu */
+    }
+    
+    .nav-container .nav-links.active {
+        transform: translateX(-50%) translateY(0); /* Slide into view */
+        visibility: visible; /* Show the menu */
+    }
+
+
+    /* Adjusting the contact form layout */
+    #contact form {
+        grid-template-columns: 1fr; /* Single column layout for the form */
+        grid-gap: 20px; /* Space between form elements */
+    }
+
+    /* Resetting position of the 'Send Message' button */
+    #send-message {
+        position: static; /* Align button within the normal document flow */
+    }
 }
 
-.info {
-  background-color: #1c1c1c;
-  color: #fff;
-  border-radius: 10px;
-  padding: 2rem;
-  box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.3);
+/* ... [other styles including rounded sliders and image adjustments] ... */
+
+
+.brand-name a {
+    font-size: 1.5em;
+    color: #333;
+    text-decoration: none;
 }
 
-.info__title {
-  font-size: 2rem;
-  margin-bottom: 1rem;
+/* Styling for footer links */
+footer a {
+    color: #007aff;
+    text-decoration: none;
 }
 
-.info__text {
-  font-size: 1.2rem;
-  line-height: 1.5;
-  margin-bottom: 1rem;
+footer a:hover {
+    text-decoration: underline;
+}
+/* Additional styles as needed */
 }
 
-.info__btn {
-  display: inline-block;
-  text-decoration: none;
-  padding: 0.8rem 2rem;
-  font-size: 1.2rem;
-  border-radius: 5px;
-  background-color: #f77062;
-  color: #fff;
-  transition: background-color 0.3s ease;
-}
-
-.info__btn:hover {
-  background-color: rgba(1000, 10, 70, 0.4);
-}
-
-.SigninData {
-  list-style: none;
-  font-family: "Kumbh Sans", sans-serif;
-}
-
-#out {
-  color: #fff;
-  padding: 10px 20px;
-  border-radius: 4px;
-  background: #f77062;
-  font-size: 1rem;
-  cursor: pointer;
-}
-
-#out:hover {
-  background: rgba(1000, 10, 70, 0.4);
-  transition: all 0.3s ease;
-}
-
-#sign {
-  padding: 10%;
-}
-
-.SigninData {
-  font-size: 1rem;
-  font-family: "Kumbh Sans", sans-serif;
-}
-
-#g_id_onload {
-  display: none;
-}
-
-/* Test Page Begin  */
-.main-title {
-  text-align: center;
-  margin-top: 4rem;
-  margin-bottom: 8rem;
-  text-shadow: 1px 0px 1px #666, 0px 1px 1px #888, 2px 1px 1px #666,
-    1px 2px 1px #888, 3px 2px 1px #666, 2px 3px 1px #888, 4px 3px 1px #666,
-    3px 4px 1px #888, 5px 4px 1px #666, 4px 5px 1px #888, 6px 5px 1px #666,
-    5px 6px 1px #888, 7px 6px 1px #666;
-}
-
-/* Default styles for h1 and h2 */
-.main-title h1 {
-  font-size: 7rem;
-  text-transform: uppercase;
-  font-weight: 800;
-  color: #666;
-}
-
-.main-title h2 {
-  font-size: 4rem;
-  font-weight: 300;
-  color: #141414;
-  text-transform: uppercase;
-}
-
-/* Styles for smaller screens */
-@media screen and (max-width: 600px) {
-  .main-title h1 {
-    font-size: 4rem;
-    font-weight: 600;
-  }
-
-  .main-title h2 {
-    font-size: 2.5rem;
-  }
-}
-
-.svg-img {
-  display: block;
-  margin: auto;
-}
-
-svg {
-  display: block;
-  margin: auto;
-}
-
-#clock {
-  animation: clockHand 5s infinite linear;
-
-  transform-box: fill-box;
-  transform-origin: bottom;
-}
-
-#leftTree,
-#righTree {
-  animation: tree 2s ease-in-out infinite alternate;
-  transform-box: fill-box;
-  transform-origin: bottom;
-}
-
-#man {
-  animation: manBody 1s ease-in-out infinite alternate;
-  transform-box: fill-box;
-  transform-origin: bottom;
-}
-
-#pc-circle {
-  fill: #6ace66;
-  stroke-width: 4;
-  animation: change-light 4s linear infinite alternate;
-}
-
-.footer {
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  height: 35px;
-  line-height: 35px;
-  background-color: #f5f5f5;
-  font-size: 1.3rem;
-}
-
-@keyframes clockHand {
-  from {
-    transform: rotateZ(0deg);
-  }
-
-  from {
-    transform: rotateZ(-360deg);
-  }
-}
-
-@keyframes manBody {
-  from {
-    transform: rotateX(0deg);
-  }
-
-  to {
-    transform: rotateX(10deg);
-  }
-}
-
-@keyframes tree {
-  from {
-    transform: rotateZ(10deg);
-  }
-
-  to {
-    transform: rotateZ(-20deg);
-  }
-}
-
-@keyframes change-light {
-  0% {
-    stroke: #cd61f8;
-  }
-
-  25% {
-    stroke: #6ace66;
-  }
-
-  75% {
-    stroke: #2995c0;
-  }
-
-  100% {
-    stroke: #e92949;
-  }
-}
-
-/* Media Queries */
-
-@media (min-width: 640px) {
-  .main-title h1 {
-    font-size: 5rem;
-    text-transform: uppercase;
-    font-weight: 700;
-    color: #555;
-  }
-
-  .main-title h2 {
-    font-size: 3rem;
-    font-weight: 300;
-    text-transform: uppercase;
-  }
-}
-
-@media (min-width: 768px) {
-  .main-title h1 {
-    font-size: 6rem;
-    text-transform: uppercase;
-    font-weight: 800;
-    color: #414141;
-  }
-
-  .main-title h2 {
-    font-size: 4rem;
-    font-weight: 300;
-    text-transform: uppercase;
-  }
-}
-
-@media (min-width: 1024px) {
-  .main-title h1 {
-    font-size: 7rem;
-    text-transform: uppercase;
-    font-weight: 900;
-    color: #555;
-  }
-
-  .main-title h2 {
-    font-size: 5rem;
-    font-weight: 300;
-    text-transform: uppercase;
-  }
-}
-
-@media (min-width: 1200px) {
-  .main-title h1 {
-    font-size: 8rem;
-    text-transform: uppercase;
-    font-weight: 900;
-    color: #555;
-  }
-
-  .main-title h2 {
-    font-size: 5rem;
-    font-weight: 300;
-    text-transform: uppercase;
-  }
-
-  .main-title {
-    text-align: center;
-    margin-top: 4rem;
-    margin-bottom: 4rem;
-  }
-}
-
-@keyframes clockHand {
-  from {
-    transform: rotateZ(0deg);
-  }
-
-  from {
-    transform: rotateZ(-360deg);
-  }
-}
-
-@keyframes manBody {
-  from {
-    transform: rotateX(0deg);
-  }
-
-  to {
-    transform: rotateX(10deg);
-  }
-}
-
-@keyframes tree {
-  from {
-    transform: rotateZ(10deg);
-  }
-
-  to {
-    transform: rotateZ(-20deg);
-  }
-}
-
-@keyframes change-light {
-  0% {
-    stroke: #cd61f8;
-  }
-
-  25% {
-    stroke: #6ace66;
-  }
-
-  75% {
-    stroke: #2995c0;
-  }
-
-  100% {
-    stroke: #e92949;
-  }
-}
-
-/* Media Queries */
-
-@media (min-width: 640px) {
-  .main-title h1 {
-    font-size: 5rem;
-    text-transform: uppercase;
-    font-weight: 700;
-    color: #555;
-  }
-
-  .main-title h2 {
-    font-size: 3rem;
-    font-weight: 300;
-    text-transform: uppercase;
-  }
-}
-
-@media (min-width: 768px) {
-  .main-title h1 {
-    font-size: 6rem;
-    text-transform: uppercase;
-    font-weight: 800;
-    color: #555;
-  }
-
-  .main-title h2 {
-    font-size: 4rem;
-    font-weight: 300;
-    text-transform: uppercase;
-  }
-}
-
-@media (min-width: 1024px) {
-  .main-title h1 {
-    font-size: 7rem;
-    text-transform: uppercase;
-    font-weight: 900;
-    color: #555;
-  }
-
-  .main-title h2 {
-    font-size: 5rem;
-    font-weight: 300;
-    text-transform: uppercase;
-  }
-}
-
-@media (min-width: 1200px) {
-  .main-title h1 {
-    font-size: 8rem;
-    text-transform: uppercase;
-    font-weight: 900;
-    color: #555;
-  }
-
-  .main-title h2 {
-    font-size: 5rem;
-    font-weight: 300;
-    text-transform: uppercase;
-  }
-
-  .main-title {
-    text-align: center;
-    margin-top: 4rem;
-    margin-bottom: 4rem;
-  }
-}
-
-/* Test Page End  */
+/* ... [other styles including rounded sliders and image adjustments] ... */

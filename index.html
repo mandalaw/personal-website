@@ -1,297 +1,413 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mandalaw Website</title>
-
-    <style>
-        @media (prefers-color-scheme: dark) {
-            body {
-                background-color: #1f1f1f;
-                color: #f2f2f2;
-            }
-        }
-    </style>
-
-
-    <!-- Google Tag Manager -->
-    <script>(function (w, d, s, l, i) {
-            w[l] = w[l] || []; w[l].push({
-                'gtm.start':
-                    new Date().getTime(), event: 'gtm.js'
-            }); var f = d.getElementsByTagName(s)[0],
-                j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; j.src =
-                    'https://www.googletagmanager.com/gtm.js?id=' + i + dl; f.parentNode.insertBefore(j, f);
-        })(window, document, 'script', 'dataLayer', 'GTM-W8SRWMM');</script>
-    <!-- End Google Tag Manager -->
-
-    <!-- // Google Sheet API Method: spreadsheets.values.append (Begin) -->
-
-    <script src="https://apis.google.com/js/api.js"></script>
-
-    <!-- // Google Sheet API Method: spreadsheets.values.append (End) -->
-
-
-
-    <script src="https://kit.fontawesome.com/0414972cbb.js" crossorigin="anonymous"></script>
-
-
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <meta name="description" content="Ahmed Mandalawi - Web and App Developer">
+    <title>Dev mandalaw Portfolio</title>
     <link href="https://fonts.googleapis.com/css2?family=Kumbh+Sans:wght@400;700&display=swap" rel="stylesheet">
-    <!-- Google Head Begin-->
-    <meta name="google-signin-client_id"
-        content="222067586540-090c5ubn4vf6487rcqg29it7n4eoc22h.apps.googleusercontent.com">
-    <link rel="shortcut icon" href="LogNow.png" type="image/x-icon">
-
-    <!-- Google Head End-->
+    <!-- Only one reference to the main stylesheet is necessary -->
     <link rel="stylesheet" href="styles.css">
+    <!-- If 'existing-styles.css' is a different file, keep this link. Otherwise, remove it if it's the same as 'styles.css' -->
+    <link rel="stylesheet" href="existing-styles.css">
+
+    <!-- Font Awesome Script -->
+    <script src="https://kit.fontawesome.com/0414972cbb.js" crossorigin="anonymous"></script>
+    
+    <!-- ... other head elements ... -->
+
 </head>
-
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-4QH0GYM4S6"></script>
-<script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag() { dataLayer.push(arguments); }
-    gtag('js', new Date());
-
-    gtag('config', 'G-4QH0GYM4S6');
-</script>
-<script>
-    gtag('config', 'G-4QH0GYM4S6', {
-        'user_id': 'id_num'
-    });
-</script>
-
 <body>
-    <!-- Google Tag Manager (noscript) -->
-    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-W8SRWMM" height="0" width="0"
-            style="display:none;visibility:hidden"></iframe></noscript>
-    <!-- End Google Tag Manager (noscript) -->
+        <!-- Colorful Brand Name -->
+        <!-- 
+        - Single file SVG animation
+        - * can be used as CSS backgroud
+        - * total size is less than 2kb!
+        -->
+
+        <svg preserveAspectRatio="xMidYMid slice" viewBox="10 10 80 80">
+            <defs>
+                <style>
+                    @keyframes rotate {
+                        0% {
+                            transform: rotate(0deg);
+                        }
+                        100% {
+                            transform: rotate(360deg);
+                        }
+                    }
+                    .out-top {
+                        animation: rotate 20s linear infinite;
+                        transform-origin: 13px 25px;
+                    }
+                    .in-top {
+                        animation: rotate 10s linear infinite;
+                        transform-origin: 13px 25px;
+                    }
+                    .out-bottom {
+                        animation: rotate 25s linear infinite;
+                        transform-origin: 84px 93px;
+                    }
+                    .in-bottom {
+                        animation: rotate 15s linear infinite;
+                        transform-origin: 84px 93px;
+                    }
+                </style>
+            </defs>
+            <!-- Adjusted colors -->
+            <path fill="#ff6277" class="out-top" d="M37-5C25.1-14.7,5.7-19.1-9.2-10-28.5,1.8-32.7,31.1-19.8,49c15.5,21.5,52.6,22,67.2,2.3C59.4,35,53.7,8.5,37-5Z"/>
+            <path fill="#ff5177" class="in-top" d="M20.6,4.1C11.6,1.5-1.9,2.5-8,11.2-16.3,23.1-8.2,45.6,7.4,50S42.1,38.9,41,24.5C40.2,14.1,29.4,6.6,20.6,4.1Z"/>
+            <path fill="#ff7599" class="out-bottom" d="M105.9,48.6c-12.4-8.2-29.3-4.8-39.4.8-23.4,12.8-37.7,51.9-19.1,74.1s63.9,15.3,76-5.6c7.6-13.3,1.8-31.1-2.3-43.8C117.6,63.3,114.7,54.3,105.9,48.6Z"/>
+            <path fill="#ff9c9e" class="in-bottom" d="M102,67.1c-9.6-6.1-22-3.1-29.5,2-15.4,10.7-19.6,37.5-7.6,47.8s35.9,3.9,44.5-12.5C115.5,92.6,113.9,74.6,102,67.1Z"/>
+        </svg>
+        
+
+    <header class="full-width-section">
+        <nav class="container">
+            <div class="nav-container">
 
 
-    <!-- Navbar Section -->
-    <nav class="navbar">
-        <div class="navbar__container">
-            <a href="https://github.com/mandalaw" id="navbar__logo">
-                <!-- <i class="fa-solid fa-laptop-code"></i> -->
-                <i class="fa-brands fa-dev"></i>
-                &#160;
-                mandalaw
-                &#160;
-            </a>
-            <div class="navbar__toggle" id="mobile-menu">
-                <span class="bar"></span> <span class="bar"></span>
-                <span class="bar"></span>
+        <div class="brand-name">
+            <a href="https://www.mandalawi.ca" class="logo"><i class="fa-brands fa-dev logo-icon"></i>mandalaw</a>
+            
+
+            <!-- Menu Icon for Mobile Screens -->
+            <div class="menu-icon" style="display: none;" onclick="toggleMenu()">
+                <i class="fa fa-bars"></i>
             </div>
-            <ul class="navbar__menu">
-                <li class="navbar__item">
-                    <a href="/" class="navbar__links"> Home </a>
-                </li>
-                <li class="navbar__item">
-                    <a href="/resume.htm" class="navbar__links">Resume</a>
-                </li>
-                <li class="navbar__item">
-                    <a href="/contact.html" class="navbar__links">Contact</a>
-                </li>
-                <li class="navbar__btn"><a class="button" id="login-btn"> Sign in </a></li>
-                <div id="login-popup" class="popup">
+        
+        </div>
+                <ul class="nav-links">
+                            
+                    <li><a href="#about" class="nav-about"><i class="fa-solid fa-user"></i> About</a></li>
+                    <li><a href="#services" class="nav-services"><i class="fa-solid fa-briefcase"></i> Services</a></li>
+                    <li><a href="#portfolio" class="nav-portfolio"><i class="fa-solid fa-folder-open"></i> Portfolio</a></li>
+                    <li><a href="#testimonials" class="nav-testimonials"><i class="fa-solid fa-comment-dots"></i> Testimonials</a></li>
+                    <li><a href="#blog" class="nav-blog"><i class="fa-solid fa-blog"></i> Blog</a></li>
+                    <li><a href="#contact" class="nav-contact"><i class="fa-solid fa-envelope"></i> Contact</a></li>
+                </ul>
+                <div class="toggle-container">
+                    <span class="mode-icon">🌞</span>
+                    <input type="checkbox" id="toggle-dark-mode" onclick="toggleDarkMode()">
+                    <label for="toggle-dark-mode" class="toggle-label"></label>
+                    <span class="mode-icon">🌜</span>
+                </div>
 
+            </div>
+        </nav>
+    </header>
+
+    <main class="container">
+        <section id="about">
+            <div class="container">
+            <h2><i class="fa-solid fa-user"></i> About Me</h2>
+            <p><i class="fa-solid fa-quote-left"></i> Hi, I'm Ahmed Mandalawi, a passionate web developer with over 7 years of experience.
+                I specialize in creating engaging, responsive websites that drive business growth. 
+                My journey in technology started at a young age and has since evolved into a professional career where I’ve had the privilege of working with diverse clients across various industries <i class="fa-solid fa-quote-right"></i></p>
+            <img src="images/toronto.jpg" alt="Ahmed Mandalawi" id="about-img">
+            </div>
+        </section>
+        <section id="services">
+            <h2><i class="fa-solid fa-tools"></i> Services</h2>
+            <div class="service">
+                <h3><i class="fa-solid fa-code"></i> Web Development</h3>
+                <p>From concept to launch, I develop websites that are not only visually stunning but also functionally robust. Utilizing the latest technologies, I ensure a seamless user experience.</p>
+            </div>
+            <div class="service">
+                <h3><i class="fa-solid fa-mobile-alt"></i> Mobile App Development</h3>
+                <p>Creating user-friendly mobile applications tailored to meet your specific business requirements. My apps are designed for maximum performance and scalability.</p>
+            </div>
+        </section>
+
+    <!-- Portfolio Section -->
+    <section id="portfolio">
+        <h2><i class="fa-solid fa-briefcase"></i> Portfolio</h2>
+        
+        <iframe src="/portfolio-website/index.html" class="portfolio-window" allowfullscreen ></iframe>
+        <!-- Adjust width, height, and other attributes as needed -->
+        </section>
+        
+    </section>
+    <!-- Testimonials Section -->
+    <section id="testimonials">
+        <h2><i class="fa-solid fa-star"></i> Testimonials</h2>
+        <blockquote>
+            <p>  <i class="fa-solid fa-quote-left"></i>Working with Mandalaw was a game-changer for our business. The new website has significantly improved our online presence.<i class="fa-solid fa-quote-right"></i> - WWM Solutions Inc 
+            </p>
+        </blockquote>
+    </section>
+
+    <section id="blog">
+        <h2><i class="fa-solid fa-blog"></i> Latest Blog Posts</h2>
+        <article>
+            <h3><i class="fa-solid fa-pen-fancy"></i> Understanding Responsive Design</h3>
+            <p>A brief introduction to the article...</p>
+            <a href="blog-post-url"><i class="fa-solid fa-arrow-right"></i> Read more</a>
+        </article>
+    </section>
+
+    <section id="contact"  class="contact-section" style="padding-top: 250px;">
+        <h2><i class="fa-solid fa-envelope"></i> Contact Me</h2>
+            <p>Hi there, my name is Ahmed - aka <a href="https://www.youtube.com/channel/UC616xOmZduf8jzbzzBm9ITA"> Dev mandalaw</a> 👋. For project inquiries and collaborations, feel free to connect with me on any of the platforms below:</p>
+        
+            <div class="contact-icons">
+                <!-- Gmail -->
+                <a href="mailto:dev@mandalawi.ca">
+                    <img src="https://img.shields.io/badge/Gmail-D14836?style=for-the-badge&amp;logo=gmail&amp;logoColor=white"
+                        alt="Gmail">
+                </a>
+                
+                <!-- Microsoft Outlook -->
+                <a href="mailto:al.mandalawi@mail.utoronto.ca">
+                    <img src="https://img.shields.io/badge/Microsoft_Outlook-0078D4?style=for-the-badge&amp;logo=microsoft-outlook&amp;logoColor=white"
+                        alt="Outlook">
+                </a>
+        
+                <!-- Microsoft Teams -->
+                <a href="https://teams.microsoft.com/l/chat/0/0?users=&lt;al.mandalawi@mail.utoronto.ca">
+                    <img src="https://img.shields.io/badge/Microsoft_Teams-6264A7?style=for-the-badge&amp;logo=microsoft-teams&amp;logoColor=white"
+                        alt="Teams">
+                </a>
+        
+                <!-- Discord -->
+                <a href="http://discordapp.com/users/755049087006670979">
+                    <img src="https://img.shields.io/badge/Discord-7289DA?style=for-the-badge&amp;logo=discord&amp;logoColor=white"
+                        alt="Discord">
+                </a>
+        
+                <!-- Zoom -->
+                <a href="https://utoronto.zoom.us/j/9163385035">
+                    <img src="https://img.shields.io/badge/Zoom-2D8CFF?style=for-the-badge&amp;logo=zoom&amp;logoColor=white"
+                        alt="Zoom">
+                </a>
+        
+                <!-- GroupMe -->
+                <a href="https://web.groupme.com/contact/29355158/1OEHVQkN">
+                    <img src="https://img.shields.io/badge/GroupMe-00AFF0?style=for-the-badge&amp;logo=groupme&amp;logoColor=white"
+                        alt="GroupMe">
+                </a>
+        
+                <!-- Messenger -->
+                <a href="http://m.me/almandalawi">
+                    <img src="https://img.shields.io/badge/Messenger-00B2FF?style=for-the-badge&amp;logo=messenger&amp;logoColor=white"
+                        alt="Messenger">
+                </a>
+        
+                <!-- WhatsApp -->
+                <a href="https://wa.me/16477848222">
+                    <img src="https://img.shields.io/badge/WhatsApp-25D366?style=for-the-badge&amp;logo=whatsapp&amp;logoColor=white"
+                        alt="WhatsApp">
+                </a>
+        
+                <!-- LinkedIn -->
+                <a href="https://www.linkedin.com/in/devmandalaw">
+                    <img src="https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&amp;logo=linkedin&amp;logoColor=white"
+                        alt="LinkedIn">
+                </a>
+        
+                <!-- Instagram -->
+                <a href="https://www.instagram.com/mandaluvwe">
+                    <img src="https://img.shields.io/badge/Instagram-E4405F?style=for-the-badge&amp;logo=instagram&amp;logoColor=white"
+                        alt="Instagram">
+                </a>
+        
+                <!-- YouTube -->
+                <a href="https://www.youtube.com/channel/UC616xOmZduf8jzbzzBm9ITA">
+                    <img src="https://img.shields.io/badge/YouTube-FF0000?style=for-the-badge&amp;logo=youtube&amp;logoColor=white"
+                        alt="YouTube">
+                </a>
+            </div>
                     <form>
-                        <section class="container d-flex flex-column justify-content-center align-items-center h-100"
-                            dark>
-                            <div id="g_id_onload"
-                                data-client_id="222067586540-090c5ubn4vf6487rcqg29it7n4eoc22h.apps.googleusercontent.com"
-                                data-context="signup" data-ux_mode="popup" data-callback="handleCredentialResponse"
-                                data-auto_prompt="true" data-skip_prompt_cookie="sid" data-auto_select="true">
-                            </div>
-
-                            <div id="sign" class="g_id_signin col-6 col-xm-6 col-md-4 col-sm-5 col-lg-3"
-                                data-type="standard" data-shape="circle" data-theme="filled_black"
-                                data-text="signin_with" data-size="large" datfonta-logo_alignment="center"
-                                color-scheme="dark">
-                            </div>
-
-                            <div id="info" class="card d-none" style="width: auto;">
-                                <img id="photo" class="card-img-top" alt="Your Image">
-                                <div class="card-body">
-                                    <h5 class="card-title" id="fullname"></h5>
-                                </div>
-                                <ul class="SigninData">
-                                    <li class="item">Token#: <span id="id_num"></span></li>
-                                    <li class="item"><span id="email"></span></li>
-                                    <li class="item"><span id="first"></span></li>
-                                    <li class="item"><span id="last"></span></li>
-                                </ul>
-                            </div>
-                        </section>
-                        <button
-                            class="d-none btn btn-primary mt-3 col-6 col-xm-6 col-md-4 col-sm-5 col-lg-3 font-weight-bold"
-                            id="out">Sign out</button>
-                        <!-- google Library -->
-                        <script src="https://accounts.google.com/gsi/client" async defer></script>
-                        <script src="https://apis.google.com/js/platform.js" async defer></script>
-                        <!-- bootstrap -->
-                        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
-                            integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4"
-                            crossorigin="anonymous"></script>
-                        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.min.js"
-                            integrity="sha384-cuYeSxntonz0PPNlHhBs68uyIAVpIIOZZ5JqeqvYYIcEL727kskC66kF92t6Xl2V"
-                            crossorigin="anonymous"></script>
-                        <button id="close-popup">Close</button>
-
-                    </form>
+                <input type="text" id="name" name="name" placeholder="Your Name" required>
+                <input type="email" id="email" name="email" placeholder="Your Email" required>
+                <textarea id="message" name="message" placeholder="Your Message" required maxlength="500" oninput="updateCharacterCount()"></textarea>
+                <div id="message-info">
+                    <span id="character-count">0</span>/500
                 </div>
-            </ul>
-        </div>
-    </nav>
-    <!-- Hero Section -->
-    <div class="main">
-        <div class="main__container">
-            <div class="main__content">
-                &#160;
-                <h1><i class="fa-solid fa-terminal"></i>
-                    My name is Ahmed Mandalawi, aka dev name, mandalaw <i class="fa-solid fa-barcode"></i>
+            
+         <button type="submit">Send Message</button>
+            </form>
+        </section>
+    </main>
 
-                </h1>
-                <button class="main__btn" id="main-btn">Get Started</a></button>
-                <h2><i class="fa-solid fa-laptop-code"></i>Sign in to view/download my current Resume</h2>
-                <p>
-                    <i class="fa-solid fa-code"></i>
-                    <i class="fa-brands fa-java"></i>
-                    <i class="fa-solid fa-c"></i>
-                    <i class="fa-brands fa-js"></i>
-                    <i class="fa-brands fa-python"></i>
-                    <i class="fa-brands fa-html5"></i>
-                    <i class="fa-brands fa-css3-alt"></i>
-                    <i class="fa-brands fa-google"></i>
-                    <i class="fa-brands fa-github"></i>
-                    <i class="fa-brands fa-reddit"></i>
-                    <i class="fa-solid fa-cloud"></i>
-                    <i class="fa-brands fa-canadian-maple-leaf"></i>
-                    <i class="fa-solid fa-magnifying-glass-dollar"></i>
-                    <i class="fa-brands fa-bitcoin"></i>
-                    <i class="fa-brands fa-windows"></i>
-                    <i class="fa-brands fa-apple"></i>
-                </p>
-            </div>
-            <div class="main__img--container">
-                <img src="images/pic1.svg" alt="pic" id="main__img" />
-            </div>
-        </div>
-    </div>
+    <footer class="container" style="clear: both;"> <!-- Clear property to ensure it's not overlapped -->
+        <p>© 2024 Dev Mandalaw</p>
+        <p>Visit my main website at <a href="https://www.mandalawi.ca" target="_blank">mandalawi.ca</a></p>
+        <!-- Other footer content -->
+        <p>
+            <a href="https://www.linkedin.com/in/devmandalaw"><i class="fa-brands fa-linkedin"></i> LinkedIn</a>
+            <a href="https://github.com/devmandalaw"><i class="fa-brands fa-github"></i> GitHub</a>
+            <a href="https://twitter.com/devmandalaw"><i class="fa-brands fa-twitter"></i> Twitter</a>
+        </p>
+        </footer>
 
-    <!-- Services Section -->
+        <script>
+            // Prevent Automatic Browser Scroll Restoration
+            if ('scrollRestoration' in history) {
+                history.scrollRestoration = 'manual';
+            }
+        
 
-    <div class="services">
-        <h1>Current Projects</h1>
-        <div class="services__container">
-            <div class="services__card">
-                <h2>GDSC</h2>
-                <p>Team Project</p>
-                <button onclick="location.href='https://gdscutm.com/#'" type="button">
-                    Get Started</button>
-            </div>
-        </div>
-    </div>
-
-
-    <div class="services">
-        <div class="services__container">
-            <div class="services__card2">
-                <h2>City of Mississauga</h2>
-                <p>GIS team project</p>
-                <button onclick="location.href='https://storymaps.arcgis.com/stories/d3b8e006fe54465a8fa5c0737d4e9e6c'"
-                    type="button">
-                    Get Started</button>
-            </div>
-        </div>
-    </div>
-
-    <div class="services">
-        <div class="services__container">
-            <div class="services__card3">
-                <h2>Routeability Navigation</h2>
-                <p>GIS team project</p>
-                <button
-                    onclick="location.href='https://resources.esri.ca/news-and-updates/app-of-the-month-routeability'"
-                    type="button">
-                    Get Started</button>
-            </div>
-        </div>
-    </div>
-
-    <div class="services">
-        <div class="services__container">
-            <div class="services__card4">
-                <h2>OthelloBoard</h2>
-                <p>Java language game</p>
-                <button onclick="location.href='https://github.com/mandalaw/OthelloBoard.git'" type="button">
-                    Get Started</button>
-            </div>
-        </div>
-    </div>
+            function toggleMenu() {
+                document.querySelector('.nav-links').classList.toggle('active');
+            }
 
 
 
 
-    <!-- Footer Section -->
-    <div class="footer__container">
-        <div class="footer__links">
-            <div class="footer__link--wrapper">
-            </div>
+            // Ensure the page starts at the top on initial load
+            window.addEventListener('load', () => {
+                // Delay scroll to top to ensure layout stabilization
+                setTimeout(() => {
+                    window.scrollTo(0, 0);
+                }, 0); // Delay can be fine-tuned based on testing
+            });
+        
+            // Smooth Scroll to Section Function
+            function smoothScrollToSection(event) {
+                event.preventDefault();
+                const targetId = event.currentTarget.getAttribute('href').substring(1);
+                const targetSection = document.getElementById(targetId);
+        
+                // Smooth scroll to target section
+                targetSection.scrollIntoView({ behavior: 'smooth' });
+            }
+        
+            // Attach click event listener to navigation links
+            document.querySelectorAll('.nav-links a[href^="#"]').forEach(link => {
+                link.addEventListener('click', smoothScrollToSection);
+            });
+        
+            // Intersection Observer for Highlighting Active Navigation Link
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        // Find the navigation link corresponding to the section
+                        const navLink = document.querySelector(`.nav-links a[href="#${entry.target.id}"]`);
+        
+                        // Remove 'active' class from all navigation links
+                        document.querySelectorAll('.nav-links a').forEach(link => {
+                            link.classList.remove('active');
+                        });
+        
+                        // Add 'active' class to the current navigation link
+                        if (navLink) {
+                            navLink.classList.add('active');
+                        }
+                    }
+                });
+            }, { rootMargin: "-50% 0px -50% 0px" });
+        
+            // Observe each section for intersection
+            document.querySelectorAll('section').forEach(section => {
+                observer.observe(section);
+            });
+        
+            // Dark Mode Toggle Function
+            function toggleDarkMode() {
+    const body = document.body;
+    body.classList.toggle('dark-mode'); // Toggle dark mode class
 
-            <div class="footer__link--wrapper">
-                <div class="footer__logo">
-                    <a href="/" id="footer__logo"><i class="fa-brands fa-dev"></i>
-                        &#160;
-                        mandalaw</a>
-                    <div class="social__icons">
+    // Define your dark and light mode colors for the SVG paths
+    const darkModeColors = ['#374785', '#5C4B51', '#233B6E', '#423F8D']; // Example dark colors for SVG
+    const lightModeColors = ['#ff6277', '#ff5177', '#ff7599', '#ff9c9e']; // Original light colors for SVG
 
-                        <a href="http://m.me/almandalawi" class="social__icon--link" target="_blank">
-                            <i class="fab fa-facebook"></i>
-                        </a>
-                        <a href="https://www.instagram.com/mandaluvwe" class="social__icon--link" target="_blank">
-                            <i class="fab fa-instagram"></i>
-                        </a>
-                        <a href="https://twitter.com/mandaluvwe" class="social__icon--link" target="_blank">
-                            <i class="fab fa-twitter"></i>
-                        </a>
-                        <a href="https://www.linkedin.com/in/devmandalaw" class="social__icon--link" target="_blank">
-                            <i class="fab fa-linkedin"></i>
-                        </a>
-                        <a href="https://www.youtube.com/channel/UC616xOmZduf8jzbzzBm9ITA" class="social__icon--link"
-                            target="_blank">
-                            <i class="fab fa-youtube"></i>
-                        </a>
-                    </div>
-                </div>
-                <div class="footer__link--items">
-                    <h2>Social Media</h2>
-                    <a href="https://www.instagram.com/mandaluvwe">Instagram</a> <a
-                        href="http://m.me/almandalawi">Facebook</a>
-                    <a href="https://www.youtube.com/channel/UC616xOmZduf8jzbzzBm9ITA">Youtube</a> <a
-                        href="https://twitter.com/mandaluvwe">Twitter</a>
-                </div>
+// Define your dark and light mode background colors
+    const darkModeBackground = '#34262f'; // Dark muted burgundy shade
+    const lightModeBackground = '#ff8177'; // Soft off-white/peach shade
 
-                <div class="footer__link--items">
-                    <h2>About Us</h2>
-                    <a href="https://www.ontario.ca/page/terms-use">Terms of Service</a>
-                    <a href="/contact.html">Contact</a> <a href="mailto:dev@mandalawi.ca">Support</a><a
-                        href="/testpage.html">Test Page</a>
-                </div>
-            </div>
-        </div>
-        <div class="social__media">
-            <div class="social__media--wrap">
-                <p class="website__rights">Copyright © 2023 mandalaw. All rights reserved.</p>
-            </div>
-        </div>
-    </div>
-    <script src="app.js"></script>
+
+    // Select all SVG paths you wish to change colors for
+    const svgPaths = document.querySelectorAll('svg path');
+
+    svgPaths.forEach((path, index) => {
+        if (body.classList.contains('dark-mode')) {
+            // Apply dark mode colors to SVG
+            path.setAttribute('fill', darkModeColors[index % darkModeColors.length]);
+            // Apply dark mode background color
+            body.style.backgroundColor = darkModeBackground;
+            body.style.color = '#FFFFFF'; // Optional: change text color to light for dark mode
+        } else {
+            // Revert to light mode colors for SVG
+            path.setAttribute('fill', lightModeColors[index % lightModeColors.length]);
+            // Revert to light mode background color
+            body.style.backgroundColor = lightModeBackground;
+            body.style.color = '#000000'; // Optional: revert text color to dark for light mode
+        }
+    });
+
+    // Existing functionality to switch the About section image based on mode
+    switchAboutImage();
+}
+
+// Include the rest of your existing JavaScript functions as needed without modifications
+
+        
+            // Function to Switch About Section Image Based on Dark Mode
+            function switchAboutImage() {
+                const aboutImage = document.getElementById('about-img');
+                if (document.body.classList.contains('dark-mode')) {
+                aboutImage.src = 'images/toronto_night.jpg'; // Image for dark mode
+                } else {
+                aboutImage.src = 'images/toronto.jpg'; // Image for light mode
+                }
+            }
+        
+            // Function to Update Character Count in contact form
+            function updateCharacterCount() {
+                var message = document.getElementById('message').value;
+                var characterCount = message.length;
+                document.getElementById('character-count').textContent = characterCount;
+            }
+        
+            // Initialize About Section Image on Page Load
+            window.onload = switchAboutImage;
+        
+            // New functionality for scroll-triggered animations
+            // Function to check if element is in viewport
+            function isInViewport(el) {
+                const rect = el.getBoundingClientRect();
+                return (
+                    rect.top >= 0 &&
+                    rect.left >= 0 &&
+                    rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
+                    rect.right <= (window.innerWidth || document.documentElement.clientWidth)
+                );
+            }
+        
+            // Function to add animation class to elements in viewport
+            function animateOnScroll() {
+                document.querySelectorAll('.section-content').forEach((el) => {
+                    if (isInViewport(el)) {
+                        el.classList.add('animate-on-scroll');
+                    } else {
+                        el.classList.remove('animate-on-scroll'); // Optional: remove animation outside viewport
+                    }
+                });
+            }
+            // New Parallax Effect for Section Backgrounds
+            function addParallaxEffect() {
+                const sections = document.querySelectorAll('section');
+
+                window.addEventListener('scroll', () => {
+                    sections.forEach(section => {
+                        const speed = section.getAttribute('data-parallax-speed'); // Define data attribute for speed
+                        const offset = window.pageYOffset * speed; // Calculate offset based on scroll position and speed
+
+                        // Apply the parallax effect by transforming the background position
+                        section.style.backgroundPosition = `center ${offset}px`;
+                    });
+                });
+            }
+
+    // Call the parallax effect function
+    addParallaxEffect();
+            // Listen for scroll events
+            window.addEventListener('scroll', animateOnScroll);
+        
+            // Initial check to apply animations
+            animateOnScroll();
+        </script>
+        
+    
 </body>
-
 </html>
