@@ -1,0 +1,37 @@
+/* The mobile discovery area changes; brand, companion and quick paths do not. */
+.entry-stage,.entry-mode{display:contents}.entry-mode[hidden],.entry-switcher[hidden]{display:none!important}.entry-switcher{display:none}.entry-play-icon{display:none}
+@media(max-width:799px){
+ html[data-entry-ready=true] .entry-stage{display:grid;place-items:center;width:100%;max-width:350px;height:214px;flex:none;position:relative;contain:layout}
+ html[data-entry-ready=true] .entry-mode{display:flex;align-items:center;justify-content:center;grid-area:1/1;width:100%;height:100%;min-width:0}
+ html[data-entry-ready=true] .entry-mode .entry-dock{margin:0!important;min-height:0;padding:0;grid-template-columns:repeat(3,66px);gap:44px 21px;align-self:center;translate:0 -9px}
+ .entry-tools{display:flex;align-items:center;justify-content:center;gap:21px;translate:0 -9px}
+ .entry-tools .entry-object{width:66px!important;height:66px!important;border-radius:20px!important;position:relative}
+ .entry-tools .object-label{position:absolute;top:calc(100% + 7px);left:50%;translate:-50% 0;font-size:11px;line-height:1.35;color:var(--ink);white-space:nowrap}
+ .entry-project{display:flex;align-items:center;justify-content:space-between;gap:16px;max-width:285px;width:100%;min-height:103px;padding:20px;border:1px solid var(--edge);border-radius:20px;background:var(--surface-gradient);box-shadow:var(--shadow-rest);color:var(--signature);font-size:14px;line-height:1.5;translate:0 -9px}
+ .entry-project>span{font-weight:700}.entry-project small{display:block;margin-top:5px;font-size:12px;font-weight:400}.entry-project .ui-icon{flex:none;width:21px;height:21px}
+ html[data-entry-ready=true] .entry-switcher{display:flex;align-items:center;justify-content:center;height:44px;gap:3px;margin:-3px 0 8px;flex:none}
+ .entry-switcher button{display:grid;place-items:center;width:44px;height:44px;padding:0;border:0;background:transparent;color:var(--ink-muted);border-radius:13px;cursor:pointer;touch-action:manipulation}
+ .entry-switcher button .ui-icon{width:16px;height:16px;stroke-width:1.7}
+ .entry-switcher button[aria-pressed=true]:not(#entry-auto){color:var(--signature);background:var(--surface-gradient);box-shadow:var(--shadow-rest);border:1px solid var(--edge)}
+ .entry-switcher #entry-auto{margin-left:7px;border-left:1px solid var(--edge);border-radius:0 13px 13px 0}
+ #entry-auto[aria-pressed=true] .entry-pause-icon{display:none}#entry-auto[aria-pressed=true] .entry-play-icon{display:block}
+ .entry-mode :is(a,button):focus-visible,.entry-switcher button:focus-visible{outline:2px solid var(--focus);outline-offset:4px}
+ html[data-entry-ready=true] #entry-line{min-height:23px;height:23px;line-height:23px!important;white-space:nowrap}
+}
+@media(max-width:360px){html[data-entry-ready=true] .entry-stage{height:210px}.entry-project{max-width:270px}}
+@media(prefers-reduced-motion:reduce){.entry-mode{animation:none!important;transition:none!important}}
+@media print{.entry-switcher{display:none!important}}
+@media(max-width:799px){
+ html[data-theme] .entry-switcher button{background:transparent!important;box-shadow:none!important;color:var(--ink-muted)!important;border:0!important;min-height:44px!important;border-radius:13px!important;transform:none!important;filter:none!important}
+ html[data-theme] .entry-switcher button[aria-pressed=true]:not(#entry-auto){background:var(--surface-gradient)!important;color:var(--signature)!important;border:1px solid var(--edge)!important;box-shadow:var(--shadow-rest)!important}
+ html[data-theme] .entry-switcher #entry-auto{border-left:1px solid var(--edge)!important;border-radius:0 13px 13px 0!important}
+ .entry-switcher button>.ui-icon{grid-area:1/1}.entry-switcher #entry-auto .entry-play-icon{display:none!important}.entry-switcher #entry-auto .entry-pause-icon{display:block!important}
+ .entry-switcher #entry-auto[aria-pressed=true] .entry-play-icon{display:block!important}.entry-switcher #entry-auto[aria-pressed=true] .entry-pause-icon{display:none!important}
+ html[data-entry-ready=true] .entry-mode .entry-dock{translate:0 -22px}
+}
+@media(max-width:799px){
+ /* An explicit track prevents different teaser intrinsic widths from resizing the entry. */
+ html[data-entry-ready=true][data-theme] #about{grid-template-columns:minmax(0,1fr)}
+ html[data-entry-ready=true] #about .entry-space{width:100%;min-width:0;justify-self:center}
+}
+@media(max-width:799px){html[data-entry-ready=true] #entry-line{width:100%;text-align:center}}
