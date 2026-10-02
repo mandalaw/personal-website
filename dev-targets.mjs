@@ -1,5 +1,11 @@
 // Curated public controls only. Presence, visibility and context are checked before use.
 export const targets=Object.freeze([
+ {id:'school-quantic',selector:'[data-brand="quantic"]',contexts:['ABOUT'],pose:'document',prompt:'The master’s was here.',priority:4},
+ {id:'school-uoft',selector:'[data-brand="uoft"]',contexts:['ABOUT'],pose:'document',prompt:'Code and maps.',priority:4},
+ {id:'gis-tool',selector:'[data-brand="arcgis"],[data-brand="arcmap"]',contexts:['WORKBENCH','GIS'],pose:'map',prompt:'Maps? Right there.',priority:5},
+ {id:'stack',selector:'button[data-guide-open="stack"],[data-brand="python"],[data-brand="react"]',contexts:['WORKBENCH'],pose:'terminal',prompt:'Want the stack?',priority:4},
+ {id:'azure-tool',selector:'[data-brand="azure"]',contexts:['WORKBENCH'],pose:'cable',prompt:'Follow the connection.',priority:4},
+ {id:'oracle-tool',selector:'[data-brand="oracle"]',contexts:['WORKBENCH'],pose:'database',prompt:'The other end.',priority:4},
  {id:'theme',selector:'#toggle-dark-mode',contexts:['ENTRY','WORKBENCH','CONTACT','ABOUT','FOOTER'],pose:'look-up',prompt:'A different light.',priority:1},
  {id:'live',selector:'a[href="https://trustai.mandalawi.ca/"]',contexts:['ENTRY','TRUSTAI'],pose:'tablet',prompt:'That one’s live.',priority:5},
  {id:'map',selector:'[data-cap="map"],[data-entry-tool="map"],a[href="#project-garden"],a[href="/case-studies/garden/"]',contexts:['ENTRY','GIS','WORKBENCH','PORTFOLIO','TRUSTAI'],pose:'map',prompt:'Maps? Of course.',priority:4},
@@ -16,7 +22,7 @@ export const targets=Object.freeze([
  {id:'about',selector:'a[href="#experience"],.about-portrait',contexts:['ENTRY','ABOUT'],pose:'look-up',prompt:'That’s the actual human.',priority:2},
  {id:'contact',selector:'a[href="#contact"],a[href="/#contact"]',contexts:['ENTRY','ABOUT','LOST','FOOTER'],pose:'envelope',prompt:'Say hi.',priority:2},
  {id:'visuals',selector:'a[href="/visuals/"]',contexts:['ENTRY','SIDE_QUESTS','VISUALS','FOOTER'],pose:'camera',prompt:'Through the lens.',priority:3},
- {id:'github',selector:'a[href="https://github.com/mandalaw"]',contexts:['CONTACT','FOOTER'],pose:'terminal',prompt:'The source is there.',priority:2},
+ {id:'github',selector:'a[href^="https://github.com/mandalaw"],a[href="https://github.com/UTSCCSCC01/finalprojectw22-GDSC2.0"]',contexts:['CONTACT','FOOTER','PORTFOLIO'],pose:'terminal',prompt:'The source is there.',priority:2},
  {id:'linkedin',selector:'a[href="https://www.linkedin.com/in/devmandalaw"]',contexts:['CONTACT','FOOTER'],pose:'document',prompt:'The professional side.',priority:2},
  {id:'world-a',selector:'[data-entry-select="a"]',contexts:['ENTRY'],pose:'curious',prompt:'A different door.',priority:1},
  {id:'world-b',selector:'[data-entry-select="b"]',contexts:['ENTRY'],pose:'workbench',prompt:'A little workbench.',priority:1},

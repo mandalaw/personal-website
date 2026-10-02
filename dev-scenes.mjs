@@ -1,6 +1,11 @@
 // Scenes describe intentional little tasks. Durations are milliseconds, positions are lane fractions.
 const beat=(pose,ms=800,extra={})=>({pose,ms,...extra});
 export const scenes=Object.freeze({
+ EDUCATION_COMPARE:{contexts:['ABOUT'],requires:['school-quantic','school-uoft'],cooldown:65000,steps:[beat('document',900,{micro:'glance'}),beat('point',1100,{target:true,targetId:'school-quantic'}),beat('think',650),beat('point',1100,{target:true,targetId:'school-uoft'}),beat('document-tuck',650),beat('stand',450)]},
+ GIS_TOOLKIT:{contexts:['WORKBENCH','GIS'],requires:['gis-tool'],cooldown:45000,steps:[beat('map-fold',650),beat('map',1000,{micro:'prop-check'}),beat('point',1100,{target:true,targetId:'gis-tool'}),beat('map',700),beat('map-fold',650),beat('stand',450)]},
+ STACK_CHECK:{contexts:['WORKBENCH'],requires:['stack'],cooldown:40000,steps:[beat('look-up',650),beat('walk-right',900,{move:'other'}),beat('terminal',800,{micro:'type'}),beat('point',1100,{target:true,targetId:'stack'}),beat('think',600,{micro:'nod'}),beat('stand',450)]},
+ SOURCE_CHECK:{contexts:['CONTACT','FOOTER','PORTFOLIO'],requires:['github'],cooldown:45000,steps:[beat('terminal',850,{micro:'type'}),beat('look-up',650),beat('point',1200,{target:true,targetId:'github'}),beat('wave',650),beat('stand',450)]},
+ CLOUD_CONNECT:{contexts:['WORKBENCH'],requires:['azure-tool','oracle-tool'],cooldown:55000,steps:[beat('cable',800,{micro:'prop-check'}),beat('point',1000,{target:true,targetId:'azure-tool'}),beat('database',900),beat('point',1000,{target:true,targetId:'oracle-tool'}),beat('cable',650),beat('stand',450)]},
  CHAIR_BREAK:{contexts:['ENTRY_A','ENTRY_B','ENTRY_C','WORKBENCH','ABOUT','CONTACT','SIDE_QUESTS','FOOTER'],cooldown:30000,chair:true,steps:[
   beat('look-right',650,{chair:'available',face:'stow'}),beat('walk-right',1000,{move:'stow'}),beat('chair-grab',650,{chair:'grab'}),
   beat('chair-pull',1200,{move:'seat',chair:'pull'}),beat('chair-grab',600,{chair:'turn'}),beat('stand-to-sit',550,{chair:'sit-down'}),

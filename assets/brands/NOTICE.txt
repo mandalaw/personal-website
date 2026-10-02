@@ -1,0 +1,42 @@
+Tool artwork and sources
+
+These marks identify products referenced in the work. No endorsement or affiliation is implied. SVG drawing geometry and official colors are preserved. Non-rendering comments/editor metadata were removed. Python's original intrinsic viewport was made explicit for proportional sizing.
+
+Python: https://www.python.org/community/logos/
+Python and the Python logo are trademarks of the Python Software Foundation.
+Node.js: https://nodejs.org/en/about/branding
+Node.js is a registered trademark of the OpenJS Foundation. The mark links to the Node.js project. https://trademark-policy.openjsf.org/
+MongoDB: https://www.mongodb.com/company/newsroom/brand-resources
+MongoDB is a trademark of MongoDB, Inc. Used solely to identify the database in a team project.
+GitHub: https://brand.github.com/foundations/logo
+GitHub marks are used to link to the relevant GitHub profile or repository. GitHub, Inc.
+Azure Functions: https://learn.microsoft.com/en-us/azure/architecture/icons/
+Microsoft Azure architecture icon used in explanatory documentation of integration work.
+HTML5 logo by W3C: https://www.w3.org/html/logo/
+Creative Commons Attribution 3.0: https://creativecommons.org/licenses/by/3.0/
+Git logo by Jason Long: https://git-scm.com/community/logos
+Creative Commons Attribution 3.0: https://creativecommons.org/licenses/by/3.0/
+React artwork by the React contributors: https://github.com/reactjs/react.dev/tree/8c68ae8d2410abe59f351195780c6f8ea9f50904/public/images/brand
+Copyright Meta Platforms, Inc. and affiliates. Documentation artwork licensed under Creative Commons Attribution 4.0: https://creativecommons.org/licenses/by/4.0/
+FastAPI artwork: https://github.com/fastapi/fastapi/tree/e6942531f53bc49b86ecf73f9500abd0e22eef0b/docs/en/docs/img
+The MIT License (MIT)
+
+Copyright (c) 2018 Sebastián Ramírez
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.

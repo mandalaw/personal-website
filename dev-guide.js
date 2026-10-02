@@ -1,8 +1,8 @@
-import {Behavior,profiles} from './dev-behavior.mjs?v=0cdcc87d56a5';
-import {SceneClock,scenes} from './dev-scenes.mjs?v=e46eaedcda54';
-import {Stage,obstacles,available} from './dev-stage.mjs?v=3cb4a4bb0e20';
-import {bank} from './dev-prompts.mjs?v=94bf16a7632b';
-import * as Targets from './dev-targets.mjs?v=c1b8858d7abe';
+import {Behavior,profiles} from './dev-behavior.mjs?v=9626815f6283';
+import {SceneClock,scenes} from './dev-scenes.mjs?v=62c6a5a4cb32';
+import {Stage,obstacles,available} from './dev-stage.mjs?v=c5b99a3bdad7';
+import {bank} from './dev-prompts.mjs?v=e12db5e7fe7c';
+import * as Targets from './dev-targets.mjs?v=97b4676830c4';
 import * as Motion from './dev-motion.mjs?v=c08c4b474ebb';
 'use strict';
 (() => {
@@ -31,9 +31,9 @@ import * as Motion from './dev-motion.mjs?v=c08c4b474ebb';
  }
  function schedule(){if(!document.hidden&&!raf)raf=requestAnimationFrame(layout)}
  function face(direction){stage.face(direction);behavior.faced(direction,performance.now())}
- function chooseTarget(id){const items=Targets.candidates(context()),fresh=items.filter(x=>!behavior.targetRecent.slice(-3).includes(x.id));return (id&&items.find(x=>x.id===id))||(fresh.length?fresh:items)[0]||null}
+ function chooseTarget(id){const items=Targets.candidates(context()),fresh=items.filter(x=>!behavior.targetRecent.slice(-3).includes(x.id));if(id)return items.find(x=>x.id===id)||null;return (fresh.length?fresh:items)[0]||null}
  function rememberTarget(item){if(item){root.dataset.devTarget=item.id;behavior.rememberList(behavior.targetRecent,item.id,5)}}
- function startScene(name){if(!scenes[name]||!stage.canWalk()||calm()||modal()||transition()||reading())return false;clock.cancel();stage.cancel(false);shortAction=null;const now=performance.now();clock.start(name,now);behavior.started(name,now);root.dataset.devScene=name;state('SCENE');return true}
+ function startScene(name){if(!scenes[name]||scenes[name].requires?.some(id=>!Targets.candidates(context()).some(t=>t.id===id))||!stage.canWalk()||calm()||modal()||transition()||reading())return false;clock.cancel();stage.cancel(false);shortAction=null;const now=performance.now();clock.start(name,now);behavior.started(name,now);root.dataset.devScene=name;state('SCENE');return true}
  async function point(item){if(!item||!Targets.visible(item.el))return;const version=stage.version,aim=Motion.toward(mark,item.el);face(aim.facing);await Motion.pose(mark,aim.pose);if(version!==stage.version)return;rememberTarget(item);behavior.remember(aim.pose);root.dataset.devPose=aim.pose;root.dataset.devBeat='point-target'}
  function small(now,action){if(action==='point'&&target){Motion.pose(mark,'look-up');face(Motion.toward(mark,target.el).facing);shortAction={item:target,at:now+350,end:now+1600,pointed:false};root.dataset.devBeat='notice-target'}else{const pose=({wave:'wave',look:'look-up',peek:behavior.facing==='FACING_LEFT'?'peek-left':'peek-right',turn:'curious'})[action]||'stand';if(action==='turn')face(behavior.facing==='FACING_LEFT'?'FACING_RIGHT':'FACING_LEFT');Motion.pose(mark,pose);behavior.remember(pose);root.dataset.devPose=pose;root.dataset.devBeat=pose;shortAction={at:now,end:now+1500,pointed:true};if(action==='wave')Motion.liveMicro(mark,'wave')}}
  function glyph(name){const ns='http://www.w3.org/2000/svg',svg=document.createElementNS(ns,'svg'),use=document.createElementNS(ns,'use');svg.setAttribute('viewBox','0 0 24 24');svg.setAttribute('aria-hidden','true');svg.classList.add('ui-icon');use.setAttribute('href','#icon-'+name);svg.append(use);return svg}
@@ -43,7 +43,7 @@ import * as Motion from './dev-motion.mjs?v=c08c4b474ebb';
   const place=positions.find(p=>available({...p,right:p.left+b.width,bottom:p.top+b.height,width:b.width,height:b.height},items,5));if(!place){prompt.hidden=true;prompt.style.visibility='';return false}
   prompt.style.left=place.left+'px';prompt.style.top=place.top+'px';prompt.style.visibility='';cue.textContent=item.text;launcher.dataset.cueTopic=item.topic;promptUntil=performance.now()+(item.chips?.length?6500:4400);return true;
  }
- function speak(now){if(reading()||count>=profiles[behavior.mode].cap||stage.moving||root.dataset.devVisible!=='true'||promptUntil)return;const item=behavior.speech(now,now-lastInput,bank(context()));if(!item)return;
+ function speak(now){if(reading()||count>=behavior.speechProfile().cap||stage.moving||root.dataset.devVisible!=='true'||promptUntil)return;const item=behavior.speech(now,now-lastInput,bank(context()));if(!item)return;
   if(bubble(item)){count++;behavior.spoken(item,now);try{sessionStorage.setItem('mandalaw-live-cues',String(count));sessionStorage.setItem('mandalaw-live-lines',JSON.stringify(behavior.speechRecent))}catch{}}
  }
  prompt.addEventListener('click',e=>{const b=e.target.closest('button[data-topic]');if(!b)return;const topic=b.dataset.topic;hidePrompt();if(topic==='dismiss'){launcher.focus({preventScroll:true});return}window.PocketGuide?.open(topic,launcher)});
@@ -66,7 +66,7 @@ import * as Motion from './dev-motion.mjs?v=c08c4b474ebb';
    if(read){if(clock.name)cancel();const action=behavior.micro(now,{soft:true});if(action&&mini){Motion.liveMicro(mini,action,true);root.dataset.devAction=action;lastMicroAt=now}}
    else if(mini){
     if(promptUntil)clock.pause(now);else clock.resume(now);
-    if(!clock.name&&!shortAction&&!promptUntil){const name=behavior.scene(now,sceneContext(),stage.canWalk());if(name)startScene(name)}
+    if(!clock.name&&!shortAction&&!promptUntil){const name=behavior.scene(now,sceneContext(),stage.canWalk(),Targets.candidates(context()).map(t=>t.id));if(name)startScene(name)}
     const beat=clock.step(now);if(beat?.done){stage.finish();behavior.completed(now);root.dataset.devScene='';root.dataset.devBeat='scene-finished';state('LIVING')}
     else if(beat){const item=chooseTarget(beat.targetId);rememberTarget(beat.target?item:null);stage.perform(beat,item);behavior.remember(beat.pose);root.dataset.devAction=beat.pose}
     if(!clock.name&&!promptUntil){if(shortAction){if(!shortAction.pointed&&now>=shortAction.at){point(shortAction.item);shortAction.pointed=true}if(now>=shortAction.end){Motion.pose(mark,'stand');shortAction=null;root.dataset.devBeat='relax'}}else{const action=behavior.small(now);if(action)small(now,action)}}
@@ -89,6 +89,6 @@ import * as Motion from './dev-motion.mjs?v=c08c4b474ebb';
  reduced.addEventListener('change',()=>{cancel();Motion.stopAll();schedule()});
  document.addEventListener('visibilitychange',()=>{clearTimeout(timer);timer=0;held=false;const now=performance.now();if(document.hidden){pause(now);hidePrompt();stage.hide()}else{lastInput=now;resume(now);schedule();tick()}});
  root.dataset.devQuiet=String(quiet);root.dataset.devReady='true';root.dataset.devIntensity='LIVE';root.dataset.devFacing='FACING_RIGHT';root.dataset.devChair='stowed';Motion.pose(mark,'stand');
- window.DevGuide=Object.freeze({layout,preference,engage,greet:value=>Motion.pose(document.querySelector('#pocket-guide .dev-character'),value),targets:()=>Targets.candidates(context()).map(x=>({id:x.id,pose:x.pose,prompt:x.prompt})),intensity:mode=>{cancel();behavior.configure(mode,performance.now());root.dataset.devIntensity=behavior.mode},scene:startScene,sceneNames:Object.keys(scenes),react:pose=>{if(!calm()&&!modal())Motion.pose(mark,pose)},snapshot:()=>({state:root.dataset.devState,context:context(),pose:mark.dataset.pose,facing:mark.dataset.facing,quiet,hints:count,mode:behavior.mode,scene:clock.snapshot(),stage:stage.snapshot(),behavior:behavior.snapshot(),timerCount:timer?1:0,lastMicroAt,promptVisible:!prompt.hidden})});
+ window.DevGuide=Object.freeze({layout,preference,engage,greet:value=>Motion.pose(document.querySelector('#pocket-guide .dev-character'),value),targets:()=>Targets.candidates(context()).map(x=>({id:x.id,pose:x.pose,prompt:x.prompt})),intensity:mode=>{cancel();behavior.configure(mode,performance.now());root.dataset.devIntensity=behavior.mode},cadence:name=>{hidePrompt();behavior.configureCadence(name,performance.now())},scene:startScene,sceneNames:Object.keys(scenes),react:pose=>{if(!calm()&&!modal())Motion.pose(mark,pose)},snapshot:()=>({state:root.dataset.devState,context:context(),pose:mark.dataset.pose,facing:mark.dataset.facing,quiet,hints:count,mode:behavior.mode,scene:clock.snapshot(),stage:stage.snapshot(),behavior:behavior.snapshot(),timerCount:timer?1:0,lastMicroAt,promptVisible:!prompt.hidden})});
  schedule();tick();
 })();

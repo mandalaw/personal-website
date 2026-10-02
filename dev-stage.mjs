@@ -3,7 +3,7 @@ const root=document.documentElement;
 export const overlaps=(a,b,g=8)=>a.left<b.right+g&&a.right>b.left-g&&a.top<b.bottom+g&&a.bottom>b.top-g;
 const box=(left,top,width,height)=>({left,top,right:left+width,bottom:top+height,width,height});
 export function obstacles(){
- return [...document.querySelectorAll('header,main a,main button,main summary,main h1,main h2,main h3,main p,main img,main .site-character,main .project-card,main .bench-panel,main .work-card,footer a,footer button,footer summary,footer p')]
+ return [...document.querySelectorAll('header,main a,main button,main summary,main h1,main h2,main h3,main p,main img,main .site-character,main .project-card,main .bench-panel,main .work-card,main [data-brand-tray],main .credential-tile,footer a,footer button,footer summary,footer p')]
  .filter(e=>!e.closest('[hidden],[inert],template')&&e.getClientRects().length&&getComputedStyle(e).visibility!=='hidden').map(e=>e.getBoundingClientRect()).filter(r=>r.width&&r.height&&r.bottom>0&&r.top<innerHeight);
 }
 export function available(r,items,g=8){const header=document.querySelector('header')?.getBoundingClientRect().bottom||64,s=getComputedStyle(root),bottom=parseFloat(s.getPropertyValue('--safe-bottom'))||0;return r.left>=10&&r.right<=innerWidth-10&&r.top>=header+10&&r.bottom<=innerHeight-bottom-12&&!items.some(o=>overlaps(r,o,g))}
