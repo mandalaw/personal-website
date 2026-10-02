@@ -44,3 +44,16 @@ html[data-theme=night] [data-motion-scene=hero]{--scene-paper:#2c364a}
 
 /* Structural SVG matrices position the drawing; reduced motion must retain them. */
 html[data-motion=reduce] :is(.motion-art,.dev-character,.dev-definitions) [transform]{transform:var(--dev-base-transform)!important;transform-origin:0 0;transform-box:view-box}
+
+/* Only the internal SVG rig turns; labels, controls and prop marks keep their direction. */
+.dev-character [data-facing-body],.dev-character [data-upright-prop]{transform-origin:0 0;transform-box:view-box}
+.guide-related{display:flex;flex-wrap:wrap;gap:6px;margin:12px 0}
+.guide-related:before{content:'Keep exploring';flex-basis:100%;font-size:11px;opacity:.75}
+.guide-related button{display:flex;align-items:center;gap:5px;padding:7px 9px;font-size:11px;border-radius:12px}
+.guide-related .ui-icon{width:14px;height:14px}
+
+.guide-prompts button[hidden]{display:none}
+
+.guide-prompts[hidden]{display:none}
+.guide-related button,.guide-actions button{min-height:44px;border:1px solid var(--edge);background:var(--surface-gradient);color:var(--ink-secondary);font:12px/1.5 var(--font-body);text-align:left}
+.guide-actions button{padding:8px 12px;border-radius:9px;cursor:pointer;display:inline-flex;align-items:center;gap:7px}
