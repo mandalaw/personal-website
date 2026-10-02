@@ -15,7 +15,7 @@ export function face(el,direction,animated=true){if(!el||!['FACING_LEFT','FACING
 }
 export function toward(el,target){const a=el.getBoundingClientRect(),b=target.getBoundingClientRect(),dx=b.left+b.width/2-a.left-a.width/2,dy=b.top+b.height/2-a.top-a.height*.45;return {facing:dx<0?'FACING_LEFT':'FACING_RIGHT',pose:'point-'+(Math.abs(dy)>Math.abs(dx)*.65?(dy<0?'up-':'down-'):'')+(dx<0?'left':'right'),above:dy<-30};}
 let rare;
-function loadRare(){return rare||(rare=import('./images/characters/motion/props.mjs?v=29c43990b987').then(m=>Object.assign(library,m.poses)))}
+function loadRare(){return rare||(rare=import('./images/characters/motion/props.mjs?v=6bcdc14062bd').then(m=>Object.assign(library,m.poses)))}
 export async function pose(el,name,ticket){if(!el)return;if(ticket===undefined){stop(el);ticket=versions.get(el)}el.dataset.pose=name;const canonical=opposite[name]||name;let item=library[canonical];if(!item){await loadRare();if(el.dataset.pose!==name||versions.get(el)!==ticket)return;item=library[canonical]}if(!item)return;const svg=el.querySelector('svg');if(!svg)return;if(rendered.get(el)===name)return;
  el.getAnimations({subtree:true}).forEach(a=>a.cancel());svg.setAttribute('viewBox','70 15 220 370');const g=document.createElementNS(ns,'g');g.dataset.facingBody='';g.append(...parse(item.art).childNodes);svg.replaceChildren(g);
  // Counter-mirror props inside the body rig: code, page marks and camera controls stay readable.
@@ -74,4 +74,33 @@ async function scene(el){if(loaded.has(el))return;loaded.add(el);let key=el.data
 const observer=new IntersectionObserver(entries=>entries.forEach(({target,isIntersecting})=>{if(isIntersecting){visible.add(target);scene(target)}else visible.delete(target)}),{threshold:.12});
 document.querySelectorAll('.site-character,[data-home-character]').forEach(el=>observer.observe(el));
 export function visibleScenes(){return [...visible].filter(el=>!el.hidden&&!el.closest('[hidden]')&&el.getClientRects().length)}
-export const stateCount=62;
+export const stateCount=75;
+
+// Short, articulated locomotion is shared by walks and chair handling.
+export function stride(el,duration=1000,backward=false){
+ const count=Math.max(2,Math.round(duration/280)),beat=duration/count;
+ for(const [name,sign] of [['leg-left',1],['leg-right',-1],['arm',-.6],['hand',.45]]){
+  if(el.dataset.pose?.startsWith('chair-')&&['arm','hand'].includes(name))continue;
+  const direction=backward?-sign:sign;
+  animate(el.querySelector(`[data-part="${name}"]`),[{transform:'rotate(0deg)'},{transform:`rotate(${16*direction}deg)`,offset:.25},{transform:'rotate(0deg)',offset:.5},{transform:`rotate(${-16*direction}deg)`,offset:.75},{transform:'rotate(0deg)'}],{duration:beat,iterations:count,easing:'linear'});
+ }
+ animate(el.querySelector('[data-part=body]'),[{transform:'translateY(0)'},{transform:'translateY(-3px)'},{transform:'translateY(0)'}],{duration:beat/2,iterations:count*2});
+}
+export function liveMicro(el,action,soft=false){
+ if(!el)return;const amp=soft?.45:1,part=name=>el.querySelector(`[data-part="${name}"]`);
+ const swing=(node,deg,dx=0,dy=0)=>animate(node,[{transform:'translate(0,0) rotate(0deg)'},{transform:`translate(${dx*amp}px,${dy*amp}px) rotate(${deg*amp}deg)`,offset:.42},{transform:'translate(0,0) rotate(0deg)'}],{duration:720});
+ if(action==='glance')swing(part('head'),9,3,-1);
+ else if(action==='nod')swing(part('head'),-8,0,2);
+ else if(action==='hand-adjust')swing(part('hand')||part('arm'),10,0,-4);
+ else if(action==='toe-tap')swing(part('leg-right')||part('head'),6,0,-3);
+ else if(action==='weight')swing(part('body'),2.5,2,0);
+ else if(action==='prop-check'){swing(part('head'),6,1,0);swing(part('prop')||part('hand'),-6,0,-3)}
+ else if(action==='wave')swing(part('hand'),13,0,-2);
+ else if(action==='type')animate(part('hand'),[{transform:'translateY(0)'},{transform:'translateY(5px)'},{transform:'translateY(0)'},{transform:'translateY(4px)'},{transform:'translateY(0)'}],{duration:680});
+ else if(action==='breathe')animate(part('body'),[{transform:'scaleY(1)'},{transform:`scaleY(${1+.018*amp})`},{transform:'scaleY(1)'}],{duration:900});
+ else micro(el,action,soft);
+ el.dataset.gesture=action;
+}
+export const animatePart=animate;
+export function pauseAll(){for(const a of playing)if(a.playState==='running')a.pause()}
+export function resumeAll(){for(const a of playing)if(a.playState==='paused')a.play()}

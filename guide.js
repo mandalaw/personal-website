@@ -11,7 +11,7 @@
  const backdrop=document.createElement('div');backdrop.className='guide-backdrop';backdrop.hidden=true;backdrop.setAttribute('aria-hidden','true');document.body.append(backdrop);
  try{hidden=sessionStorage.getItem('mandalaw-guide-hidden')==='1'}catch{}
  root.dataset.guideReady='true';root.dataset.guideHidden=String(hidden);
- const safeLink=href=>/^(#[a-z][a-z0-9-]*|\/case-studies\/[a-z-]+\/|\/(?:resume|visuals)\/|mailto:dev@mandalawi\.ca(?:\?subject=Resume%20request)?|https:\/\/(?:trustai\.mandalawi\.ca\/|www\.linkedin\.com\/in\/devmandalaw|github\.com\/mandalaw))$/.test(href);
+ const safeLink=href=>/^(#[a-z][a-z0-9-]*|\/case-studies\/[a-z-]+\/|\/(?:resume|visuals)\/|\/404\.html|mailto:dev@mandalawi\.ca(?:\?subject=Resume%20request)?|https:\/\/(?:trustai\.mandalawi\.ca\/|www\.linkedin\.com\/in\/devmandalaw|github\.com\/mandalaw))$/.test(href);
  const icons={best:'work',build:'web',ai:'model',fun:'terminal',resume:'resume',contact:'mail',trustai:'model',gdsc:'web',gis:'map',photo:'camera',study:'education',msse:'education',frontend:'web',backend:'terminal',fullstack:'web',data:'data',integrations:'plug',experience:'work',location:'location',available:'status',projects:'work',worlds:'layers',old:'archive',reversi:'board',secrets:'archive',help:'question',quiet:'status',work:'work',othello:'board',break:'board',visuals:'video'};
  function glyph(name){const ns='http://www.w3.org/2000/svg',svg=document.createElementNS(ns,'svg'),use=document.createElementNS(ns,'use');svg.setAttribute('class','ui-icon');svg.setAttribute('viewBox','0 0 24 24');svg.setAttribute('aria-hidden','true');use.setAttribute('href','#icon-'+name);svg.append(use);return svg}
  function questionButton(item){const b=document.createElement('button');b.type='button';b.textContent=item.q;b.prepend(glyph(icons[item.id]||'question'));b.dataset.guideTopic=item.id;return b}
@@ -46,7 +46,7 @@
   const S=window.SectionScroll,s=S?.snapshot();if(s&&['TRANSITIONING','SETTLING','INTENT_DETECTED'].includes(s.phase))await S.go(s.targetSectionIndex??s.currentSectionIndex,{instant:true,source:'guide-open',historyMode:'none'});
   prompts();if(id&&byId.has(id))show(id);else home();if(!isOpen()){outside.forEach(el=>{inertBefore.set(el,el.inert);el.inert=true});dialog.hidden=false;backdrop.hidden=false}root.dataset.guideOpen='true';document.getElementById('guide-close').focus({preventScroll:true});
  }
- function close(restore=true){dialog.hidden=true;backdrop.hidden=true;outside.forEach(el=>{if(inertBefore.has(el))el.inert=inertBefore.get(el)});inertBefore.clear();root.dataset.guideOpen='false';if(restore&&opener?.isConnected)opener.focus({preventScroll:true});schedule()}
+ function close(restore=true){dialog.hidden=true;backdrop.hidden=true;outside.forEach(el=>{if(inertBefore.has(el))el.inert=inertBefore.get(el)});inertBefore.clear();root.dataset.guideOpen='false';if(restore&&opener?.isConnected){window.DevGuide?.layout();const target=opener.getClientRects().length&&getComputedStyle(opener).visibility!=='hidden'?opener:document.querySelector('header a');target?.focus({preventScroll:true})}schedule()}
  document.getElementById('guide-close').addEventListener('click',()=>close());
  backdrop.addEventListener('click',()=>close());
  

@@ -57,3 +57,22 @@ html[data-motion=reduce] :is(.motion-art,.dev-character,.dev-definitions) [trans
 .guide-prompts[hidden]{display:none}
 .guide-related button,.guide-actions button{min-height:44px;border:1px solid var(--edge);background:var(--surface-gradient);color:var(--ink-secondary);font:12px/1.5 var(--font-body);text-align:left}
 .guide-actions button{padding:8px 12px;border-radius:9px;cursor:pointer;display:inline-flex;align-items:center;gap:7px}
+
+/* A reserved corridor contains the actor and his own movable chair. */
+html[data-dev-intensity] #guide-launcher{width:var(--dev-w,76px);height:var(--dev-h,124px);min-width:var(--dev-w,76px)!important;min-height:var(--dev-h,124px)!important;right:auto!important;bottom:auto!important;transition:opacity 120ms}
+html[data-dev-intensity] #guide-launcher .dev-character{width:100%;height:100%}
+html[data-dev-intensity] #guide-launcher .guide-launch-label{display:none}
+.dev-chair{position:fixed;display:block;z-index:89;pointer-events:none;contain:layout;transform-origin:center bottom}
+.dev-chair svg{display:block;width:100%;height:100%;overflow:visible;transform-origin:center bottom}
+.dev-chair[hidden]{display:none}
+.dev-prompt{position:fixed;z-index:91;max-width:min(234px,calc(100vw - 28px));padding:5px;border:1px solid var(--edge);border-radius:16px;background:var(--surface-high);background-image:var(--surface-gradient);box-shadow:var(--shadow-raised);color:var(--ink);font:12px/1.4 var(--font-body)}
+.dev-prompt[hidden],html[data-guide-open=true] .dev-prompt,html[data-scene-open=true] .dev-prompt{display:none}
+.dev-prompt button{min-height:44px;min-width:44px;border:0;border-radius:10px;background:transparent;color:var(--ink);font:inherit;padding:7px 10px;cursor:pointer;text-align:left;display:flex;align-items:center;gap:6px}
+.dev-prompt-line{width:100%;font-weight:600!important}
+.dev-prompt-chips{display:flex;gap:4px;flex-wrap:wrap}
+.dev-prompt-chips button{border:1px solid var(--edge);background:var(--surface-gradient);font-size:11px;flex:1;white-space:nowrap}
+.dev-prompt .ui-icon{width:15px;height:15px;flex:none}
+.dev-prompt button:hover{background:var(--accent-soft)}
+.dev-prompt button:focus-visible{outline:2px solid var(--focus);outline-offset:1px}
+@media(max-width:799px){.dev-prompt{max-width:208px;font-size:11px}.dev-prompt button{padding:6px 8px}}
+@media print{.dev-chair,.dev-prompt{display:none!important}}

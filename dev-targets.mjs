@@ -1,5 +1,6 @@
 // Curated public controls only. Presence, visibility and context are checked before use.
 export const targets=Object.freeze([
+ {id:'theme',selector:'#toggle-dark-mode',contexts:['ENTRY','WORKBENCH','CONTACT','ABOUT','FOOTER'],pose:'look-up',prompt:'A different light.',priority:1},
  {id:'live',selector:'a[href="https://trustai.mandalawi.ca/"]',contexts:['ENTRY','TRUSTAI'],pose:'tablet',prompt:'That one’s live.',priority:5},
  {id:'map',selector:'[data-cap="map"],[data-entry-tool="map"],a[href="#project-garden"],a[href="/case-studies/garden/"]',contexts:['ENTRY','GIS','WORKBENCH','PORTFOLIO','TRUSTAI'],pose:'map',prompt:'Maps? Of course.',priority:4},
  {id:'game',selector:'[data-game-open="reversi"]',contexts:['ENTRY','SIDE_QUESTS'],pose:'game-piece',prompt:'One game?',priority:4},
@@ -22,7 +23,7 @@ export const targets=Object.freeze([
  {id:'world-c',selector:'[data-entry-select="c"]',contexts:['ENTRY'],pose:'tablet',prompt:'One project first.',priority:1},
  {id:'home',selector:'a[href="/"],a[href="/#about"]',contexts:['LOST','VISUALS','RESUME'],pose:'present',prompt:'Home is that way.',priority:2}
 ].map(t=>Object.freeze({...t,anchors:['scene-left','scene-right','lower-left','lower-right'],reactions:['face','point','prop']})));
-export function visible(el){if(!el||el.closest('[hidden],[inert]'))return false;const r=el.getBoundingClientRect(),s=getComputedStyle(el);return r.width>0&&r.height>0&&r.top>=64&&r.bottom<=innerHeight-10&&r.left>=0&&r.right<=innerWidth&&s.visibility!=='hidden'&&s.display!=='none'}
+export function visible(el){if(!el||el.closest('[hidden],[inert]'))return false;const r=el.getBoundingClientRect(),s=getComputedStyle(el);return r.width>0&&r.height>0&&r.top>=(el.closest('header')?0:64)&&r.bottom<=innerHeight-10&&r.left>=0&&r.right<=innerWidth&&s.visibility!=='hidden'&&s.display!=='none'}
 export function candidates(context){return targets.filter(t=>t.contexts.includes(context)).flatMap(t=>[...document.querySelectorAll(t.selector)].filter(visible).map(el=>({...t,el}))).sort((a,b)=>b.priority-a.priority)}
 export function match(node,context){for(const t of targets){if(!t.contexts.includes(context))continue;const el=node?.closest?.(t.selector);if(visible(el))return {...t,el}}return null}
 export function choose(context,recent=[]){const all=candidates(context),fresh=all.filter(t=>!recent.slice(-3).includes(t.id));return (fresh.length?fresh:all)[0]||null}
