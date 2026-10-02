@@ -23,3 +23,24 @@ html[data-theme] #guide-launcher:focus-visible{outline:2px solid var(--focus);ou
 
 .scene-heading .scene-guide{display:none}.scene-panel[data-scene=game] .scene-guide{display:inline-flex;width:30px;height:50px;margin-right:4px}.dev-detour{display:flex;width:70px;height:115px;margin:0 auto 20px}
 @media print{#guide-launcher,#pocket-guide,.guide-backdrop,.scene-panel,.footer-guide{display:none!important}}
+
+/* Part motion stays inside fixed character boxes; the scene never becomes a carousel. */
+.dev-definitions{position:absolute;width:0;height:0;overflow:hidden;pointer-events:none}
+.dev-character [data-part],.motion-art [data-part]{transform-box:fill-box;transform-origin:center}
+.dev-character [data-part=prop],.motion-art [data-part=prop]{transform-origin:center bottom}
+.motion-scene{--scene-ink:#2f2e41;--scene-device:#3f3d56;--scene-paper:#e6e6e6;--scene-screen:#f2f2f2}
+html[data-theme=night] .motion-scene{--scene-ink:#3d4a63;--scene-device:#4d5d7a;--scene-paper:#39475b;--scene-screen:#1b2230}
+.motion-scene>img{visibility:hidden!important}.motion-scene>.motion-art{position:absolute;inset:0;width:100%;height:100%;max-width:none;max-height:none;display:block;pointer-events:none;overflow:visible;fill:none;stroke:none}
+.dev-character[data-pose=peek-bottom]{overflow:hidden}
+.guide-detail{font-size:13px;line-height:1.6}.guide-detail summary{padding:8px 0;cursor:pointer;font-weight:600}
+.guide-categories{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0}.guide-categories button{padding:7px 10px;font-size:12px;border-radius:12px}
+.guide-categories button[aria-pressed=true]{background:var(--accent-soft);border-color:var(--accent)}
+.guide-all-list{max-height:220px;overflow:auto}.guide-more .guide-prompts{grid-template-columns:1fr 1fr}
+.guide-launch-label{transition:opacity 180ms,translate 180ms;translate:0 3px}#guide-launcher[data-cue-visible=true] .guide-launch-label{translate:0 0}
+@media(max-width:400px){.guide-more .guide-prompts{grid-template-columns:1fr}.guide-prompts button{font-size:12px}}
+@media(prefers-reduced-motion:reduce){.guide-launch-label{transition:none}}
+html[data-motion=reduce] .guide-launch-label{transition:none}
+html[data-theme=night] [data-motion-scene=hero]{--scene-paper:#2c364a}
+
+/* Structural SVG matrices position the drawing; reduced motion must retain them. */
+html[data-motion=reduce] :is(.motion-art,.dev-character,.dev-definitions) [transform]{transform:var(--dev-base-transform)!important;transform-origin:0 0;transform-box:view-box}
