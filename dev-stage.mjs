@@ -1,4 +1,4 @@
-import * as Motion from './dev-motion.mjs?v=c08c4b474ebb';
+import * as Motion from './dev-motion.mjs?v=3ca54d15331d';
 const root=document.documentElement;
 export const overlaps=(a,b,g=8)=>a.left<b.right+g&&a.right>b.left-g&&a.top<b.bottom+g&&a.bottom>b.top-g;
 const box=(left,top,width,height)=>({left,top,right:left+width,bottom:top+height,width,height});
@@ -14,6 +14,7 @@ export class Stage {
   // Keep a whole motion corridor clear, including the separate chair. No text is crossed.
   if(this.plan&&this.plan.w===w&&this.plan.h===h&&available(box(this.plan.left,this.plan.top,this.plan.width,h),items)){if(!this.chairVisible&&this.chairReady){this.chairPosition(this.waypoint('stow'));this.chairVisible=true;this.chair.style.opacity='1'}return true}
   const bottom=innerHeight-h-20,ys=[bottom,header+26,Math.round((header+bottom)/2),bottom-h-20];
+  for(let y=bottom-32;y>header+12;y-=32)if(!ys.includes(y))ys.push(y);
   const widths=[w+(compact?76:130),w+(compact?40:78),w+24,w];let chosen=null;
   for(const width of widths){for(const y of ys){for(const x of [innerWidth-width-18,18,Math.max(18,innerWidth/2-width/2)]){const r=box(x,y,width,h);if(available(r,items)){chosen={...r,w,h};break}}if(chosen)break}if(chosen)break}
   if(!chosen){this.hide();this.plan=null;return false}

@@ -76,3 +76,6 @@ html[data-dev-intensity] #guide-launcher .guide-launch-label{display:none}
 .dev-prompt button:focus-visible{outline:2px solid var(--focus);outline-offset:1px}
 @media(max-width:799px){.dev-prompt{max-width:208px;font-size:11px}.dev-prompt button{padding:6px 8px}}
 @media print{.dev-chair,.dev-prompt{display:none!important}}
+
+.scene-panel[data-scene=detail] .scene-guide{display:inline-flex;width:30px;height:50px;margin-right:8px;flex:none}
+.scene-panel[data-scene=detail] .scene-heading{gap:14px}.scene-panel[data-scene=detail] .scene-heading>div{flex:1;min-width:0}

@@ -58,3 +58,40 @@ html[data-theme=night] .brand-source .brand-dark{display:block}
 .brand-preview{display:inline-flex;align-items:center;gap:6px;padding:4px 6px;border-radius:7px;background:#fff;flex:none}.brand-preview img{height:20px!important;width:auto!important;max-width:72px;object-fit:contain;filter:none!important}.detail-trigger:has(.brand-preview){flex-wrap:wrap;justify-content:flex-start;gap:10px}.brand-preview img[src*="fastapi"]{width:60px!important}.brand-preview img[src*="mongodb"]{width:72px!important}
 
 html[data-motion=reduce] .brand-chip{transition:none;translate:none}
+
+/* Contextual identity, without imitating institutional crests or changing product colors. */
+.brand-word{width:auto;min-width:48px;padding:3px 8px;font:600 13px/1.2 var(--font-body);letter-spacing:-.03em;color:#27303c}
+.brand-chip:has(.brand-word) .brand-label{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)}
+.brand-plate:has(img[src*="java-duke"]){height:38px}.brand-plate img[src*="java-duke"]{height:34px;width:28px}
+.credential-tile{position:relative;overflow:hidden;padding:20px 22px;border-left:3px solid var(--signature)}
+.credential-field{display:block;font:9px/1.6 var(--font-body);letter-spacing:.13em;color:var(--ink-muted);margin-bottom:9px}
+.credential-quantic .credential-school{font-size:19px;line-height:1.28;letter-spacing:-.03em;max-width:25ch}
+.credential-uoft .credential-school{font-family:Georgia,'Times New Roman',serif;font-size:23px;line-height:1.2;letter-spacing:-.02em}
+.credential-uoft{border-left-color:#527da4;background:linear-gradient(115deg,rgba(85,120,159,.09),transparent 75%),var(--surface-gradient)}
+.credential-quantic{background:linear-gradient(115deg,rgba(249,103,103,.08),transparent 75%),var(--surface-gradient)}
+.credential-degree{margin-top:12px}.credential-symbol{display:none}
+.program-identity{display:flex;gap:13px;align-items:center;padding:0 0 14px;margin-bottom:14px;border-bottom:1px solid var(--edge)}
+.program-identity img{width:64px!important;height:30px!important;object-fit:contain;flex:none;padding:5px;border-radius:9px;background:#fff;box-sizing:content-box;filter:none!important}
+.program-identity strong,.program-identity small{display:block;line-height:1.6}
+.program-identity strong{font-size:13px;color:var(--ink)}.program-identity small{font-size:11px;color:var(--ink-muted)}
+.social-mark{display:inline-flex;align-items:center;justify-content:center;flex:none;width:38px;height:38px;margin-right:5px;padding:7px;border-radius:11px;background:#fff;border:1px solid rgba(243,114,116,.28);box-sizing:border-box;vertical-align:middle}
+.social-mark img{display:block;width:24px!important;height:24px!important;object-fit:contain;filter:none!important;opacity:1!important}
+.social-mark .ui-icon{width:24px!important;height:24px!important;color:#bf464d;stroke:currentColor}
+.contact-signal-grid .signal-badge>.social-mark{margin:0}
+.contact-signal-grid .signal-badge>svg:first-child{width:38px;height:38px;padding:7px;box-sizing:border-box;border:1px solid rgba(243,114,116,.28);border-radius:11px;background:#fff;color:#bf464d}
+.contact-signal-grid .signal-badge>svg:last-child{margin-left:auto;flex:none}
+.contact-signal-grid .signal-badge{align-items:center}
+.resume-contact a{display:inline-flex;align-items:center;gap:3px;min-height:44px}
+.resume-contact .social-mark{width:30px;height:30px;padding:5px;border-radius:8px}
+.resume-contact .social-mark img,.resume-contact .social-mark .ui-icon{width:19px!important;height:19px!important}
+.footer-social>a{display:inline-flex;align-items:center;justify-content:center;min-width:44px;min-height:44px}.footer-social .social-mark{margin:0}
+.organization-rail{display:flex;flex-wrap:wrap;gap:8px;margin:16px 0}.organization-rail span{font-size:12px;color:var(--ink);border-bottom:2px solid var(--edge);padding:4px 0;margin-right:8px}
+.work-card .brand-tray{padding:12px}.work-card .brand-chip>summary,.work-card .brand-link{font-size:11px;padding:6px 8px}
+.project-method-preview{display:inline-flex;align-items:center;gap:7px;font-size:11px;color:var(--ink-secondary)}
+.game-tool-note,.resume-tool-note{max-width:800px;margin:20px auto;text-align:left}.game-tool-note>summary,.resume-tool-note>summary{min-height:44px;display:flex;align-items:center;cursor:pointer;color:var(--signature);font-size:12px;gap:8px}.game-tool-note>summary:before,.resume-tool-note>summary:before{content:'+'}
+@media(max-width:600px){.credential-tile{padding:17px}.credential-quantic .credential-school{font-size:17px}.credential-uoft .credential-school{font-size:21px}.program-identity{gap:10px}.program-identity strong{font-size:12px}.program-identity img{width:52px!important;height:24px!important}.work-card .brand-tray{padding:10px}}
+@media print{.social-mark,.resume-tool-note,.credential-field{display:none!important}.credential-tile{border:0;background:none}.credential-school{font-size:14px!important}}
+.contact-signal-grid .signal-badge>.social-mark{display:inline-flex;flex:0 0 38px;width:38px;height:38px}
+.social-mark img,.brand-plate img,.brand-preview img{border-radius:0!important;border:0!important;box-shadow:none!important;background:transparent!important}
+@media(max-width:600px){.contact-signal-grid .signal-badge>.social-mark{flex:0 0 38px}}
+.social-mark{padding:6px}.social-mark img{max-width:100%!important;flex:none}

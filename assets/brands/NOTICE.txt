@@ -40,3 +40,22 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
+
+Pass 22 additions (retrieved 2026-10-02)
+
+JavaScript community mark by Chris Williams: https://github.com/voodootikigod/logo.js
+MIT license retained in LICENSE-javascript.txt. This is a community language mark, not an ECMA certification.
+CSS community mark by Javi Aguilar / CSS-Next: https://github.com/CSS-Next/logo.css
+CC0 notice retained in LICENSE-css.txt. Original purple artwork retained.
+Bootstrap: https://getbootstrap.com/docs/5.3/about/brand/
+Copyright Bootstrap contributors. The brand guide permits reference to Bootstrap with the unmodified logo; documentation is CC BY 3.0. https://creativecommons.org/licenses/by/3.0/
+QGIS: https://www.qgis.org/community/organisation/guidelines/
+QGIS is a trademark of QGIS.ORG. Used to identify QGIS and link directly to https://qgis.org/; no endorsement. Official QGIS website SVG, drawing unchanged.
+Java Duke: https://dev.java/duke/ and https://github.com/openjdk/duke
+Duke was created by Joe Palrang and released under a BSD license. Oracle recommends Duke for identifying Java without a Java coffee-cup logo license. Official vector Wave drawing unchanged; excess outer canvas cropped for optical sizing.
+LinkedIn: https://brand.linkedin.com/in-logo
+Official blue in mark, used solely as a link to Ahmed's LinkedIn profile, as permitted for members. Colors and shape unchanged.
+Google Developer Student Clubs: historical 2022 project repository's original club artwork. Displayed only with the dated University of Toronto Mississauga academic team-project context. Google brand elements are trademarks of Google LLC. No Google employment or endorsement is claimed. https://about.google/brand-resource-center/guidance/
+AWS architecture icons: https://aws.amazon.com/architecture/icons/
+Amazon EC2, Amazon Elastic Container Registry, AWS Systems Manager. Official 2026-07-31 architecture release. Used in factual explanatory documentation of the TrustAI team deployment; original colors/shape retained. AWS and Amazon trademarks belong to Amazon.com, Inc. or its affiliates.
+Institution and employer names identify education and work history. School treatments are this site's typography, not institutional logos. Esri/ArcGIS, Google Earth, Oracle, PostgreSQL, nginx, Caddy, Material UI, Axios, Mongoose, Express, React Router, JUnit and JavaDoc appear as factual product names; text treatments are not claimed to be official logo artwork.

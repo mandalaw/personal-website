@@ -89,7 +89,10 @@ export function stride(el,duration=1000,backward=false){
 export function liveMicro(el,action,soft=false){
  if(!el)return;const amp=soft?.45:1,part=name=>el.querySelector(`[data-part="${name}"]`);
  const swing=(node,deg,dx=0,dy=0)=>animate(node,[{transform:'translate(0,0) rotate(0deg)'},{transform:`translate(${dx*amp}px,${dy*amp}px) rotate(${deg*amp}deg)`,offset:.42},{transform:'translate(0,0) rotate(0deg)'}],{duration:720});
- if(action==='glance')swing(part('head'),9,3,-1);
+ if(action==='shoulder-roll'){swing(part('body'),-2.5,0,-2);swing(part('arm'),-7,0,-2)}
+ else if(action==='wrist-check'){swing(part('head'),9,1,1);swing(part('hand'),-12,-2,-4)}
+ else if(action==='double-take')animate(part('head'),[{transform:'rotate(0deg)'},{transform:'rotate(-8deg)',offset:.3},{transform:'rotate(9deg)',offset:.7},{transform:'rotate(0deg)'}],{duration:1000});
+ else if(action==='glance')swing(part('head'),9,3,-1);
  else if(action==='nod')swing(part('head'),-8,0,2);
  else if(action==='hand-adjust')swing(part('hand')||part('arm'),10,0,-4);
  else if(action==='toe-tap')swing(part('leg-right')||part('head'),6,0,-3);
