@@ -1,0 +1,25 @@
+/* The small guide shares the room character's contours and theme palette. */
+:root{--dev-ink:#2f2e41;--dev-device:#3f3d56;--dev-paper:#e6e6e6;--dev-screen:#f2f2f2;--dev-sage:#8a9d91}
+html[data-theme=night]{--dev-ink:#64758e;--dev-device:#697b96;--dev-paper:#a2afc3;--dev-screen:#1b2230;--dev-sage:#7e9c96}
+.dev-character{position:relative;display:inline-flex;flex:none;width:64px;height:106px;pointer-events:none;isolation:isolate}
+.dev-character svg{position:static!important;inset:auto!important;display:block;width:100%!important;height:100%!important;max-width:none;max-height:none;margin:0;fill:none;stroke:none;overflow:visible}
+html[data-guide-ready=true] #guide-launcher{width:68px;height:106px;min-width:68px!important;min-height:106px!important;padding:0;border:0;background:none;box-shadow:none;backdrop-filter:none;border-radius:16px;left:var(--dev-x);top:var(--dev-y);contain:layout;transition:opacity 140ms}
+#guide-launcher .dev-character{width:68px;height:106px}
+html[data-dev-ready]:not([data-dev-visible=true]) #guide-launcher{visibility:hidden;pointer-events:none}
+html[data-theme] #guide-launcher:focus-visible{outline:2px solid var(--focus);outline-offset:3px;background:var(--surface-gradient)}
+.guide-top .dev-character{width:52px;height:80px;margin-block:-12px}
+.guide-prompts{display:grid;grid-template-columns:1fr 1fr;gap:7px}
+.guide-prompts button{display:flex;align-items:center;gap:8px}
+.guide-prompts .ui-icon{width:19px;height:19px;flex:none}
+.guide-more .guide-prompts{grid-template-columns:1fr}
+.guide-bottom{font-size:11px}
+.dev-micro{width:36px;height:58px}
+.contact-companion .dev-micro{width:38px;height:62px}
+.footer-guide{position:relative;overflow:visible;background:none;border:none;width:44px;height:64px}
+.footer-guide .dev-micro{height:64px;width:40px}
+@media(max-width:799px){html[data-guide-ready=true] #guide-launcher{width:56px;height:88px;min-width:56px!important;min-height:88px!important}#guide-launcher .dev-character{width:56px;height:88px}}
+@media(prefers-reduced-motion:reduce){.dev-character{animation:none!important;transition:none!important}}
+@media print{.dev-character{display:none!important}}
+
+.scene-heading .scene-guide{display:none}.scene-panel[data-scene=game] .scene-guide{display:inline-flex;width:30px;height:50px;margin-right:4px}.dev-detour{display:flex;width:70px;height:115px;margin:0 auto 20px}
+@media print{#guide-launcher,#pocket-guide,.guide-backdrop,.scene-panel,.footer-guide{display:none!important}}
