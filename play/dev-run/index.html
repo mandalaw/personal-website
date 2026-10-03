@@ -1,0 +1,247 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' blob:; font-src 'self'; connect-src 'none'; media-src 'none'; frame-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'"
+    />
+    <meta name="referrer" content="no-referrer" />
+    <meta property="og:title" content="Dev Run — Toronto to the Bay" />
+    <meta
+      property="og:description"
+      content="Same Dev. Two cities. A laptop with somewhere to be."
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://www.mandalawi.ca/play/dev-run/" />
+    <meta
+      property="og:image"
+      content="https://www.mandalawi.ca/images/project-dev-run.png"
+    />
+    <meta
+      property="og:image:alt"
+      content="Dev jumping a bug on the Toronto waterfront in Dev Run."
+    />
+
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width,initial-scale=1,viewport-fit=cover"
+    />
+    <meta name="theme-color" content="#1c2231" />
+    <title>Dev Run — Toronto to the Bay | DEV mandalaw</title>
+    <meta
+      name="description"
+      content="An original, finishable browser game. Take Dev from Toronto to the Bay through bugs, broken builds and a very final deployment."
+    />
+    <link rel="canonical" href="https://www.mandalawi.ca/play/dev-run/" />
+    <link rel="icon" href="/favicon.svg" />
+    <script src="/theme-boot.js"></script>
+    <link rel="stylesheet" href="./game.css?v=85c95fb05003" />
+    <script type="module" src="./main.mjs?v=26326c747689"></script>
+  </head>
+  <body class="dev-run-page">
+    <a class="skip" href="#game">Skip to game</a>
+    <header class="run-header">
+      <a href="/#about" class="wordmark" aria-label="DEV mandalaw home"
+        ><span>DEV</span> mandalaw</a
+      >
+      <nav aria-label="Game navigation">
+        <a href="/#playground">← Side quests</a
+        ><a href="/case-studies/dev-run/">Behind the game</a>
+      </nav>
+    </header>
+    <main class="run-shell">
+      <div class="game-heading">
+        <div>
+          <p class="eyebrow">A little way off the main branch</p>
+          <h1>Dev Run <span>Toronto → the Bay</span></h1>
+        </div>
+        <a class="quiet-link" href="/#portfolio">Back to the work ↗</a>
+      </div>
+      <div class="game-frame" id="game">
+        <div class="hud" aria-label="Game status">
+          <div class="hud-stage">
+            <small id="city">TORONTO</small
+            ><strong id="stage-name">Morning build</strong>
+          </div>
+          <div>
+            <small>BUILD HEALTH</small
+            ><strong id="health" aria-label="3 of 3 hearts">♥ ♥ ♥</strong>
+          </div>
+          <div><small>SCORE</small><strong id="score">0</strong></div>
+          <div><small>TIME</small><strong id="time">0:00</strong></div>
+          <button id="pause" type="button" aria-label="Pause game" disabled>
+            Ⅱ
+          </button>
+        </div>
+        <div class="progress-track">
+          <progress
+            id="progress"
+            max="100"
+            value="0"
+            aria-label="Journey progress"
+          ></progress
+          ><span>Toronto</span><span>The Bay</span>
+        </div>
+        <div class="game-stage">
+          <canvas
+            id="world"
+            width="960"
+            height="540"
+            tabindex="0"
+            role="img"
+            aria-label="Dev Run playfield. A or Left and D or Right to move. Space, Up or W to jump. Down or S to duck. Escape pauses."
+            aria-describedby="instructions next-hazard"
+            ><p>
+              This game needs Canvas. The keyboard-friendly Reversi game is also
+              available in Side quests.
+            </p></canvas
+          >
+          <div id="screen" class="game-screen">
+            <div class="screen-card">
+              <p class="eyebrow">One developer. Two cities.</p>
+              <h2>Take the<br />scenic route.</h2>
+              <p>Take the rooftops. Ride the laptop. Follow the cat west.</p>
+              <label for="mode">How do you want to play?</label
+              ><select id="mode">
+                <option value="runner">Adventure — timing & movement</option>
+                <option value="planner">
+                  Route planner — take your time
+                </option></select
+              ><button class="primary" id="play" disabled>
+                Loading the route…
+              </button>
+              <p class="screen-note">
+                About 3–4 minutes · checkpoints along the way<br />Sound off ·
+                no account · local best scores
+              </p>
+            </div>
+          </div>
+          <div
+            class="chapter-banner"
+            id="chapter"
+            aria-hidden="true"
+            hidden
+          ></div>
+        </div>
+        <div class="game-caption">
+          <p id="dev-line">A small trip through a very large backlog.</p>
+          <p id="kit">
+            Three hearts. Seven route choices. Plenty of second chances.
+          </p>
+        </div>
+        <div class="next-row">
+          <p id="next-hazard">
+            Move right. At the first pocket, jump up and return left.
+          </p>
+          <span id="best">Best on this device: 0</span>
+        </div>
+        <div class="touch-controls">
+          <button
+            type="button"
+            id="left"
+            aria-label="Move left"
+            aria-pressed="false"
+            disabled
+          >
+            <span aria-hidden="true">←</span> Left <kbd>A</kbd>
+          </button>
+          <button
+            type="button"
+            id="right"
+            aria-label="Move right"
+            aria-pressed="false"
+            disabled
+          >
+            <span aria-hidden="true">→</span> Right <kbd>D</kbd>
+          </button>
+          <button type="button" id="jump" disabled>
+            <span aria-hidden="true">↑</span> Jump <kbd>SPACE</kbd></button
+          ><button type="button" id="slide" disabled>
+            <span aria-hidden="true">↓</span> Duck <kbd>S</kbd></button
+          ><button type="button" id="sound" aria-pressed="false">
+            Sound off
+          </button>
+        </div>
+      </div>
+      <label class="walk-option"
+        ><input type="checkbox" id="latch" /> Tap-to-walk: tap a direction to
+        keep moving; tap it again to stop.</label
+      >
+      <p class="orientation-note">A wider view can help. Portrait works too.</p>
+      <p class="instructions" id="instructions">
+        <kbd>A</kbd> / <kbd>←</kbd> left · <kbd>D</kbd> / <kbd>→</kbd> right ·
+        <kbd>SPACE</kbd> / <kbd>↑</kbd> / <kbd>W</kbd> jump · <kbd>↓</kbd> /
+        <kbd>S</kbd> duck / marked laptop ride · <kbd>ESC</kbd> pause ·
+        <kbd>ENTER</kbd> start / confirm. Three hearts; retry from the latest
+        checkpoint.
+      </p>
+      <p
+        class="sr-only"
+        id="announcement"
+        aria-live="polite"
+        aria-atomic="true"
+      ></p>
+      <details class="field-notes">
+        <summary>Field notes & the toolkit</summary>
+        <div class="notes-grid">
+          <section>
+            <h2>A designed journey</h2>
+            <p>
+              Eleven chapters, from Toronto’s waterfront to a last deployment by
+              the Bay. Shape labels show what to do: jump over blocks and
+              missing tiles; duck under hanging hazards. Build momentum to slide;
+              standing still gives you a crouch. Pickups bring test
+              cover, recovery, review points or focus.
+            </p>
+            <p>
+              On a collision, you get a brief protected recovery. Checkpoints
+              restore a heart. A retry restores your checkpoint score, so the
+              same pickup cannot be farmed for points.
+              Fictional robots charge before releasing data pulses: watch the cue,
+              then jump, duck or wait. Wildlife and background transit are never hazards.
+            </p>
+          </section>
+          <section>
+            <h2>A quieter route</h2>
+            <p>
+              Route planner uses the same hazards, chapters, checkpoints and
+              trophy without scrolling or timing pressure. Read each obstacle,
+              then choose Jump or Slide. It is selected automatically for
+              reduced-motion preferences. Its local best score is separate.
+            </p>
+            <p id="tool-notes">
+              Tool badges identify technologies from this portfolio. Their
+              in-game effects are fictional kit bonuses, not claims about those
+              products. The Bay trains and Toronto streetcars are original,
+              locally inspired artwork with no transit-agency affiliation.
+            </p>
+            <div
+              id="toolbox"
+              class="toolbox"
+              aria-label="Tool collectibles"
+            ></div>
+          </section>
+        </div>
+        <p class="credits">
+          Character adapted from the site’s existing Dev artwork, originally
+          “Feeling proud” by Katerina Limpitsouni /
+          <a href="https://undraw.co/license">unDraw</a>. Scenery, hazards,
+          trophy and sound design are original to this game.
+          <a href="/assets/brands/NOTICE.txt">Technology artwork credits</a>.
+        </p>
+      </details>
+      <noscript
+        ><p>
+          Dev Run needs JavaScript.
+          <a href="/#portfolio">Return to the portfolio.</a>
+        </p></noscript
+      >
+    </main>
+    <footer class="run-footer">
+      <span><b>DEV</b> mandalaw · A side quest with a finish line.</span
+      ><a href="/case-studies/dev-run/">How it was built ↗</a
+      ><a href="mailto:dev@mandalawi.ca">Say hello ↗</a>
+    </footer>
+  </body>
+</html>

@@ -3,6 +3,8 @@
  const assets='/assets/brands/';
  // Marks identify tools in the work; they are not proficiency scores or endorsements.
  const tools={
+  canvas:{label:'Canvas 2D',icon:'code',category:'DRAW',note:'Dev Run renders its world, original scenery, hazards and cached character frames with the browser Canvas 2D API.'},
+  webaudio:{label:'Web Audio',word:'Audio',category:'SOUND',note:'Optional original oscillator sounds in Dev Run. Muted until the player explicitly enables them.'},
   bootstrap:{label:'Bootstrap',asset:'technologies/bootstrap.svg',category:'INTERFACE',note:'Bootstrap 5 styles and components in the GDSC team source.'},
   mui:{label:'Material UI',word:'MUI',category:'INTERFACE',note:'Material UI components imported by the GDSC application.'},
   axios:{label:'Axios',word:'axios',category:'CONNECT',note:'HTTP requests in the GDSC frontend, including login and registration flows.'},
@@ -47,6 +49,7 @@
   java:{label:'Java · Duke',asset:'technologies/java-duke.svg',category:'BUILD',note:'Othello coursework includes department code; Ahmed is credited for JavaDoc.'}
  };
  const trays={
+  devrun:{title:'Dev Run · the actual stack',ids:['js','html','css','canvas'],more:['svg','webaudio','git','pages'],note:'Plain ES modules, Canvas 2D and the site’s existing Dev artwork. Node’s built-in test runner checks the deterministic game logic. No game framework or backend.'},
   routeability:{title:'RouteAbility · documented application',ids:['js','arcgisjs','spatial'],note:'Esri Canada’s 2019 feature describes the routing API and custom road data. These are application details, not a claim that I built every part.'},
   webwork:{title:'Web work · across projects',ids:['react','html','css','js'],more:['workspace','api'],note:'The stack varies by project. Interfaces, authentication, testing and service connections.'},
   current:{title:'This site · under the surface',ids:['html','css','js','svg'],more:['git','pages'],note:'Static pages, local vector artwork and small browser modules. The games here are separate from the Java archive.'},

@@ -1,0 +1,94 @@
+/* Dev Run discovery uses the existing card system; the game loads only on its route. */
+html[data-theme] .dev-run-feature {
+  grid-column: 1/-1;
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+  gap: 30px;
+  align-items: center;
+  padding: 20px;
+  text-decoration: none;
+  overflow: hidden;
+}
+.dev-run-preview {
+  width: 100%;
+  height: auto;
+  display: block;
+  border: 1px solid var(--edge);
+  border-radius: 14px;
+  box-shadow: var(--shadow-card);
+}
+.dev-run-invite {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  align-items: flex-start;
+}
+.dev-run-invite strong {
+  font-size: clamp(23px, 2.5vw, 34px);
+  line-height: 1.2;
+}
+.dev-run-invite > span:not(.quest-action):not(.quest-kicker) {
+  font-size: 13px;
+  color: var(--ink-secondary);
+}
+.dev-run-feature .quest-action {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+.dev-run-feature .quest-action .ui-icon {
+  width: 20px;
+  height: 20px;
+}
+.dev-run-figure-pair {
+  display: grid;
+  grid-template-columns: 1.6fr 1fr;
+  gap: 24px;
+  align-items: start;
+}
+.dev-run-figure-pair .case-figure {
+  margin: 0;
+}
+.dev-run-figure-pair .case-figure:last-child img {
+  max-height: 580px;
+  object-fit: contain;
+  background: var(--surface);
+}
+.dev-run-architecture {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  list-style: none;
+  padding: 0;
+}
+.dev-run-architecture li {
+  border: 1px solid var(--edge);
+  border-radius: 12px;
+  padding: 15px;
+  font-size: 12px;
+}
+.dev-run-architecture strong {
+  display: block;
+  margin-bottom: 8px;
+}
+.dev-run-architecture span {
+  color: var(--ink-secondary);
+}
+@media (max-width: 700px) {
+  html[data-theme] .dev-run-feature {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+  .dev-run-invite strong {
+    font-size: 25px;
+  }
+  .dev-run-figure-pair {
+    grid-template-columns: 1fr;
+  }
+  .dev-run-figure-pair .case-figure:last-child img {
+    max-height: 520px;
+  }
+  .dev-run-architecture {
+    grid-template-columns: 1fr 1fr;
+  }
+}
