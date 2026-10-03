@@ -19,18 +19,19 @@ export class Camera {
     finish,
     quiet = false,
     board = false,
+    frame = {anchor:.32,min:.29,max:.51},
   }) {
-    if (this.x === null || quiet) this.x = x - width * 0.32;
+    if (this.x === null || quiet) this.x = x - width * frame.anchor;
     const desiredLead = board
       ? Math.max(-70, Math.min(120, vx * 0.3))
       : Math.max(-55, Math.min(75, vx * 0.22));
     this.lead += (desiredLead - this.lead) * Math.min(1, dt * 3);
     const screen = x - this.x + this.lead;
     let target = this.x;
-    if (screen > width * 0.51) target += screen - width * 0.51;
-    if (screen < width * 0.29) target += screen - width * 0.29;
+    if (screen > width * frame.max) target += screen - width * frame.max;
+    if (screen < width * frame.min) target += screen - width * frame.min;
     this.x += (target - this.x) * (quiet ? 1 : 1 - Math.exp(-dt * 7));
-    this.x = Math.max(-width * 0.32, Math.min(finish - width * 0.53, this.x));
+    this.x = Math.max(-width * frame.anchor, Math.min(finish - width * 0.53, this.x));
     const dy = Math.min(
       0,
       Math.max(-78, ground - 421 + Math.min(0, y - ground) * 0.16),

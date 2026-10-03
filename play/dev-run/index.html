@@ -37,7 +37,8 @@
     <link rel="icon" href="/favicon.svg" />
     <script src="/theme-boot.js"></script>
     <link rel="stylesheet" href="./game.css?v=85c95fb05003" />
-    <script type="module" src="./main.mjs?v=26326c747689"></script>
+    <link rel="stylesheet" href="./immersive.css?v=c6a5cb8969cf">
+    <script type="module" src="./main.mjs?v=b9ad97d165d6"></script>
   </head>
   <body class="dev-run-page">
     <a class="skip" href="#game">Skip to game</a>
@@ -56,23 +57,24 @@
           <p class="eyebrow">A little way off the main branch</p>
           <h1>Dev Run <span>Toronto → the Bay</span></h1>
         </div>
-        <a class="quiet-link" href="/#portfolio">Back to the work ↗</a>
+        <button class="immersive-entry" id="enter-immersive" type="button" disabled>⛶ Enter immersive mode</button>
       </div>
-      <div class="game-frame" id="game">
+      <div class="game-frame" id="game" data-immersive="PAGE" data-layout="page">
         <div class="hud" aria-label="Game status">
           <div class="hud-stage">
-            <small id="city">TORONTO</small
+            <small><span id="city">TORONTO</span><span class="checkpoint-cue" id="checkpoint-cue"> · CP 0</span></small
             ><strong id="stage-name">Morning build</strong>
           </div>
           <div>
             <small>BUILD HEALTH</small
             ><strong id="health" aria-label="3 of 3 hearts">♥ ♥ ♥</strong>
           </div>
-          <div><small>SCORE</small><strong id="score">0</strong></div>
-          <div><small>TIME</small><strong id="time">0:00</strong></div>
+          <div class="hud-score"><small>SCORE</small><strong id="score">0</strong></div>
+          <div class="hud-tools"><small>TOOLS</small><strong id="collect-count">0</strong></div>
+          <div class="hud-time"><small>TIME</small><strong id="time">0:00</strong></div>
           <button id="pause" type="button" aria-label="Pause game" disabled>
             Ⅱ
-          </button>
+          </button><button id="exit-immersive" type="button" aria-label="Exit immersive mode" title="Exit immersive mode">×</button>
         </div>
         <div class="progress-track">
           <progress
@@ -117,6 +119,7 @@
               </p>
             </div>
           </div>
+          <div class="play-guide" id="play-guide" role="dialog" aria-modal="true" aria-labelledby="guide-title" hidden><div><h2 id="guide-title" tabindex="-1">Rotate for the full run.</h2><p class="guide-message"></p><div class="guide-keys" aria-label="Controls"><span>← → Move</span><span>↑ Jump</span><span>↓ Slide</span></div><button id="guide-go" class="primary">Play anyway</button><button id="guide-exit" type="button">Back to page</button></div></div>
           <div
             class="chapter-banner"
             id="chapter"
@@ -155,14 +158,20 @@
           >
             <span aria-hidden="true">→</span> Right <kbd>D</kbd>
           </button>
-          <button type="button" id="jump" disabled>
+          <button type="button" id="jump" aria-label="Jump" disabled>
             <span aria-hidden="true">↑</span> Jump <kbd>SPACE</kbd></button
-          ><button type="button" id="slide" disabled>
-            <span aria-hidden="true">↓</span> Duck <kbd>S</kbd></button
+          ><button type="button" id="slide" aria-label="Slide or marked laptop action" disabled>
+            <span aria-hidden="true">↓</span> Slide <kbd>S</kbd></button
           ><button type="button" id="sound" aria-pressed="false">
             Sound off
           </button>
         </div>
+      <p
+        class="sr-only"
+        id="announcement"
+        aria-live="polite"
+        aria-atomic="true"
+      ></p>
       </div>
       <label class="walk-option"
         ><input type="checkbox" id="latch" /> Tap-to-walk: tap a direction to
@@ -176,12 +185,6 @@
         <kbd>ENTER</kbd> start / confirm. Three hearts; retry from the latest
         checkpoint.
       </p>
-      <p
-        class="sr-only"
-        id="announcement"
-        aria-live="polite"
-        aria-atomic="true"
-      ></p>
       <details class="field-notes">
         <summary>Field notes & the toolkit</summary>
         <div class="notes-grid">

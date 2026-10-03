@@ -1,13 +1,14 @@
+import { viewportPlan } from "./viewport.mjs?v=c77ee2bc882e";
 import { collectibleFrame } from "./collectibles.mjs?v=31db57189395";
 import { turnFrame } from "./locomotion.mjs?v=1e48e39f8dd4";
 import { drawRobot } from "./robots.mjs?v=346697f0306a";
 import { shadow } from "./living-world.mjs?v=073a4f43e5ab";
-import { Camera } from "./camera.mjs?v=72e9f8b607c9";
+import { Camera } from "./camera.mjs?v=7af2e5e82987";
 import {
   WorldRenderer,
   paletteAt,
   visibleZones,
-} from "./environment.mjs?v=6759a2a50bf9";
+} from "./environment.mjs?v=1301110e4474";
 import {
   sceneFor,
   weatherFor,
@@ -15,7 +16,7 @@ import {
 } from "./course.mjs?v=3d15474f11f1";
 import { hazardFrame } from "./dynamics.mjs?v=263cebe5feb5";
 import { drawCityMotion, drawSurfaceDetails } from "./world.mjs?v=8426e57ab827";
-import { drawCeremony } from "./ceremony.mjs?v=87f7dd7845b7";
+import { drawCeremony } from "./ceremony.mjs?v=e6dbd8b8556c";
 import {
   HAZARDS,
   TOOLS,
@@ -287,16 +288,23 @@ export class Renderer {
     this.reduced = false;
     this.resize();
   }
-  resize() {
+  resize(finale = this.finale || false) {
+    const previousWidth = this.width;
+    this.finale = finale;
     this.camera?.reset();
     const r = this.canvas.getBoundingClientRect(),
       dpr = Math.min(2, devicePixelRatio || 1);
     this.cssWidth = r.width;
     this.cssHeight = r.height;
-    // Keep Dev and the hazards legible in a short landscape viewport.
-    this.zoom = r.height < 280 ? 1.45 : 1;
-    this.width = (540 * r.width) / r.height / this.zoom;
-    this.cameraY = this.zoom > 1 ? 421 - (540 / this.zoom) * 0.78 : 0;
+    const shell = this.canvas.closest('#game'), safe = getComputedStyle(shell);
+    this.view = viewportPlan({width:r.width,height:r.height,immersive:shell.classList.contains('is-immersive'),mobile:innerWidth<=700||innerHeight<=450,safeLeft:parseFloat(safe.getPropertyValue('--safe-left'))||0,safeRight:parseFloat(safe.getPropertyValue('--safe-right'))||0,finale});
+    this.width = this.view.width;
+    if (this.arrivalX !== undefined && previousWidth) this.arrivalX *= this.width / previousWidth;
+    this.viewHeight = this.view.height;
+    this.zoom = 540 / this.viewHeight;
+    this.cameraY = this.view.cameraY;
+    shell.dataset.camera = this.view.mode;
+    shell.dataset.quality = this.view.quality;
     this.canvas.width = Math.round(r.width * dpr);
     this.canvas.height = Math.round(r.height * dpr);
     this.scale = this.canvas.width / this.width;
@@ -312,7 +320,7 @@ export class Renderer {
   }
   burst(x, y, kind = "pickup") {
     if (this.reduced) return;
-    for (let i = 0; i < (kind === "win" ? 30 : this.width < 800 ? 5 : 8); i++)
+    for (let i = 0; i < (kind === "win" ? (this.view.quality === "balanced" ? 16 : 30) : this.view.quality === "balanced" ? 5 : 8); i++)
       this.particles.push(
         Object.assign(this.pool.pop() || {}, {
           x,
@@ -353,6 +361,7 @@ export class Renderer {
     if (e.type === "near") this.burst(x + 12, y, "near");
   }
   draw(game, time = 0, dt = 0) {
+    if ((game.status === "won") !== Boolean(this.finale)) this.resize(game.status === "won");
     time = game.stats.time + (game.status === "won" ? game.ceremony : 0);
     const c = this.c,
       w = this.width;
@@ -371,6 +380,7 @@ export class Renderer {
       finish: FINISH,
       quiet: this.reduced,
       board: game.player.board,
+      frame: this.view,
     });
     if (game.status === "title") cam.reset();
     const cameraX = cam.x ?? -w * 0.32;
@@ -382,6 +392,7 @@ export class Renderer {
       time,
       this.assets,
       this.reduced,
+      this.view.quality === "balanced",
     );
     c.setTransform(
       this.scale,
@@ -403,8 +414,8 @@ export class Renderer {
     c.beginPath();
     c.moveTo(0, ground(0));
     for (let x = 0; x <= w + 20; x += 20) c.lineTo(x, ground(x));
-    c.lineTo(w, 540);
-    c.lineTo(0, 540);
+    c.lineTo(w, Math.max(540, this.cameraY + this.viewHeight + 80));
+    c.lineTo(0, Math.max(540, this.cameraY + this.viewHeight + 80));
     c.fill();
     c.strokeStyle = "#a5b8b9";
     c.lineWidth = 3;

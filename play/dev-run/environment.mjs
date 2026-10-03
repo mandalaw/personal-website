@@ -245,7 +245,7 @@ export class WorldRenderer {
     for (const key of this.cache.keys())
       if (!need.has(key)) this.cache.delete(key);
   }
-  draw(c, w, game, camera, t, assets, reduced) {
+  draw(c, w, game, camera, t, assets, reduced, balanced = false) {
     const pal = paletteAt(game.distance),
       sky = c.createLinearGradient(0, 0, 0, 540);
     sky.addColorStop(0, pal[0]);
@@ -282,7 +282,7 @@ export class WorldRenderer {
                     : "clear",
         },
       );
-      drawLivingWorld(k, w, game, camera, clock, z, reduced, w < 800);
+      drawLivingWorld(k, w, game, camera, clock, z, reduced, balanced || w < 800);
       if (
         z.stage < 5 &&
         !["transit", "tunnel", "grid", "layers"].includes(z.scene)

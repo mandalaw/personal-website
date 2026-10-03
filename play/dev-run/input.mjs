@@ -18,6 +18,7 @@ export function bindControls({
     held.clear();
     publish();
     for (const b of [left, right]) b.setAttribute("aria-pressed", "false");
+    for (const b of [left, right, jump, slide]) delete b.dataset.held;
   };
   const direction = {
     a: "left",
@@ -77,6 +78,7 @@ export function bindControls({
   ]) {
     const start = (e) => {
       if (button.disabled) return;
+      button.dataset.held = "true";
       e.preventDefault();
       canvas.focus({ preventScroll: true });
       if ((action === "left" || action === "right") && latch.checked) {
@@ -112,6 +114,7 @@ export function bindControls({
       button.addEventListener(
         type,
         (e) => {
+          delete button.dataset.held;
           held.set("pointer:" + e.pointerId, action, false);
           publish();
         },

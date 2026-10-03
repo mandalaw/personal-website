@@ -1,13 +1,14 @@
-import { CEREMONY_SECONDS } from "./ceremony.mjs?v=87f7dd7845b7";
+import { createImmersive } from "./immersive.mjs?v=caa5acdbaa20";
+import { CEREMONY_SECONDS } from "./ceremony.mjs?v=e6dbd8b8556c";
 import { speedFor, sceneFor } from "./course.mjs?v=3d15474f11f1";
 import { Game } from "./engine.mjs?v=776dfa1f622f";
 import { STAGES, HAZARDS, TOOLS, KITS, SECRETS, FINISH } from "./course.mjs?v=3d15474f11f1";
-import { loadAssets, Renderer } from "./render.mjs?v=eb321ede2056";
+import { loadAssets, Renderer } from "./render.mjs?v=fdc87230467a";
 import { Dialogue } from "./dialogue.mjs?v=94da74293e6e";
 import { AudioBus } from "./audio.mjs?v=0c00726a0636";
 import { readRecord, saveRecord } from "./persistence.mjs?v=8b760301279c";
 import { clock, rank } from "./scoring.mjs?v=097b44f00e65";
-import { bindControls } from "./input.mjs?v=adf933fed83f";
+import { bindControls } from "./input.mjs?v=6f337567d6db";
 import { Metrics } from "./metrics.mjs?v=fd1676bfd8b9";
 
 const $ = (id) => document.getElementById(id),
@@ -38,7 +39,8 @@ let game = new Game({
   disposed = false,
   planLast = 0,
   screenState = "title",
-  loadedAt = 0;
+  loadedAt = 0,
+  immersive;
 const metrics = new Metrics(),
   audio = new AudioBus(),
   dialogue = new Dialogue(),
@@ -69,6 +71,7 @@ function button(text, id, primary = false) {
 }
 function screenFor(kind, reason = "") {
   screenState = kind;
+  immersive?.sync(kind);
   screen.classList.toggle("epilogue", kind === "won");
   screen.hidden = kind === "running";
   screen.classList.toggle("is-result", kind === "won" || kind === "over");
@@ -163,17 +166,21 @@ function screenFor(kind, reason = "") {
       flush();
     };
     actions.append(go);
+    const checkpoint = button("Restart checkpoint", "restart-checkpoint");
+    checkpoint.onclick = () => { controls.clear(); game.restore(); screenFor("running"); audio.resume(); startLoop(); flush(); };
+    actions.append(checkpoint);
+    if (immersive?.active) { const leave = button("Exit fullscreen", "leave-immersive"); leave.onclick = () => immersive.exit(); actions.append(leave); }
     const reset = button("Start over", "restart");
     reset.onclick = () => titleScreen();
-    actions.append(reset);
+    if (!immersive?.active) actions.append(reset);
   }
   const exit = document.createElement("a");
   exit.href = "/#playground";
-  exit.textContent = "Back to Side quests";
+  exit.textContent = immersive?.active ? "Exit Dev Run" : "Back to Side quests";
   actions.append(exit);
   card.append(actions);
   screen.replaceChildren(card);
-  if (kind === "over")
+  if (kind === "over" && !immersive?.active)
     $("game").scrollIntoView({ block: "start", behavior: "instant" });
   if (kind === "won")
     screen.scrollIntoView({ block: "nearest", behavior: "instant" });
@@ -184,6 +191,7 @@ function wireTitle() {
     play = $("play");
   mode.value = game.mode;
   play.disabled = !renderer;
+  $("enter-immersive").disabled = !renderer;
   play.textContent = renderer ? "Play Dev Run →" : "Loading the route…";
   if (play.dataset.bound) return;
   play.dataset.bound = "true";
@@ -221,7 +229,7 @@ function start(replay = false) {
   dialogue.next = 0;
   planLast = performance.now();
   screenFor("running");
-  if (innerWidth <= 700 || innerHeight < 600)
+  if (!immersive?.active && (innerWidth <= 700 || innerHeight < 600))
     $("game").scrollIntoView({ block: "start", behavior: "instant" });
   audio.resume();
   startLoop();
@@ -321,6 +329,8 @@ function hud() {
   const s = STAGES[game.stage];
   $("city").textContent = s.city.toUpperCase();
   $("stage-name").textContent = s.name;
+  $("collect-count").textContent = game.stats.pickups;
+  $("checkpoint-cue").textContent = " · CP " + game.checkpoint;
   $("health").textContent =
     "♥ ".repeat(game.health) + "♡ ".repeat(3 - game.health);
   $("health").setAttribute("aria-label", `${game.health} of 3 hearts`);
@@ -555,7 +565,7 @@ $("sound").addEventListener(
 );
 window.addEventListener(
   "blur",
-  () => pause("Paused when the game lost focus."),
+  () => { if (!immersive?.transitioning) pause("Paused when the game lost focus."); },
   { signal },
 );
 document.addEventListener(
@@ -577,29 +587,20 @@ reduce.addEventListener(
   },
   { signal },
 );
-let resizeTimer;
-const observer = new ResizeObserver(() => {
-  if (!renderer) return;
-  const size = canvas.getBoundingClientRect();
-  if (
-    Math.abs(size.width - renderer.cssWidth) < 1 &&
-    Math.abs(size.height - renderer.cssHeight) < 1
-  )
-    return;
-  clearTimeout(resizeTimer);
-  resizeTimer = setTimeout(() => {
-    if (game.status === "running" && game.stats.time > 0.5)
-      pause("View changed. Your progress is safe.");
-    renderer.resize();
-    render();
-  }, 120);
+immersive = createImmersive({shell:$("game"),canvas,entry:$("enter-immersive"),signal,status:()=>game.status,
+  onStart:()=>start(false),
+  onSuspend:()=>{controls.clear();if(game.status==='running')game.pause('View changing');stopLoop();audio.suspend();},
+  onResume:()=>{if(game.status==='paused'){game.resume();screenFor('running');planLast=performance.now();audio.resume();startLoop();flush();}else if(game.status==='won'&&game.mode!=='planner'&&game.ceremony<CEREMONY_SECONDS)startLoop();},
+  onPause:reason=>{if(game.status==='paused')screenFor('paused',reason);else pause(reason);if(game.status==='won'&&game.mode!=='planner'&&game.ceremony<CEREMONY_SECONDS)startLoop();render();},
+  onResize:()=>{if(renderer){renderer.resize();render();hud();}}
 });
+const observer = new ResizeObserver(()=>immersive.resize());
 observer.observe(canvas);
 function dispose() {
   if (disposed) return;
   disposed = true;
   stopLoop();
-  clearTimeout(resizeTimer);
+
   observer.disconnect();
   abort.abort();
   audio.dispose();
