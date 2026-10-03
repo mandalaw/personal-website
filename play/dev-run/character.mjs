@@ -1,9 +1,12 @@
-import { TURN_SECONDS } from "./locomotion.mjs?v=1e48e39f8dd4";
+import { shoe, shoeDefinitions } from './footwear.mjs?v=5c81a98406d8';
+import { material, resolvePalette } from './palette.mjs?v=dd92ec3032ad';
+import { slideArtwork } from "./slide-body.mjs?v=f69e9bf83f88";
+import { TURN_SECONDS } from "./locomotion.mjs?v=9390228e9641";
 import {
   definitions,
   poses,
 } from "../../images/characters/motion/poses.mjs?v=755e8af1f27e";
-import { STAGES, stageProgress } from "./course.mjs?v=3d15474f11f1";
+import { STAGES, stageProgress } from "./course.mjs?v=1b77db058418";
 const part = (id, transform = "") =>
   `<g transform="${transform}"><use href="#dev-part-${id}"/></g>`;
 const turn = (a, x, y) => `rotate(${a} ${x} ${y})`;
@@ -11,15 +14,12 @@ const bag = (dx = 0, dy = 0, angle = 0) =>
   `<g transform="translate(${dx} ${dy}) rotate(${angle} 133 119)"><path d="M126 77Q110 78 108 95L104 151Q103 167 121 174L146 167 151 92Q144 74 126 77Z" fill="#253247"/><path d="M117 90Q126 81 137 87L138 149Q121 157 112 147Z" fill="#47566e"/><path d="M115 123L135 119 134 147 112 151Z" fill="#344159"/><path d="M118 128L129 126" stroke="#f8a78f" stroke-width="3"/><path d="M130 79Q128 66 138 72L143 84" fill="none" stroke="#29374b" stroke-width="5"/><path d="M139 87Q155 104 148 151" fill="none" stroke="#86969e" stroke-width="5"/></g>`;
 const laptop = (x = 120, y = 349, angle = 0, open = 0) =>
   `<g transform="translate(${x} ${y}) rotate(${angle})"><path d="M0 8L116 8 125 14 9 16Z" fill="#c7d0d2"/><path d="M9 16L125 14 122 20 16 22Z" fill="#7e919b"/><path d="M17 10L103 10" stroke="#39485c" stroke-width="2"/>${open ? `<path d="M5 7L9 ${-open} 108 ${-open - 4} 115 7Z" fill="#2b394e" stroke="#b4c0c3" stroke-width="3"/><path d="M44 ${-open * 0.48}h28m-20 7h23" stroke="#f77062" stroke-width="3"/>` : ""}<circle cx="37" cy="23" r="4" fill="#263043"/><circle cx="102" cy="22" r="4" fill="#263043"/></g>`;
-const legs = (tuck = 0) =>
-  tuck
-    ? `<path d="M147 186Q126 228 105 258L147 306 163 289 137 256 183 206Z" fill="#39445c"/><path d="M178 184L211 238 239 268 224 282 187 258 156 214Z" fill="#39445c"/><path d="M146 298L160 286 184 302 180 313 150 313M224 274L239 263 263 279 258 289 228 288" fill="#c5c9cd"/>`
-    : "";
+const legs = (tuck = 0) => tuck ? `<g data-leg="rear"><path d="M147 186Q126 228 105 258L147 306 163 289 137 256 183 206Z" fill="${material("pants")}"/>${shoe('rear',161,313,19,.9)}</g><g data-leg="front"><path d="M178 184L211 238 239 268 224 282 187 258 156 214Z" fill="${material("pants")}"/>${shoe('front',239,289,23,.9)}</g>` : "";
 function armTo(x, y, side = "left") {
   const sx = side === "left" ? 147 : 200,
     ex = (sx + x) / 2 + (side === "left" ? -13 : 10),
     ey = Math.max(110, (96 + y) / 2 + 12);
-  return `<path d="M${sx} 96Q${ex} ${ey} ${x} ${y}" fill="none" stroke="#56647d" stroke-width="16" stroke-linecap="round"/><path d="M${x} ${y - 4}L${x + 2} ${y + 5}" stroke="#ffb8b8" stroke-width="9" stroke-linecap="round"/>`;
+  return `<path d="M${sx} 96Q${ex} ${ey} ${x} ${y}" fill="none" stroke="${material("jacket")}" stroke-width="16" stroke-linecap="round"/><path d="M${x} ${y - 4}L${x + 2} ${y + 5}" stroke="#ffb8b8" stroke-width="9" stroke-linecap="round"/>`;
 }
 const grip = (x, y, angle, along = 20) => [
   x +
@@ -31,10 +31,10 @@ const grip = (x, y, angle, along = 20) => [
 ];
 function rig(l = 0, r = 0, a = 0, b = 0, lean = 0, options = {}) {
   const o = { bx: 0, by: 0, ba: 0, tuck: 0, head: 0, bounce: 0, ...options };
-  return `<g transform="translate(0 ${o.bounce})">${o.tuck ? legs(o.tuck) : part("leg-left", turn(l, 150, 195)) + part("leg-right", turn(r, 176, 195))}<g transform="${turn(lean, 170, 195)}">${bag(o.bx, o.by, o.ba)}${part("torso")}<path d="M169 183Q188 182 ${198 + Math.min(9, Math.abs(l) / 3)} 193L181 199Z" fill="#f77062"/>${part("head", turn(o.head, 170, 65))}<circle cx="147" cy="96" r="8" fill="#56647d"/><circle cx="200" cy="96" r="8" fill="#56647d"/>${o.left ? armTo(...o.left) : part("left", turn(a, 147, 96))}${o.right ? armTo(...o.right, "right") : part("right", turn(b, 200, 96))}</g></g>`;
+  return `<g transform="translate(0 ${o.bounce})">${o.tuck ? legs(o.tuck) : part("leg-left", turn(l, 150, 195)) + part("leg-right", turn(r, 176, 195))}<g transform="${turn(lean, 170, 195)}">${bag(o.bx, o.by, o.ba)}${part("torso")}${part("head", turn(o.head, 170, 65))}<circle cx="147" cy="96" r="8" fill="${material("jacket")}"/><circle cx="200" cy="96" r="8" fill="${material("jacket")}"/>${o.left ? armTo(...o.left) : part("left", turn(a, 147, 96))}${o.right ? armTo(...o.right, "right") : part("right", turn(b, 200, 96))}</g></g>`;
 }
 function crouch(lean = 0, board = false) {
-  return `${board ? `<g transform="translate(-16 0) scale(1.15 1)">${laptop(112, 342, lean)}</g>` : ""}<path d="M155 265Q117 278 103 312L165 342 176 327 139 304 184 290Z" fill="#39445c"/><path d="M180 270L205 299 230 327 217 344 190 317 158 284Z" fill="#39445c"/><path d="M161 336L180 329 199 343 195 351 162 350M215 336L232 327 256 340 252 350 219 349" fill="#c5c9cd"/><g transform="translate(-25 83) rotate(${50 + lean} 170 195)">${bag(-5, -6, -7)}${part("torso")}${part("head", turn(-10, 170, 65))}${part("left", turn(-48, 147, 96))}${part("right", turn(15, 200, 96))}</g>`;
+  return `${board ? `<g transform="translate(-16 0) scale(1.15 1)">${laptop(112, 342, lean)}</g>` : ""}<g data-leg="rear"><path d="M155 265Q117 278 103 312L165 342 176 327 139 304 184 290Z" fill="${material("pants")}"/>${shoe('rear',177,351,0,.9)}</g><g data-leg="front"><path d="M180 270L205 299 230 327 217 344 190 317 158 284Z" fill="${material("pants")}"/>${shoe('front',235,350,0,.9)}</g><g transform="translate(-25 83) rotate(${50 + lean} 170 195)">${bag(-5, -6, -7)}${part("torso")}${part("head", turn(-10, 170, 65))}${part("left", turn(-48, 147, 96))}${part("right", turn(15, 200, 96))}</g>`;
 }
 export const trophyArt =
   '<path d="M129 119H213V173Q171 206 129 173Z" fill="#f8a78f"/><path d="M129 128H113Q107 162 139 169M213 128H230Q235 162 202 169" fill="none" stroke="#f8a78f" stroke-width="9"/><path d="M171 190V220M147 222H195" stroke="#f8a78f" stroke-width="10" stroke-linecap="round"/><rect x="143" y="137" width="57" height="28" rx="5" fill="#fa6771"/><text x="171" y="157" text-anchor="middle" font-family="Arial" font-weight="700" font-size="20" fill="#fff">DEV</text>';
@@ -131,7 +131,7 @@ export function characterArt() {
       `<g transform="translate(115 -67) scale(.65)">${trophyArt}</g>`,
     "pet-cat":
       crouch(-12).replace(part("right", turn(15, 200, 96)), "") +
-      '<path d="M226 217Q250 253 278 306" fill="none" stroke="#56647d" stroke-width="15" stroke-linecap="round"/><path d="M278 306L284 313" stroke="#ffb8b8" stroke-width="9" stroke-linecap="round"/>',
+      `<path d="M226 217Q250 253 278 306" fill="none" stroke="${material("jacket")}" stroke-width="15" stroke-linecap="round"/><path d="M278 306L284 313" stroke="#ffb8b8" stroke-width="9" stroke-linecap="round"/>`,
     victory:
       rig(0, 0, 0, 0, 0, { left: [230, 166], right: [254, 169] }) +
       `<g transform="translate(135 40) scale(.65)">${trophyArt}</g>`,
@@ -212,19 +212,18 @@ export function characterArt() {
     rig(-3, 4, 8, -8, 0, { bx: 7, head: 3 }) +
     '<path d="M151 105Q159 139 153 173" fill="none" stroke="#334158" stroke-width="6" opacity=".4"/>';
   art["turn-front"] =
-    `${part("leg-left", "translate(5 0)")}${part("leg-right", "translate(-2 0)")}${bag(17, 0, 0)}${part("torso")}<path d="M168 98L175 189" stroke="#f77062" stroke-width="9"/><g transform="translate(-5 0)">${part("head")}</g>${part("left", "translate(-3 0)")}${part("right", "translate(3 0)")}<path d="M146 104L149 172M198 104L195 172" stroke="#334158" stroke-width="3" opacity=".45"/>`;
+    `${part("leg-left", "translate(5 0)")}${part("leg-right", "translate(-2 0)")}${bag(17, 0, 0)}${part("torso")}<path d="M168 98L175 189" stroke="var(--dev-shirt,#fa6771)" stroke-width="9"/><g transform="translate(-5 0)">${part("head")}</g>${part("left", "translate(-3 0)")}${part("right", "translate(3 0)")}<path d="M146 104L149 172M198 104L195 172" stroke="#334158" stroke-width="3" opacity=".45"/>`;
+  for(let i=0;i<24;i++)art["slide-body-"+i]=slideArtwork(i/23,"A",{part,bag,armTo});
   return art;
 }
-export function characterSvg(art) {
-  return `<svg xmlns="http://www.w3.org/2000/svg" width="340" height="390" viewBox="20 -10 340 390"><defs>${definitions}</defs>${art}</svg>`
-    .replace(/var\(--dev-ink,#[\da-f]+\)/g, "#56647d")
-    .replace(/var\([^,]+,(#[\da-f]+)\)/g, "$1");
+export function characterSvg(art,theme='light') {
+  return resolvePalette(`<svg xmlns="http://www.w3.org/2000/svg" width="340" height="390" viewBox="20 -10 340 390"><defs>${shoeDefinitions(definitions)}</defs>${art}</svg>`,theme);
 }
-export async function loadCharacter() {
+export async function loadCharacter(theme = document.documentElement.dataset.theme === 'night' ? 'dark' : 'light') {
   const entries = await Promise.all(
     Object.entries(characterArt()).map(async ([k, v]) => {
       const url = URL.createObjectURL(
-        new Blob([characterSvg(v)], { type: "image/svg+xml" }),
+        new Blob([characterSvg(v,theme)], { type: "image/svg+xml" }),
       );
       const img = new Image();
       try {
@@ -290,10 +289,7 @@ export function poseFor(game, time) {
     return frame("laptop-ride", (time * 1.5) % 1, 12);
   }
   if (p.turn > 0) return "turn-quarter";
-  if (p.slidePhase)
-    return ["prepare", "lower", "recover"].includes(p.slidePhase)
-      ? "crouch"
-      : "slide";
+  if(p.slidePhase)return 'slide-body-'+Math.min(23,Math.floor(p.slideAge/p.slideDuration*24));
   if (p.duck > 0) return "crouch";
   if (
     p.idle > 0.4 &&

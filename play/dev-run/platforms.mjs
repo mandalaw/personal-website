@@ -1,7 +1,11 @@
-import { groundAt } from "./course.mjs?v=3d15474f11f1";
+import { groundAt } from "./course.mjs?v=1b77db058418";
 
 export function pocketPlatforms(j, time) {
   const g = groundAt(j.x);
+  if(j.exit){
+    if(j.kind==='ascent')return [{id:`${j.id}-lift`,x:j.x+112,y:g-28-(.5-Math.cos(time*1.15+j.id)*.5)*94,w:126,kind:'lift'},{id:`${j.id}-exit`,x:j.x+260,y:g-82,w:156,kind:'exit'}];
+    return [{id:`${j.id}-step`,x:j.x+18,y:g-34,w:64,kind:'step'},{id:`${j.id}-upper`,x:j.x+j.exit-34,y:g-(j.kind==='precision'?90:76),w:j.kind==='precision'?82:150,kind:'exit'}];
+  }
   const phase = 0.5 - Math.cos(time * 1.15 + j.id) * 0.5;
   return [
     { id: `${j.id}-step`, x: j.x + 36, y: g - 38, w: 74, kind: "step" },

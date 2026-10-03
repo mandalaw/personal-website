@@ -1,5 +1,6 @@
 import * as Motion from './dev-motion.mjs?v=3ca54d15331d';
 const root=document.documentElement;
+export const compactViewport=()=>innerWidth<800||(innerWidth<=1000&&innerHeight<=500);
 export const overlaps=(a,b,g=8)=>a.left<b.right+g&&a.right>b.left-g&&a.top<b.bottom+g&&a.bottom>b.top-g;
 const box=(left,top,width,height)=>({left,top,right:left+width,bottom:top+height,width,height});
 export function obstacles(){
@@ -10,17 +11,17 @@ export function available(r,items,g=8){const header=document.querySelector('head
 export class Stage {
  constructor(launcher){this.launcher=launcher;this.mark=launcher.querySelector('.dev-character');this.x=0;this.y=0;this.chairX=0;this.plan=null;this.animations=new Set();this.version=0;this.chair=document.createElement('span');this.chair.className='dev-chair';this.chair.setAttribute('aria-hidden','true');this.chair.hidden=true;document.body.append(this.chair);this.chairReady=null;this.chairVisible=false;this.moving=false}
  async prepareChair(){if(!this.chairReady)this.chairReady=import('./images/characters/motion/chair.mjs?v=42ed6c75bc48').then(m=>{this.chair.append(new DOMParser().parseFromString(m.default,'image/svg+xml').documentElement)});return this.chairReady}
- layout(){const compact=innerWidth<800,w=compact?60:76,h=compact?100:124,items=obstacles(),header=document.querySelector('header')?.getBoundingClientRect().bottom||64;
+ layout(){const compact=compactViewport(),w=compact?44:76,h=compact?50:124,items=obstacles(),header=document.querySelector('header')?.getBoundingClientRect().bottom||64;
   // Keep a whole motion corridor clear, including the separate chair. No text is crossed.
-  if(this.plan&&this.plan.w===w&&this.plan.h===h&&available(box(this.plan.left,this.plan.top,this.plan.width,h),items)){if(!this.chairVisible&&this.chairReady){this.chairPosition(this.waypoint('stow'));this.chairVisible=true;this.chair.style.opacity='1'}return true}
+  if(this.plan&&this.plan.w===w&&this.plan.h===h&&available(box(this.plan.left,this.plan.top,this.plan.width,h),items)){if(!compact&&!this.chairVisible&&this.chairReady){this.chairPosition(this.waypoint('stow'));this.chairVisible=true;this.chair.style.opacity='1'}return true}
   const bottom=innerHeight-h-20,ys=[bottom,header+26,Math.round((header+bottom)/2),bottom-h-20];
   for(let y=bottom-32;y>header+12;y-=32)if(!ys.includes(y))ys.push(y);
-  const widths=[w+(compact?76:130),w+(compact?40:78),w+24,w];let chosen=null;
+  const widths=compact?[w]:[w+130,w+78,w+24,w];let chosen=null;
   for(const width of widths){for(const y of ys){for(const x of [innerWidth-width-18,18,Math.max(18,innerWidth/2-width/2)]){const r=box(x,y,width,h);if(available(r,items)){chosen={...r,w,h};break}}if(chosen)break}if(chosen)break}
   if(!chosen){this.hide();this.plan=null;return false}
-  this.cancel(true);this.plan=chosen;this.y=chosen.top;const span=chosen.width-w;this.x=chosen.left+(span*.18);this.position(this.x);this.chairPosition(chosen.left+span);this.launcher.style.setProperty('--dev-w',w+'px');this.launcher.style.setProperty('--dev-h',h+'px');this.chair.style.width=w+'px';this.chair.style.height=h+'px';this.chair.style.top=this.y+'px';this.prepareChair().then(()=>{if(this.plan===chosen){this.chairVisible=true;this.chair.hidden=root.dataset.devVisible!=='true';this.chair.style.opacity='1'}});root.dataset.devAnchor=chosen.left<innerWidth/2?'left-lane':'right-lane';return true;
+  this.cancel(true);this.plan=chosen;this.y=chosen.top;const span=chosen.width-w;this.x=chosen.left+(span*.18);this.position(this.x);this.chairPosition(chosen.left+span);this.launcher.style.setProperty('--dev-w',w+'px');this.launcher.style.setProperty('--dev-h',h+'px');this.chair.style.width=w+'px';this.chair.style.height=h+'px';this.chair.style.top=this.y+'px';if(!compact)this.prepareChair().then(()=>{if(this.plan===chosen){this.chairVisible=true;this.chair.hidden=root.dataset.devVisible!=='true';this.chair.style.opacity='1'}});root.dataset.devAnchor=chosen.left<innerWidth/2?'left-lane':'right-lane';return true;
  }
- show(){root.dataset.devVisible='true';this.chair.hidden=!this.chairVisible}
+ show(){root.dataset.devVisible='true';this.chair.hidden=innerWidth<800||!this.chairVisible}
  hide(){root.dataset.devVisible='false';this.chair.hidden=true}
  position(x){this.x=x;this.launcher.style.setProperty('--dev-x',x+'px');this.launcher.style.setProperty('--dev-y',this.y+'px')}
  chairPosition(x){this.chairX=x;this.chair.style.left=x+'px'}

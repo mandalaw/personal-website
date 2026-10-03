@@ -1,31 +1,34 @@
+import { SurfaceRenderer, surfaceAt } from './surfaces.mjs?v=d3fb3d14feac';
+import { slideContact } from "./slide-body.mjs?v=f69e9bf83f88";
+import { routeWindow } from "./course.mjs?v=1b77db058418";
 import { viewportPlan } from "./viewport.mjs?v=c77ee2bc882e";
 import { collectibleFrame } from "./collectibles.mjs?v=31db57189395";
-import { turnFrame } from "./locomotion.mjs?v=1e48e39f8dd4";
-import { drawRobot } from "./robots.mjs?v=346697f0306a";
-import { shadow } from "./living-world.mjs?v=073a4f43e5ab";
+import { turnFrame } from "./locomotion.mjs?v=9390228e9641";
+import { drawRobot } from "./robots.mjs?v=e403c3a2fa85";
+import { shadow } from "./living-world.mjs?v=0f11f50945cb";
 import { Camera } from "./camera.mjs?v=7af2e5e82987";
 import {
   WorldRenderer,
   paletteAt,
   visibleZones,
-} from "./environment.mjs?v=1301110e4474";
+} from "./environment.mjs?v=01948817634f";
 import {
   sceneFor,
   weatherFor,
   stageProgress,
-} from "./course.mjs?v=3d15474f11f1";
-import { hazardFrame } from "./dynamics.mjs?v=263cebe5feb5";
-import { drawCityMotion, drawSurfaceDetails } from "./world.mjs?v=8426e57ab827";
-import { drawCeremony } from "./ceremony.mjs?v=e6dbd8b8556c";
+} from "./course.mjs?v=1b77db058418";
+import { hazardFrame } from "./dynamics.mjs?v=7a11f7da2fdd";
+import { drawCityMotion, drawSurfaceDetails } from "./world.mjs?v=dee736397dd9";
+import { drawCeremony } from "./ceremony.mjs?v=bb109e40cf33";
 import {
   HAZARDS,
   TOOLS,
   STAGES,
   FINISH,
   groundAt,
-} from "./course.mjs?v=3d15474f11f1";
+} from "./course.mjs?v=1b77db058418";
 import { playerBox, hazardBox } from "./physics.mjs?v=ff700b9e51ad";
-import { loadCharacter, poseFor } from "./character.mjs?v=82e82450b008";
+import { loadCharacter, poseFor } from "./character.mjs?v=cf8a0ed912fb";
 import {
   PALETTE as P,
   round,
@@ -279,6 +282,7 @@ export class Renderer {
     this.backgrounds = new Map();
     this.camera = new Camera();
     this.world = new WorldRenderer();
+    this.surfaces = new SurfaceRenderer();
     this.particles = [];
     this.pool = [];
     this.lead = 0.2;
@@ -332,7 +336,9 @@ export class Renderer {
           color:
             kind === "snow"
               ? "#e3ece2"
-              : kind === "land"
+              : kind === "wet"
+                ? "#a7c8d1"
+                : kind === "land"
                 ? "#899997"
                 : i % 2
                   ? P.peach
@@ -355,7 +361,7 @@ export class Renderer {
       this.burst(
         x,
         game.player.y,
-        weatherFor(game) === "snow" ? "snow" : "land",
+        surfaceAt(game.distance).material === "snow" ? "snow" : (this.world.state?.wet > .45 ? "wet" : "land"),
       );
     }
     if (e.type === "near") this.burst(x + 12, y, "near");
@@ -410,31 +416,10 @@ export class Renderer {
         ? (game.upcoming()?.x ?? game.distance) - w * 0.43
         : game.distance;
     const ground = (x) => game.surfaceAt(dist + x - heroX);
-    c.fillStyle = palette[2];
-    c.beginPath();
-    c.moveTo(0, ground(0));
-    for (let x = 0; x <= w + 20; x += 20) c.lineTo(x, ground(x));
-    c.lineTo(w, Math.max(540, this.cameraY + this.viewHeight + 80));
-    c.lineTo(0, Math.max(540, this.cameraY + this.viewHeight + 80));
-    c.fill();
-    c.strokeStyle = "#a5b8b9";
-    c.lineWidth = 3;
-    c.beginPath();
-    for (let x = 0; x <= w + 20; x += 20) {
-      if (!x) c.moveTo(x, ground(x));
-      else c.lineTo(x, ground(x));
-    }
-    c.stroke();
-    for (const zone of visibleZones(cameraX, w)) {
-      c.save();
-      c.beginPath();
-      const a = zone.start === 0 ? -10000 : zone.start - cameraX,
-        b = zone.end === FINISH ? w + 10000 : zone.end - cameraX;
-      c.rect(a, 0, b - a, 560);
-      c.clip();
-      drawSurfaceDetails(c, w, game, dist, heroX, ground, time, zone);
-      c.restore();
-    }
+    const weather=this.world.state;
+    this.surfaces.draw(c,w,dist,heroX,ground,weather,time,this.view.quality==='balanced');
+    drawSurfaceDetails(c,w,game,dist,heroX,ground,time);
+    this.world.atmosphere.precipitation(c,w,weather,time,cameraX,ground,this.view.quality==='balanced');
     if (game.status !== "won") this.arrivalX = heroX;
     if (game.status === "won") {
       this.pose = poseFor(game, time);
@@ -467,6 +452,7 @@ export class Renderer {
       c.fill();
       c.fillStyle = "#d1ded1";
       c.fillRect(px + 4, p.y, p.w - 8, 2);
+      this.surfaces.platform(c,p,px,weather);
       if (p.kind === "lift") {
         c.strokeStyle = "#77918b66";
         c.lineWidth = 2;
@@ -501,6 +487,12 @@ export class Renderer {
           c.lineTo(px + n * 25, gy + 29);
           c.stroke();
         }
+      } else if(j.exit) {
+        const open=routeWindow(j,game.stats.time),ox=px+j.exit;
+        c.fillStyle=cleared?'#a9c4b6':open?'#c9e5c7':'#f8a78f';
+        c.fillText(cleared?'PATH OPEN →':j.kind==='ascent'?'↑ LIFT / ↓ PASSAGE':j.kind==='window'?(open?'↓ WINDOW OPEN / ↑ LOOKOUT':'WAIT FOR GREEN / ↑ LOOKOUT'):j.kind==='fork'?'↑ CATWALK / → PAVEMENT':'↑ UPPER / ↓ LOWER',px+85,gy-164);
+        for(const dy of [0,-85]){round(c,ox-12,gy+dy-22,24,22,4);c.fill();}
+        if(!cleared){c.fillRect(px+j.exit+78,gy-52,3,52);}
       } else {
         c.fillText(
           cleared ? "PATH OPEN →" : "↑ CLIMB, THEN ← RETURN",
@@ -641,25 +633,8 @@ export class Renderer {
         f.tilt,
       );
     }
-    if (game.player.slidePhase && !this.reduced) {
-      const snow = game.stage < 3;
-      c.strokeStyle = snow ? "#dfe9de99" : "#d0b89766";
-      c.lineWidth = 2;
-      c.beginPath();
-      c.moveTo(heroX - game.player.facing * 50, game.player.y + 2);
-      c.lineTo(heroX, game.player.y + 2);
-      c.stroke();
-      for (let k = 0; k < 5; k++) {
-        c.fillStyle = snow ? "#dfe9de88" : "#c0a58d66";
-        const age = (game.player.slideAge * 2 + k / 5) % 1;
-        c.fillRect(
-          heroX - game.player.facing * age * 44,
-          game.player.y - Math.sin(age * 3) * 7,
-          2,
-          2,
-        );
-      }
-    }
+    const contact=slideContact(game.player);
+    this.surfaces.contact(c,game,heroX,ground,weather,time,contact,this.reduced);
     this.pose = poseFor(game, time);
     const tf = turnFrame(game.player, this.reduced);
     if (tf.pose && !game.player.board && game.player.grounded)
@@ -689,7 +664,7 @@ export class Renderer {
     const soft = c.createRadialGradient(0, 0, 0, 0, 0, radius);
     soft.addColorStop(
       0,
-      `rgba(9,19,29,${0.18 * (1 - Math.min(0.85, air / 170))})`,
+      `rgba(9,19,29,${weather.shadow * (1 - Math.min(0.85, air / 170))})`,
     );
     soft.addColorStop(1, "#09131d00");
     c.fillStyle = soft;
@@ -786,6 +761,7 @@ export class Renderer {
   }
   dispose() {
     this.backgrounds.clear();
+    this.surfaces.cache.clear();this.surfaces.tracks.length=0;this.world.cache.clear();
     this.particles.length = 0;
   }
 }

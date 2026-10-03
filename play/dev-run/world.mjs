@@ -3,7 +3,7 @@ import {
   sceneFor,
   weatherFor,
   stageProgress,
-} from "./course.mjs?v=3d15474f11f1";
+} from "./course.mjs?v=1b77db058418";
 import { round } from "./scenery.mjs?v=5014aceabc11";
 export const ENVIRONMENTS = Object.freeze([
   "morning",
@@ -198,36 +198,6 @@ export function drawSurfaceDetails(
   t,
   zone = {},
 ) {
-  const scene = zone.scene || sceneFor(game),
-    surface = STAGES[zone.stage ?? game.stage].surface;
-  if (["roofs", "fog", "golden"].includes(scene)) {
-    c.fillStyle = "#c9a37a33";
-    for (let x = -(dist % 110); x < w; x += 110) {
-      const y = ground(x);
-      c.fillRect(x + 18, y + 24, 18, 30);
-      c.fillRect(x + 47, y + 24, 18, 30);
-    }
-  }
-  if (surface === "metal" || scene === "transit") {
-    c.fillStyle = "#b5c3c82b";
-    for (let x = -(dist % 75); x < w; x += 75)
-      c.fillRect(x, ground(x) + 22, 39, 3);
-  }
-  if (scene === "snow") {
-    c.fillStyle = "#dce7e2";
-    for (let x = 0; x < w; x += 25) {
-      c.beginPath();
-      c.ellipse(x, ground(x) + 2, 18, 3, 0, 0, Math.PI * 2);
-      c.fill();
-    }
-  }
-  if (scene === "hills") {
-    const g = c.createLinearGradient(0, 410, 0, 500);
-    g.addColorStop(0, "#f8a78f24");
-    g.addColorStop(1, "#f8a78f00");
-    c.fillStyle = g;
-    c.fillRect(0, 420, w, 80);
-  }
   if (game.bridge > 0) {
     c.fillStyle = "#a9c4b6";
     for (const h of game.course.hazards) {

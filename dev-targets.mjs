@@ -1,5 +1,6 @@
 // Curated public controls only. Presence, visibility and context are checked before use.
 export const targets=Object.freeze([
+ {id:'devrun',selector:'#project-devrun .project-action.primary,.dev-run-feature',contexts:['ENTRY','PORTFOLIO','SIDE_QUESTS'],pose:'point-right',prompt:'Run it?',priority:6},
  {id:'school-quantic',selector:'[data-brand="quantic"]',contexts:['ABOUT'],pose:'document',prompt:'The master’s was here.',priority:4},
  {id:'school-uoft',selector:'[data-brand="uoft"]',contexts:['ABOUT'],pose:'document',prompt:'Code and maps.',priority:4},
  {id:'gis-tool',selector:'[data-brand="arcgis"],[data-brand="arcmap"]',contexts:['WORKBENCH','GIS'],pose:'map',prompt:'Maps? Right there.',priority:5},

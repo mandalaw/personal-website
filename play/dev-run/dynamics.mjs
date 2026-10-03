@@ -1,5 +1,5 @@
-import { robotFrame } from "./robots.mjs?v=346697f0306a";
-import { HAZARDS } from "./course.mjs?v=3d15474f11f1";
+import { robotFrame } from "./robots.mjs?v=e403c3a2fa85";
+import { HAZARDS } from "./course.mjs?v=1b77db058418";
 import { hazardBox } from "./physics.mjs?v=ff700b9e51ad";
 
 // The same transform drives both drawing and collision. Telegraphs never have hitboxes.
@@ -30,7 +30,7 @@ export function hazardFrame(h, game) {
     w += Math.max(0, Math.min(22, (330 - revealedLead) * 0.08));
   const robot = robotFrame(h, game);
   if (robot) {
-    x = h.x;
+    x = h.x + (h.choreography && robot.type==='analyst' ? Math.sin(robot.age*3)*24 : h.choreography && robot.type==='open' ? Math.min(20,robot.age*25) : 0);
     y = 0;
     active = robot.active;
   }

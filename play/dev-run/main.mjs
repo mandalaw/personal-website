@@ -1,14 +1,16 @@
+import { createDiscovery } from './discovery.mjs?v=b845c79e3f52';
+import { createCompanion } from "./companion.mjs?v=49210b0f4a70";
 import { createImmersive } from "./immersive.mjs?v=caa5acdbaa20";
-import { CEREMONY_SECONDS } from "./ceremony.mjs?v=e6dbd8b8556c";
-import { speedFor, sceneFor } from "./course.mjs?v=3d15474f11f1";
-import { Game } from "./engine.mjs?v=776dfa1f622f";
-import { STAGES, HAZARDS, TOOLS, KITS, SECRETS, FINISH } from "./course.mjs?v=3d15474f11f1";
-import { loadAssets, Renderer } from "./render.mjs?v=fdc87230467a";
+import { CEREMONY_SECONDS } from "./ceremony.mjs?v=bb109e40cf33";
+import { speedFor, sceneFor, LONG_WAY, JOURNEY } from "./course.mjs?v=1b77db058418";
+import { Game } from "./engine.mjs?v=fe6df7e85a4b";
+import { STAGES, HAZARDS, TOOLS, KITS, SECRETS, FINISH } from "./course.mjs?v=1b77db058418";
+import { loadAssets, Renderer } from "./render.mjs?v=ce3f71f9bd39";
 import { Dialogue } from "./dialogue.mjs?v=94da74293e6e";
 import { AudioBus } from "./audio.mjs?v=0c00726a0636";
 import { readRecord, saveRecord } from "./persistence.mjs?v=8b760301279c";
 import { clock, rank } from "./scoring.mjs?v=097b44f00e65";
-import { bindControls } from "./input.mjs?v=6f337567d6db";
+import { bindControls } from "./input.mjs?v=c22a839c2ab6";
 import { Metrics } from "./metrics.mjs?v=fd1676bfd8b9";
 
 const $ = (id) => document.getElementById(id),
@@ -19,8 +21,8 @@ const $ = (id) => document.getElementById(id),
   initialScreen = screen.innerHTML,
   reduce = matchMedia("(prefers-reduced-motion:reduce)");
 const storage = {
-  getItem: (key) => localStorage.getItem(key),
-  setItem: (key, value) => localStorage.setItem(key, value),
+  getItem: (key) => localStorage.getItem((LONG_WAY?key:JOURNEY+":"+key)),
+  setItem: (key, value) => localStorage.setItem((LONG_WAY?key:JOURNEY+":"+key), value),
 };
 let game = new Game({
     mode:
@@ -40,7 +42,7 @@ let game = new Game({
   planLast = 0,
   screenState = "title",
   loadedAt = 0,
-  immersive;
+  immersive, companion;
 const metrics = new Metrics(),
   audio = new AudioBus(),
   dialogue = new Dialogue(),
@@ -169,7 +171,7 @@ function screenFor(kind, reason = "") {
     const checkpoint = button("Restart checkpoint", "restart-checkpoint");
     checkpoint.onclick = () => { controls.clear(); game.restore(); screenFor("running"); audio.resume(); startLoop(); flush(); };
     actions.append(checkpoint);
-    if (immersive?.active) { const leave = button("Exit fullscreen", "leave-immersive"); leave.onclick = () => immersive.exit(); actions.append(leave); }
+    const expand = button(immersive?.active ? "Exit fullscreen" : "⛶ Fullscreen / immersive", "pause-fullscreen"); expand.dataset.fullscreenAction="true"; actions.append(expand);
     const reset = button("Start over", "restart");
     reset.onclick = () => titleScreen();
     if (!immersive?.active) actions.append(reset);
@@ -187,6 +189,11 @@ function screenFor(kind, reason = "") {
   focusScreen();
 }
 function wireTitle() {
+  const journeyLink=document.getElementById('journey-link');
+journeyLink.textContent=LONG_WAY?'Take the cinematic route →':'Want every detour? Take the long way →';
+journeyLink.href=LONG_WAY?'./':'?journey=long-way';
+document.getElementById('journey-duration').textContent=LONG_WAY?'About 3–4 minutes':'About 2–3 minutes';
+
   const mode = $("mode"),
     play = $("play");
   mode.value = game.mode;
@@ -226,6 +233,7 @@ function start(replay = false) {
   metrics.reset();
   renderer.particles.length = 0;
   game.start();
+  try { sessionStorage.setItem('dev-run-played','1'); } catch {}
   dialogue.next = 0;
   planLast = performance.now();
   screenFor("running");
@@ -326,6 +334,7 @@ function render() {
   if (renderer) renderer.draw(game, performance.now() / 1000, 0);
 }
 function hud() {
+  companion?.update();
   const s = STAGES[game.stage];
   $("city").textContent = s.city.toUpperCase();
   $("stage-name").textContent = s.name;
@@ -356,7 +365,7 @@ function hud() {
         ? `${game.encounter.title} · Jump high / Duck low`
         : game.encounter.kind === "ride"
           ? `${game.encounter.title} · Duck to ride / Jump to walk`
-          : `${game.encounter.title} · Jump onto the ledge, then go LEFT to the switch. Or duck at the lower switch.`;
+          : game.encounter.cue ? `${game.encounter.title} · ${game.encounter.cue}` : `${game.encounter.title} · Jump onto the ledge, then go LEFT to the switch. Or duck at the lower switch.`;
   } else if (
     game.mode === "planner" &&
     game.nextJunction() &&
@@ -587,6 +596,7 @@ reduce.addEventListener(
   },
   { signal },
 );
+companion=createCompanion({button:$('run-companion'),panel:$('companion-panel'),canvas:$('companion-art'),game:()=>game,assets:()=>assets,pause:()=>{$('pause').click()},resume:()=>{$('resume')?.click()},signal});
 immersive = createImmersive({shell:$("game"),canvas,entry:$("enter-immersive"),signal,status:()=>game.status,
   onStart:()=>start(false),
   onSuspend:()=>{controls.clear();if(game.status==='running')game.pause('View changing');stopLoop();audio.suspend();},
@@ -594,6 +604,7 @@ immersive = createImmersive({shell:$("game"),canvas,entry:$("enter-immersive"),s
   onPause:reason=>{if(game.status==='paused')screenFor('paused',reason);else pause(reason);if(game.status==='won'&&game.mode!=='planner'&&game.ceremony<CEREMONY_SECONDS)startLoop();render();},
   onResize:()=>{if(renderer){renderer.resize();render();hud();}}
 });
+createDiscovery({shell:$('game'),entry:$('enter-immersive'),toggle:$('hud-fullscreen'),invite:$('fullscreen-invite'),immersive,signal});
 const observer = new ResizeObserver(()=>immersive.resize());
 observer.observe(canvas);
 function dispose() {

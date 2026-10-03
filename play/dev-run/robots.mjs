@@ -1,3 +1,4 @@
+import { LONG_WAY } from "./course.mjs?v=1b77db058418";
 import { round } from "./scenery.mjs?v=5014aceabc11";
 export const ROBOTS = Object.freeze({
   chatter: {
@@ -45,6 +46,7 @@ export const ROBOT_PHASES = Object.freeze({
   patrol: 0.55,
 });
 export const robotFor = (h) => TYPES[h.type] || null;
+export const ROBOT_TIMING=Object.freeze({chatter:{telegraph:.85,attack:.85},twin:{telegraph:1,attack:.95},analyst:{telegraph:1.05,attack:1.05},open:{telegraph:.9,attack:.8},swarm:{telegraph:1.1,attack:.95},guardrail:{telegraph:.85,attack:.7}});
 export function updateRobots(game, dt) {
   for (const [id] of game.robots) {
     const h = game.course.hazards.find((h) => h.id === id);
@@ -80,8 +82,9 @@ export function updateRobots(game, dt) {
       continue;
     }
     r.age += dt;
-    if (r.age >= ROBOT_PHASES[r.state]) {
-      r.age -= ROBOT_PHASES[r.state];
+    const duration=(!LONG_WAY&&ROBOT_TIMING[robotFor(h)]?.[r.state])||ROBOT_PHASES[r.state];
+    if (r.age >= duration) {
+      r.age -= duration;
       const next = {
         notice: "telegraph",
         telegraph: "attack",
@@ -110,7 +113,7 @@ export function robotFrame(h, game) {
   return {
     ...state,
     type,
-    active: state.state === "attack" && state.telegraphed > 0,
+    active: state.state === "attack" && state.telegraphed > 0 && (LONG_WAY || (type==='chatter'?state.age<.24||state.age>.48:type==='twin'?state.age<.3||state.age>.61:type==='swarm'?state.age>.16:true)),
     telegraph: ["notice", "telegraph"].includes(state.state),
   };
 }

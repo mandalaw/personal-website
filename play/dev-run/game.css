@@ -1283,3 +1283,29 @@ html[data-theme="day"] .wordmark {
     display: none;
   }
 }
+
+/* Companion occupies its own HUD column; it never floats over controls or hazards. */
+.hud .run-companion{flex:0 0 44px;width:44px;height:50px;min-width:44px;min-height:50px;padding:0;background:transparent;border:0;display:grid;place-items:center;align-self:center;box-shadow:none}
+.run-companion canvas{display:block;width:30px;height:50px;pointer-events:none}
+.run-companion:focus-visible{outline:2px solid #f8a78f;outline-offset:-2px;border-radius:8px}
+.hud-stage{min-width:0}.hud-stage strong{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.companion-panel{position:absolute;z-index:18;left:12px;top:62px;max-width:min(310px,calc(100% - 24px));max-height:calc(100% - 90px);overflow:auto;padding:16px;border:1px solid #9cacb8;border-radius:16px;background:#233243;color:#f3f1e9;box-shadow:0 8px 24px #10172288}
+.companion-panel[hidden]{display:none}.companion-panel p{margin:0 0 12px;font-size:14px;line-height:1.5}.companion-panel button{min-height:44px;min-width:72px}
+.journey-choice{font-size:12px!important;margin:5px 0 12px!important}.journey-choice a{color:#f8a78f;text-underline-offset:3px}
+@media(max-width:500px){.hud{gap:7px}.hud .run-companion{flex-basis:44px}.hud-stage{flex:1}.hud-tools{display:none}}
+
+/* Fullscreen discovery: a reserved HUD cell, never a floating playfield control. */
+.hud #exit-immersive{display:none!important}
+.hud .fullscreen-control{display:flex;flex:0 0 58px;flex-direction:column;align-items:center;justify-content:center;gap:2px;min-width:58px;min-height:46px;height:46px;padding:3px;border-radius:11px;background:#fa677114;border:1px solid #fa677180;color:inherit;cursor:pointer;position:static;order:0}
+.fullscreen-control svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.7;transition:transform .18s}.fullscreen-control span{font:600 9px/1.1 system-ui,sans-serif;white-space:nowrap}
+.fullscreen-control:hover svg,.fullscreen-control:focus-visible svg{transform:scale(1.12)}.fullscreen-control:hover{box-shadow:0 0 0 3px #fa67711a}.fullscreen-control:active{transform:translateY(1px)}.fullscreen-control:focus-visible{outline:3px solid #fa6771;outline-offset:3px}
+.fullscreen-control[data-active="true"] svg{transform:rotate(180deg) scale(.8)}
+.fullscreen-invite{position:relative;z-index:11;top:auto;left:auto;margin:8px 12px;display:flex;gap:6px;max-width:calc(100% - 24px);padding:7px;background:#f7eee1;color:#293043;border:1px solid #fa677188;border-radius:13px;box-shadow:0 5px 15px #0002}
+.fullscreen-invite[hidden]{display:none}.fullscreen-invite button{font:500 12px/1.35 system-ui;text-align:left;min-height:44px;padding:4px 10px;background:none;color:inherit;border:0;border-radius:7px;cursor:pointer}.fullscreen-invite b{display:block}.fullscreen-invite [data-dismiss]{min-width:44px;text-align:center;font-size:22px}
+.companion-panel [data-fullscreen-action]{margin-left:7px}.is-immersive .fullscreen-control{color:#f5f0e6;flex-basis:58px}
+@keyframes expand-invite{50%{box-shadow:0 0 0 4px #fa677130}}
+.fullscreen-control.first-look{animation:expand-invite 1.4s ease-in-out 3}
+@media(prefers-reduced-motion:reduce){.fullscreen-control.first-look{animation:none}.fullscreen-control svg{transition:none}}
+@media(max-width:700px){.hud .hud-tools{display:none}.fullscreen-invite{top:auto}.hud .hud-stage{min-width:0}.hud .hud-stage strong{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}}
+
+@media(max-width:700px){.game-frame:not(.is-immersive) .hud .hud-score,.game-frame:not(.is-immersive) .hud .hud-time{display:none}.game-frame:not(.is-immersive) .hud{gap:7px;padding:9px 10px;flex-wrap:nowrap}.game-frame:not(.is-immersive) .hud .hud-stage{flex:1;min-width:0;max-width:none;width:auto}.game-frame:not(.is-immersive) .hud>div:not(.hud-stage){flex:0 0 auto}.game-frame:not(.is-immersive) .hud #pause{flex:0 0 44px;min-width:44px;padding:0;position:static}}

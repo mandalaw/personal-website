@@ -1,7 +1,8 @@
-import { drawLivingWorld, shadow } from "./living-world.mjs?v=073a4f43e5ab";
-import { STAGES } from "./course.mjs?v=3d15474f11f1";
+import { Atmosphere, weatherState, tint } from './weather.mjs?v=c2b8070f8516';
+import { drawLivingWorld, shadow } from "./living-world.mjs?v=0f11f50945cb";
+import { STAGES } from "./course.mjs?v=1b77db058418";
 import { background, round } from "./scenery.mjs?v=5014aceabc11";
-import { drawCityMotion } from "./world.mjs?v=8426e57ab827";
+import { drawCityMotion } from "./world.mjs?v=dee736397dd9";
 const splits = {
   snow: [0.52, "transit"],
   grid: [0.55, "layers"],
@@ -69,7 +70,7 @@ export function visibleZones(camera, width) {
       (i === ZONES.length - 1 || z.end > camera - 200),
   );
 }
-export function flag(c, image, x, y, width = 64, time = 0, base = 368) {
+export function flag(c, image, x, y, width = 64, time = 0, base = 368, wind = .3) {
   if (!image) return;
   c.save();
   c.strokeStyle = "#bfcdd0";
@@ -93,7 +94,7 @@ export function flag(c, image, x, y, width = 64, time = 0, base = 368) {
     for (let i = 0; i < 16; i++) {
       const ratio = i / 16,
         sw = iw / 16;
-      const wave = Math.sin(time * 1.4 - ratio * 4) * ratio * 1.25;
+      const wave = Math.sin(time * (1+wind) - ratio * 4) * ratio * (1+wind*2);
       c.drawImage(
         image,
         sw * i,
@@ -228,6 +229,7 @@ export function billboard(
 export class WorldRenderer {
   constructor() {
     this.cache = new Map();
+    this.atmosphere = new Atmosphere();
     this.layer = document.createElement("canvas");
     this.layer.width = 1800;
     this.layer.height = 540;
@@ -246,13 +248,9 @@ export class WorldRenderer {
       if (!need.has(key)) this.cache.delete(key);
   }
   draw(c, w, game, camera, t, assets, reduced, balanced = false) {
-    const pal = paletteAt(game.distance),
-      sky = c.createLinearGradient(0, 0, 0, 540);
-    sky.addColorStop(0, pal[0]);
-    sky.addColorStop(0.75, pal[1]);
-    sky.addColorStop(1, pal[2]);
-    c.fillStyle = sky;
-    c.fillRect(0, 0, w, 540);
+    const pal = paletteAt(game.distance);
+    this.state = weatherState(game.distance, reduced);
+    this.atmosphere.sky(c,w,this.state,t,camera,balanced);
     this.preload(camera, w);
     const clock = reduced ? 0 : t;
     for (const z of visibleZones(camera, w)) {
@@ -282,14 +280,14 @@ export class WorldRenderer {
                     : "clear",
         },
       );
-      drawLivingWorld(k, w, game, camera, clock, z, reduced, balanced || w < 800);
+      drawLivingWorld(k, w, game, camera, clock, z, reduced, balanced || w < 800, this.state);
       if (
         z.stage < 5 &&
         !["transit", "tunnel", "grid", "layers"].includes(z.scene)
       ) {
         const tx = 620 - ((camera * 0.1) % 950);
         tower(k, tx, clock);
-        if (tx < 0) tower(k, tx + 950, clock);
+        if (tx < 0) tower(k, tx + 950, clock, 368, this.state.wind);
       }
       const left = z === ZONES[0] ? -10000 : z.start - camera,
         right = z === ZONES.at(-1) ? 10000 : z.end - camera;
@@ -314,8 +312,9 @@ export class WorldRenderer {
       k.fillStyle = mask;
       k.fillRect(0, 0, 1800, 540);
       k.globalCompositeOperation = "source-over";
-      c.drawImage(this.layer, 0, 0);
+      c.save();c.globalAlpha=1-this.state.night*.17;c.drawImage(this.layer, 0, 0);c.restore();
     }
+    this.atmosphere.veil(c,w,this.state);
     const travel = STAGES[5],
       mapX = (travel.start + travel.end) / 2 - camera;
     if (mapX > -650 && mapX < w + 650) {
@@ -336,8 +335,8 @@ export class WorldRenderer {
       c.bezierCurveTo(210, 82, 445, 325, 650, 175);
       c.stroke();
       c.setLineDash([]);
-      flag(c, assets.flags.canada, 75, 150, 50, clock);
-      flag(c, assets.flags.usa, 655, 100, 50, clock);
+      flag(c, assets.flags.canada, 75, 150, 50, clock, 368, this.state.wind);
+      flag(c, assets.flags.usa, 655, 100, 50, clock, 368, this.state.wind);
       c.fillStyle = "#edf0de";
       c.font = "600 17px Arial";
       c.textAlign = "left";
@@ -375,7 +374,7 @@ export class WorldRenderer {
     ]) {
       const xx = x - camera;
       if (xx > -140 && xx < w + 100) {
-        flag(c, assets.flags[country], xx, 212, 68, clock);
+        flag(c, assets.flags[country], xx, 212, 68, clock, 368, this.state.wind);
         c.fillStyle = "#dce3d6";
         c.font = "10px Arial";
         c.textAlign = "left";

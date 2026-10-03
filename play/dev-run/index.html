@@ -36,9 +36,9 @@
     <link rel="canonical" href="https://www.mandalawi.ca/play/dev-run/" />
     <link rel="icon" href="/favicon.svg" />
     <script src="/theme-boot.js"></script>
-    <link rel="stylesheet" href="./game.css?v=85c95fb05003" />
+    <link rel="stylesheet" href="./game.css?v=173649a683db" />
     <link rel="stylesheet" href="./immersive.css?v=c6a5cb8969cf">
-    <script type="module" src="./main.mjs?v=b9ad97d165d6"></script>
+    <script type="module" src="./main.mjs?v=fd4fdb0612ba"></script>
   </head>
   <body class="dev-run-page">
     <a class="skip" href="#game">Skip to game</a>
@@ -57,10 +57,11 @@
           <p class="eyebrow">A little way off the main branch</p>
           <h1>Dev Run <span>Toronto → the Bay</span></h1>
         </div>
-        <button class="immersive-entry" id="enter-immersive" type="button" disabled>⛶ Enter immersive mode</button>
+        <button class="immersive-entry" id="enter-immersive" type="button" disabled>⛶ Fullscreen / immersive</button>
       </div>
-      <div class="game-frame" id="game" data-immersive="PAGE" data-layout="page">
+      <div class="game-frame" id="game" data-status="title" data-immersive="PAGE" data-layout="page">
         <div class="hud" aria-label="Game status">
+          <button class="run-companion" id="run-companion" type="button" aria-label="Ask Dev about the controls" aria-expanded="false" aria-controls="companion-panel"><canvas id="companion-art" width="90" height="150" aria-hidden="true"></canvas></button>
           <div class="hud-stage">
             <small><span id="city">TORONTO</span><span class="checkpoint-cue" id="checkpoint-cue"> · CP 0</span></small
             ><strong id="stage-name">Morning build</strong>
@@ -74,8 +75,10 @@
           <div class="hud-time"><small>TIME</small><strong id="time">0:00</strong></div>
           <button id="pause" type="button" aria-label="Pause game" disabled>
             Ⅱ
-          </button><button id="exit-immersive" type="button" aria-label="Exit immersive mode" title="Exit immersive mode">×</button>
+          </button><button class="fullscreen-control" id="hud-fullscreen" type="button" disabled aria-label="Enter fullscreen / immersive mode" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 3H3V9M15 3H21V9M21 15V21H15M9 21H3V15"/></svg><span>Full screen</span></button><button id="exit-immersive" type="button" aria-label="Exit immersive mode" title="Exit immersive mode">×</button>
         </div>
+        <aside id="fullscreen-invite" class="fullscreen-invite" aria-label="Dev’s fullscreen tip" hidden><button type="button" data-expand>Want the whole screen? <b>Try fullscreen ↗</b></button><button type="button" data-dismiss aria-label="Dismiss fullscreen tip">×</button></aside>
+        <aside id="companion-panel" class="companion-panel" aria-label="Dev’s field note" hidden><p></p><button type="button">Got it</button><button type="button" data-fullscreen-action>⛶ Fullscreen / immersive</button></aside>
         <div class="progress-track">
           <progress
             id="progress"
@@ -104,6 +107,7 @@
               <p class="eyebrow">One developer. Two cities.</p>
               <h2>Take the<br />scenic route.</h2>
               <p>Take the rooftops. Ride the laptop. Follow the cat west.</p>
+              <p class="journey-choice"><a id="journey-link" href="?journey=long-way">Want every detour? Take the long way →</a></p>
               <label for="mode">How do you want to play?</label
               ><select id="mode">
                 <option value="runner">Adventure — timing & movement</option>
@@ -114,7 +118,7 @@
                 Loading the route…
               </button>
               <p class="screen-note">
-                About 3–4 minutes · checkpoints along the way<br />Sound off ·
+                <span id="journey-duration">About 2–3 minutes</span> · checkpoints along the way<br />Sound off ·
                 no account · local best scores
               </p>
             </div>
@@ -177,7 +181,7 @@
         ><input type="checkbox" id="latch" /> Tap-to-walk: tap a direction to
         keep moving; tap it again to stop.</label
       >
-      <p class="orientation-note">A wider view can help. Portrait works too.</p>
+      <p class="orientation-note">Landscape + fullscreen gives the route more room. Portrait works too.</p>
       <p class="instructions" id="instructions">
         <kbd>A</kbd> / <kbd>←</kbd> left · <kbd>D</kbd> / <kbd>→</kbd> right ·
         <kbd>SPACE</kbd> / <kbd>↑</kbd> / <kbd>W</kbd> jump · <kbd>↓</kbd> /

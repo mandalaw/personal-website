@@ -27,7 +27,11 @@ export function startSlide(p, axis) {
   if (!canSlide(p, axis)) return false;
   p.slidePhase = "prepare";
   p.slideAge = 0;
-  p.duck = 0.86;
+  p.slideEntry=Math.min(335,Math.abs(p.vx));
+  p.slideDirection=axis;
+  p.slideDuration=.8+(p.slideEntry-150)/185*.14;
+  p.duck=p.slideDuration;
+  p.vx=axis*p.slideEntry;
   p.runTime = 0;
   p.runDistance = 0;
   return true;
@@ -37,7 +41,7 @@ export function trackLocomotion(p, dt, axis) {
   p.slideCooldown = Math.max(0, (p.slideCooldown || 0) - dt);
   if (p.slidePhase) {
     p.slideAge += dt;
-    const age = p.slideAge;
+    const age = p.slideAge / p.slideDuration * SLIDE.duration;
     p.slidePhase =
       age < 0.07
         ? "prepare"

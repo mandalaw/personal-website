@@ -1,4 +1,4 @@
-import { TURN_SECONDS, trackLocomotion } from "./locomotion.mjs?v=1e48e39f8dd4";
+import { TURN_SECONDS, trackLocomotion } from "./locomotion.mjs?v=9390228e9641";
 export const MOTION = Object.freeze({
   acceleration: 1900,
   brake: 2400,
@@ -45,7 +45,7 @@ export function horizontal(
   player.turn = Math.max(0, (player.turn || 0) - dt);
   const reverse = axis && axis !== player.facing;
   // Plant before changing facing. Air steering remains available; no sprite squeeze.
-  if (reverse && !player.turn && Math.abs(player.vx) < 25) {
+  if (reverse && !player.slidePhase && !player.turn && Math.abs(player.vx) < 25) {
     player.turnFrom = player.facing;
     player.facing = axis;
     player.turn = TURN_SECONDS;
@@ -73,15 +73,11 @@ export function horizontal(
         : axis || auto
           ? MOTION.acceleration
           : MOTION.friction;
-    if (
-      player.grounded && player.slidePhase &&
-      ["slide", "friction"].includes(player.slidePhase)
-    ) {
-      player.vx = approach(
-        player.vx,
-        0,
-        (player.slidePhase === "friction" ? 600 : 85) * dt,
-      );
+    if (player.grounded && player.slidePhase) {
+      const t=player.slideAge/player.slideDuration;
+      // Fixed entry momentum, mild carry then planted braking. Reverse is queued until recovery.
+      const drag=t<.18?45:t<.6?85:t<.82?350:180;
+      player.vx=player.slideDirection*Math.max(0,Math.abs(player.vx)-drag*dt);
     } else player.vx = approach(player.vx, target, rate * dt);
   }
   if (Math.abs(player.vx) < 0.25) player.vx = 0;

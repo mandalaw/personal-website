@@ -1,10 +1,11 @@
-import { startSlide } from "./locomotion.mjs?v=1e48e39f8dd4";
+import { routeWindow } from "./course.mjs?v=1b77db058418";
+import { startSlide } from "./locomotion.mjs?v=9390228e9641";
 import { collectibleFrame } from "./collectibles.mjs?v=31db57189395";
-import { updateRobots } from "./robots.mjs?v=346697f0306a";
-import { horizontal } from "./movement.mjs?v=1fa9be477985";
-import { pocketPlatforms, supportFor } from "./platforms.mjs?v=8393928aef89";
-import { hazardFrame } from "./dynamics.mjs?v=263cebe5feb5";
-import { speedFor, stageProgress } from "./course.mjs?v=3d15474f11f1";
+import { updateRobots } from "./robots.mjs?v=e403c3a2fa85";
+import { horizontal } from "./movement.mjs?v=44a7d9e8e468";
+import { pocketPlatforms, supportFor } from "./platforms.mjs?v=0c0102d1f018";
+import { hazardFrame } from "./dynamics.mjs?v=7a11f7da2fdd";
+import { speedFor, stageProgress } from "./course.mjs?v=1b77db058418";
 import {
   makeCourse,
   STAGES,
@@ -13,7 +14,7 @@ import {
   TOOLS,
   stageAt,
   groundAt,
-} from "./course.mjs?v=3d15474f11f1";
+} from "./course.mjs?v=1b77db058418";
 import {
   PHYSICS,
   overlap,
@@ -250,6 +251,9 @@ export class Game {
       this.event("shield");
       return;
     }
+    this.player.slidePhase=null;
+    this.player.slideCooldown=.55;
+    this.player.duck=0;
     this.health--;
     this.player.stun=.12;
     this.player.vx=-(this.player.facing||1)*75;
@@ -391,13 +395,18 @@ export class Game {
     if (this.encounter) {
       const e = this.encounter;
       e.age += dt;
-      const gate = e.x + (e.kind === "ride" ? 70 : 425);
+      const gate = e.x + (e.kind === "ride" ? 70 : e.exit ? e.exit + 80 : 425);
       if (this.distance > gate) {
         this.distance = gate;
         p.vx = Math.min(0, p.vx);
       }
+      if(e.exit && Math.abs(this.distance-e.x-e.exit)<62){
+        const above=p.y<groundAt(e.x)-64;
+        if(p.grounded&&above&&(e.kind!=='ascent'||String(p.support).endsWith('lift')))this.finishPocket('high');
+        else if(p.grounded&&!above&&(p.duck>0||e.kind==='fork')&&routeWindow(e,this.stats.time))this.finishPocket('low');
+      }
       if (
-        e.kind !== "ride" &&
+        !e.exit && e.kind !== "ride" &&
         this.distance < e.x - 92 &&
         this.distance > e.x - 230
       ) {
@@ -519,8 +528,8 @@ export class Game {
     this.event("route", {
       text:
         route === "high"
-          ? "Worth the detour. Upper switch found — head right."
-          : "Service switch found. Head right; the path is open.",
+          ? "Upper route found. Keep going right."
+          : "Lower route open. Keep going right.",
       high: route === "high",
     });
   }

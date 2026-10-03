@@ -272,7 +272,7 @@ export function transitPosition(camera, time, width, quiet = false) {
   const cycle=width+1100;
   return mod((quiet?0:time*66)-camera*LAYERS.transit+600,cycle)-700;
 }
-export function drawTransit(c, w, camera, time, bay, quiet = false) {
+export function drawTransit(c, w, camera, time, bay, quiet = false, weather = {}) {
   const y = bay ? 294 : 342,
     deck = bay ? 302 : 349;
   // Continuous guideway / rails; piers end on the midground street plane.
@@ -329,6 +329,8 @@ export function drawTransit(c, w, camera, time, bay, quiet = false) {
       c.fillRect(wx, y - 38, 13, 12);
       ellipse(c, wx + 6, y - 26, 2, 4, "#c2ba9e55");
     }
+    if(weather.night>.3){ellipse(c,x+ww-7,y-19,3,2,'#f2dfb1');stroke(c,'#e5d1a244',2,[[x+ww-13,deck+4],[x+ww+23,deck+4]]);}
+    if(weather.rain>.2){for(let n=0;n<3;n++)stroke(c,'#b5ced64d',1,[[x+22+n*17,y-39],[x+24+n*17,y-25]]);}
     for (const off of [14, ww - 14])
       ellipse(c, x + off, y - 1, 5, 5, "#2b4353");
     if (!bay && car === 2)
@@ -487,11 +489,12 @@ export function drawLivingWorld(
   zone,
   quiet = false,
   mobile = false,
+  authoredWeather = null,
 ) {
   const bay = zone.stage >= 6,
     toronto = zone.stage < 5,
     indoor = ["tunnel", "grid", "layers"].includes(zone.scene);
-  const weather = weatherAt(zone, game.distance),
+  const weather = authoredWeather || weatherAt(zone, game.distance),
     t = quiet ? 0 : time;
   if (!bay && !toronto) return;
   if (indoor) return;
@@ -524,7 +527,7 @@ export function drawLivingWorld(
     c.fillRect(0, 322, w, 35);
     for (let i = 0; i < (mobile ? 12 : 25); i++) {
       const x = mod(i * 83 - camera * 0.27 + t * 4, w + 100) - 50;
-      stroke(c, "#bfd5ca55", 1, [
+      stroke(c, weather.night>.5?"#b8cbe355":weather.sun>.5?"#ebc69777":"#bfd5ca55", 1, [
         [x, 329 + (i % 5) * 5],
         [x + 23, 329 + (i % 5) * 5],
       ]);
@@ -568,7 +571,7 @@ export function drawLivingWorld(
       "finish",
     ].includes(zone.scene)
   )
-    drawTransit(c, w, camera, t, bay, quiet);
+    drawTransit(c, w, camera, t, bay, quiet, weather);
   // Trees occupy the street plane; canopies above the gameplay silhouette.
   for (const { id, x } of cells(camera, w, 0.48, mobile ? 470 : 330)) {
     const y = 366;
@@ -579,9 +582,10 @@ export function drawLivingWorld(
       [x + 7, 279],
     ]);
     if (bay) {
-      ellipse(c, x - 4, 299, 25, 27, "#647f7166");
-      ellipse(c, x + 12, 283, 18, 26, "#80968188");
-      ellipse(c, x - 16, 285, 15, 22, "#7b948177");
+      const sway=quiet?0:Math.sin(t*1.8+id)*(weather.wind??.3)*3;
+      ellipse(c, x - 4+sway, 299, 25, 27, "#647f7166");
+      ellipse(c, x + 12+sway, 283, 18, 26, "#80968188");
+      ellipse(c, x - 16+sway, 285, 15, 22, "#7b948177");
     } else {
       for (const d of [-1, 1]) {
         stroke(c, "#67717c", 2, [
@@ -621,6 +625,8 @@ export function drawLivingWorld(
     mobile ? 600 : 340,
   )) {
     const s = animalState(bay ? "cat" : "raccoon", id, t, quiet);
+    if(weather.rain>.35)s.name=bay?'sleep':'peek';
+    if(!bay&&weather.snow>.5)s.name='peek';
     const move =
       s.name === "walk"
         ? Math.sin(s.phase * Math.PI) ** 2 * 55
@@ -629,6 +635,7 @@ export function drawLivingWorld(
           : 0;
     c.save();c.translate(x+move,369);
     if(s.name==='walk'&&s.phase>.5)c.scale(-1,1);
+    if(weather.rain>.35){c.fillStyle='#647780';c.fillRect(-28,-36,60,4);c.fillRect(-26,-32,3,32);c.fillRect(28,-32,3,32);}
     if (bay) drawCat(c,0,0,CAT_COATS[mod(id,5)],s.name,s.phase,.73);
     else drawRaccoon(c,0,0,s.name,s.phase,.7);
     c.restore();
@@ -640,7 +647,7 @@ export function drawLivingWorld(
     drawBird(
       c,
       x,
-      100 + (i % 4) * 24,
+      100 + (i % 4) * 24 - (weather.rain||0)*22,
       i % 3 === 0 ? "gull" : i % 3 === 1 ? "pigeon" : "small",
       t + i,
     );
@@ -664,7 +671,7 @@ export function drawLivingWorld(
       ]);
     }
   }
-  if (weather.snow > 0 && !quiet) {
+  if (!authoredWeather && weather.snow > 0 && !quiet) {
     const n = Math.floor((mobile ? 25 : 64) * weather.snow);
     for (let i = 0; i < n; i++) {
       const depth = i % 3,
@@ -674,7 +681,7 @@ export function drawLivingWorld(
       ellipse(c, x, y, size, size, "#edf0e07a");
     }
   }
-  if (weather.fog) {
+  if (!authoredWeather && weather.fog) {
     const haze = c.createLinearGradient(0, 200, 0, 365);
     haze.addColorStop(0, "#d5dac500");
     haze.addColorStop(1, `rgba(216,222,205,${weather.fog})`);

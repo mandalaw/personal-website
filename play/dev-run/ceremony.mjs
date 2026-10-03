@@ -1,5 +1,5 @@
-import { flag, tower, billboard } from "./environment.mjs?v=1301110e4474";
-import { cat } from "./world.mjs?v=8426e57ab827";
+import { flag, tower, billboard } from "./environment.mjs?v=01948817634f";
+import { cat } from "./world.mjs?v=dee736397dd9";
 import { drawTrophy, round } from "./scenery.mjs?v=5014aceabc11";
 export const CEREMONY_SECONDS = 16;
 export const CEREMONY_BEATS = Object.freeze([

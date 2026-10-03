@@ -1,4 +1,4 @@
-import { MovementInput } from "./movement.mjs?v=1fa9be477985";
+import { MovementInput } from "./movement.mjs?v=44a7d9e8e468";
 export function bindControls({
   canvas,
   left,
