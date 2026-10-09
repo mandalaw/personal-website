@@ -1,11 +1,11 @@
 import { createDiscovery } from './discovery.mjs?v=b845c79e3f52';
 import { createCompanion } from "./companion.mjs?v=49210b0f4a70";
-import { createImmersive } from "./immersive.mjs?v=caa5acdbaa20";
+import { createImmersive } from "./immersive.mjs?v=e050d774128b";
 import { CEREMONY_SECONDS } from "./ceremony.mjs?v=bb109e40cf33";
 import { speedFor, sceneFor, LONG_WAY, JOURNEY } from "./course.mjs?v=1b77db058418";
-import { Game } from "./engine.mjs?v=fe6df7e85a4b";
+import { Game } from "./engine.mjs?v=446630c70980";
 import { STAGES, HAZARDS, TOOLS, KITS, SECRETS, FINISH } from "./course.mjs?v=1b77db058418";
-import { loadAssets, Renderer } from "./render.mjs?v=ce3f71f9bd39";
+import { loadAssets, Renderer } from "./render.mjs?v=318ab0246136";
 import { Dialogue } from "./dialogue.mjs?v=94da74293e6e";
 import { AudioBus } from "./audio.mjs?v=0c00726a0636";
 import { readRecord, saveRecord } from "./persistence.mjs?v=8b760301279c";
@@ -209,6 +209,7 @@ document.getElementById('journey-duration').textContent=LONG_WAY?'About 3–4 mi
   play.onclick = () => start(false);
 }
 function titleScreen() {
+ if(game.status==='running'||game.status==='paused')if(typeof window!=='undefined')window.dispatchEvent(new CustomEvent('portfolio-game',{detail:{name:'devrun_exited',props:{outcome:'reset'}}}));
   screen.classList.remove("ceremony-screen");
   stopLoop();
   audio.suspend();

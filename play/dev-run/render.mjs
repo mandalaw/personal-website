@@ -4,7 +4,7 @@ import { routeWindow } from "./course.mjs?v=1b77db058418";
 import { viewportPlan } from "./viewport.mjs?v=c77ee2bc882e";
 import { collectibleFrame } from "./collectibles.mjs?v=31db57189395";
 import { turnFrame } from "./locomotion.mjs?v=9390228e9641";
-import { drawRobot } from "./robots.mjs?v=e403c3a2fa85";
+import { drawRobot } from "./robots.mjs?v=16cac10de379";
 import { shadow } from "./living-world.mjs?v=0f11f50945cb";
 import { Camera } from "./camera.mjs?v=7af2e5e82987";
 import {
@@ -17,7 +17,7 @@ import {
   weatherFor,
   stageProgress,
 } from "./course.mjs?v=1b77db058418";
-import { hazardFrame } from "./dynamics.mjs?v=7a11f7da2fdd";
+import { hazardFrame } from "./dynamics.mjs?v=3b14824d1919";
 import { drawCityMotion, drawSurfaceDetails } from "./world.mjs?v=dee736397dd9";
 import { drawCeremony } from "./ceremony.mjs?v=bb109e40cf33";
 import {

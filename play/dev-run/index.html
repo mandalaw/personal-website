@@ -3,7 +3,7 @@
   <head>
     <meta
       http-equiv="Content-Security-Policy"
-      content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' blob:; font-src 'self'; connect-src 'none'; media-src 'none'; frame-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'"
+      content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' blob:; font-src 'self'; connect-src https://us.i.posthog.com; media-src 'none'; frame-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'"
     />
     <meta name="referrer" content="no-referrer" />
     <meta property="og:title" content="Dev Run — Toronto to the Bay" />
@@ -38,8 +38,9 @@
     <script src="/theme-boot.js"></script>
     <link rel="stylesheet" href="./game.css?v=173649a683db" />
     <link rel="stylesheet" href="./immersive.css?v=c6a5cb8969cf">
-    <script type="module" src="./main.mjs?v=fd4fdb0612ba"></script>
-  </head>
+    <script type="module" src="./main.mjs?v=5fc91266888e"></script>
+  <link rel="stylesheet" href="/assets/analytics/privacy.css">
+</head>
   <body class="dev-run-page">
     <a class="skip" href="#game">Skip to game</a>
     <header class="run-header">
@@ -250,5 +251,6 @@
       ><a href="/case-studies/dev-run/">How it was built ↗</a
       ><a href="mailto:dev@mandalawi.ca">Say hello ↗</a>
     </footer>
-  </body>
+  <script type="module" src="/assets/analytics/site.mjs"></script>
+</body>
 </html>

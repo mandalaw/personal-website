@@ -75,7 +75,7 @@ export function updateRobots(game, dt) {
     if (!r.engaged) {
       r.age += dt; // Visible patrols move before the player enters notice range.
       if (lead < 390 && lead > 120) {
-        r.engaged = true;
+        r.engaged = true;if(typeof window!=='undefined')window.dispatchEvent(new CustomEvent('portfolio-game',{detail:{name:'devrun_robot_encounter_started',props:{robot:robotFor(h)}}}));
         r.state = "notice";
         r.age = 0;
       }
