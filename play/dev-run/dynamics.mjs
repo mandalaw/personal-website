@@ -1,4 +1,4 @@
-import { robotFrame } from "./robots.mjs?v=16cac10de379";
+import { robotFrame } from "./robots.mjs?v=e403c3a2fa85";
 import { HAZARDS } from "./course.mjs?v=1b77db058418";
 import { hazardBox } from "./physics.mjs?v=ff700b9e51ad";
 

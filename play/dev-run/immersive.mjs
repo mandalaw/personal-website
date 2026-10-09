@@ -37,22 +37,22 @@ export function createImmersive({shell,canvas,entry,onStart,onSuspend,onResume,o
     onResize();const b=canvas.getBoundingClientRect();lastSize=[Math.round(b.width),Math.round(b.height),landscape].join(':');
   }
   async function enter(){
-    if(state.value!=='PAGE')return;if(typeof window!=='undefined')window.dispatchEvent(new CustomEvent('portfolio-game',{detail:{name:'devrun_fullscreen_requested',props:{}}}));const token=++epoch;change('ENTERING');allowPortrait=false;native=false;resumeAfter=['running','title','won'].includes(status());
+    if(state.value!=='PAGE')return;const token=++epoch;change('ENTERING');allowPortrait=false;native=false;resumeAfter=['running','title','won'].includes(status());
     lockPage();if(status()==='title')onStart();onSuspend();
     // Invoke within the original click activation, before awaiting anything.
     let request;try{const method=shell.requestFullscreen||shell.webkitRequestFullscreen;if(method)request=Promise.resolve(method.call(shell,{navigationUI:'hide'}));}catch{}
     try{if(request)await request;}catch{/* The fixed shell is the supported fallback. */}
     if(token!==epoch){if(fullscreenElement()===shell){try{await (document.exitFullscreen?.()||document.webkitExitFullscreen?.());}catch{}}return;}
-    native=fullscreenElement()===shell;shell.dataset.presentation=native?'fullscreen':'immersive';if(!native)if(typeof window!=='undefined')window.dispatchEvent(new CustomEvent('portfolio-game',{detail:{name:'devrun_fullscreen_rejected',props:{reason:'unavailable'}}}));if(typeof window!=='undefined')window.dispatchEvent(new CustomEvent('portfolio-game',{detail:{name:'devrun_fullscreen_entered',props:{presentation:native?'native':'immersive'}}}));shell.dataset.orientation='manual';
+    native=fullscreenElement()===shell;shell.dataset.presentation=native?'fullscreen':'immersive';shell.dataset.orientation='manual';
     if(native&&screen.orientation?.lock){try{await screen.orientation.lock('landscape');orientationOwned=true;shell.dataset.orientation='locked';}catch{/* Manual rotation remains available. */}}
     if(token!==epoch){if(orientationOwned){try{screen.orientation.unlock();}catch{}orientationOwned=false;}return;}
     measure();if(portrait())guide(true);else if(first)guide(false);else{change('IMMERSIVE');if(resumeAfter)onResume();else sync(status());canvas.focus({preventScroll:true});}
   }
   async function exit(){
-    if(!state.active||state.value==='EXITING')return;const wasPresented=['fullscreen','immersive'].includes(shell.dataset.presentation),previousPresentation=native?'native':'immersive';++epoch;change('EXITING');clearTimeout(timer);resizing=false;panel.hidden=true;onSuspend();
+    if(!state.active)return;++epoch;change('EXITING');clearTimeout(timer);resizing=false;panel.hidden=true;onSuspend();
     if(orientationOwned){try{screen.orientation.unlock();}catch{}orientationOwned=false;}
     if(fullscreenElement()===shell){try{const fn=document.exitFullscreen||document.webkitExitFullscreen;if(fn)await fn.call(document);}catch{}}
-    if(wasPresented&&typeof window!=='undefined')window.dispatchEvent(new CustomEvent('portfolio-game',{detail:{name:'devrun_fullscreen_exited',props:{presentation:previousPresentation}}}));native=false;restorePage();change('PAGE');shell.dataset.presentation='page';shell.dataset.layout='page';onResize();onPause('Your run is paused.');entry.focus({preventScroll:true});
+    native=false;restorePage();change('PAGE');shell.dataset.presentation='page';shell.dataset.layout='page';onResize();onPause('Your run is paused.');entry.focus({preventScroll:true});
   }
   function resize(){
     if(state.value==='ENTERING'||state.value==='EXITING')return;
