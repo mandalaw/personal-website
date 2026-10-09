@@ -1,10 +1,10 @@
 import { routeWindow } from "./course.mjs?v=1b77db058418";
 import { startSlide } from "./locomotion.mjs?v=9390228e9641";
 import { collectibleFrame } from "./collectibles.mjs?v=31db57189395";
-import { updateRobots } from "./robots.mjs?v=e403c3a2fa85";
+import { updateRobots, robotFor } from "./robots.mjs?v=16cac10de379";
 import { horizontal } from "./movement.mjs?v=44a7d9e8e468";
 import { pocketPlatforms, supportFor } from "./platforms.mjs?v=0c0102d1f018";
-import { hazardFrame } from "./dynamics.mjs?v=7a11f7da2fdd";
+import { hazardFrame } from "./dynamics.mjs?v=3b14824d1919";
 import { speedFor, stageProgress } from "./course.mjs?v=1b77db058418";
 import {
   makeCourse,
@@ -97,25 +97,31 @@ export class Game {
   }
   event(type, data = {}) {
     this.events.push({ type, ...data });
+    if(typeof window!=='undefined'){
+     if(type==='route'){const c=this.stats.routes.at(-1);if(c)window.dispatchEvent(new CustomEvent('portfolio-game',{detail:{name:'devrun_route_selected',props:{junction:String(c.junction),choice:c.route}}}));}
+     const map={checkpoint:'devrun_checkpoint_reached',pickup:'devrun_collectible_acquired',win:'devrun_completed'};
+     if(type==='hit'&&data.hazard&&robotFor({type:data.hazard}))window.dispatchEvent(new CustomEvent('portfolio-game',{detail:{name:'devrun_robot_hit',props:{robot:robotFor({type:data.hazard})}}}));
+     if(map[type]){const props=type==='checkpoint'?{checkpoint:String(this.stage??0)}:type==='pickup'?{collectible:data.secret!==null&&data.secret!==undefined?'secret':'tool'}:{mode:this.mode==='planner'?'planner':'adventure',journey:new URLSearchParams(location.search).get('journey')==='long-way'?'long-way':'cinematic'};window.dispatchEvent(new CustomEvent('portfolio-game',{detail:{name:map[type],props}}));}
+    }
   }
   drain() {
     return this.events.splice(0);
   }
   start() {
     if (this.status === "title") {
-      this.status = "running";
+      this.status = "running";if(typeof window!=='undefined')window.dispatchEvent(new CustomEvent('portfolio-game',{detail:{name:'devrun_started',props:{mode:this.mode==='planner'?'planner':'adventure',journey:new URLSearchParams(location.search).get('journey')==='long-way'?'long-way':'cinematic'}}}));
       this.event("stage", { stage: STAGES[0] });
     }
   }
   pause(reason = "Paused") {
     if (this.status !== "running") return;
-    this.status = "paused";
+    this.status = "paused";if(typeof window!=='undefined')window.dispatchEvent(new CustomEvent('portfolio-game',{detail:{name:'devrun_paused',props:{}}}));
     this.input = { axis: 0, duck: false };
     this.event("pause", { reason });
   }
   resume() {
     if (this.status === "paused") {
-      this.status = "running";
+      this.status = "running";if(typeof window!=='undefined')window.dispatchEvent(new CustomEvent('portfolio-game',{detail:{name:'devrun_resumed',props:{}}}));
       this.event("resume");
     }
   }
