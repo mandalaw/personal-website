@@ -11,11 +11,14 @@
  const backdrop=document.createElement('div');backdrop.className='guide-backdrop';backdrop.hidden=true;backdrop.setAttribute('aria-hidden','true');document.body.append(backdrop);
  try{hidden=sessionStorage.getItem('mandalaw-guide-hidden')==='1'}catch{}
  root.dataset.guideReady='true';root.dataset.guideHidden=String(hidden);
- const safeLink=href=>/^\/play\/dev-run\/(?:\?journey=long-way|#(?:instructions|enter-immersive))?$/.test(href)||/^(#[a-z][a-z0-9-]*|\/case-studies\/[a-z-]+\/|\/(?:resume|visuals)\/|\/404\.html|mailto:dev@mandalawi\.ca(?:\?subject=Resume%20request)?|https:\/\/(?:trustai\.mandalawi\.ca\/|www\.linkedin\.com\/in\/devmandalaw|github\.com\/mandalaw))$/.test(href);
+ const professionalLinks=new Set(["/start/","/start/#experience","/start/#education","/start/#projects","/how-it-works/","/how-it-works/#tools","https://github.com/mandalaw/personal-website"]);
+ const safeLink=href=>professionalLinks.has(href)||/^\/play\/dev-run\/(?:\?journey=long-way|#(?:instructions|enter-immersive))?$/.test(href)||/^(#[a-z][a-z0-9-]*|\/case-studies\/[a-z-]+\/|\/(?:resume|visuals)\/|\/404\.html|mailto:dev@mandalawi\.ca(?:\?subject=Resume%20request)?|https:\/\/(?:trustai\.mandalawi\.ca\/|www\.linkedin\.com\/in\/devmandalaw|github\.com\/mandalaw))$/.test(href);
  const icons={best:'work',build:'web',ai:'model',fun:'terminal',resume:'resume',contact:'mail',trustai:'model',gdsc:'web',gis:'map',photo:'camera',study:'education',msse:'education',frontend:'web',backend:'terminal',fullstack:'web',data:'data',integrations:'plug',experience:'work',location:'location',available:'status',projects:'work',worlds:'layers',old:'archive',reversi:'board',secrets:'archive',help:'question',quiet:'status',work:'work',othello:'board',break:'board',visuals:'video'};
  function glyph(name){const ns='http://www.w3.org/2000/svg',svg=document.createElementNS(ns,'svg'),use=document.createElementNS(ns,'use');svg.setAttribute('class','ui-icon');svg.setAttribute('viewBox','0 0 24 24');svg.setAttribute('aria-hidden','true');use.setAttribute('href','#icon-'+name);svg.append(use);return svg}
  function questionButton(item){const b=document.createElement('button');b.type='button';b.textContent=item.q;b.prepend(glyph(icons[item.id]||'question'));b.dataset.guideTopic=item.id;return b}
  function contextualIds(){const path=location.pathname,section=root.dataset.scrollCurrent;
+  if(path.includes('/start/'))return ['best','experience','study','available','resume','contact'];
+  if(path.includes('/how-it-works/'))return ['sitebuild','stack','devrun','backend','testing','privacy'];
   if(path.includes('/resume'))return ['resume','experience','study','msse','available','contact'];
   if(path.includes('/visuals'))return ['visuals','photo','old','fun','best','contact'];
   if(path.includes('trustai')||root.dataset.activeProject==='trustai'&&section==='portfolio')return ['trustai','ai','backend','data','msse','projects'];

@@ -1,0 +1,6 @@
+/* Public integration: accessible footer links and lazy guide entry. Analytics behavior is unchanged. */
+html[data-theme="day"] .privacy-entry{color:#34434c!important;text-decoration:underline!important;text-underline-offset:.2em}
+html[data-theme="night"] .privacy-entry{color:#f2f2ec!important;text-decoration:underline!important;text-underline-offset:.2em}
+.agent-launcher{min-height:44px;padding:.5rem .8rem;border:1px solid currentColor;border-radius:12px;background:#f5f2eb;color:#24313a;font:inherit;cursor:pointer}
+html[data-theme="night"] .agent-launcher{background:#24313a;color:#f5f2eb}
+.agent-launcher:focus-visible{outline:3px solid #fa6771;outline-offset:3px}

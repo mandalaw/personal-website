@@ -1,0 +1,80 @@
+[
+  {
+    "title": "TrustAI",
+    "category": "ai",
+    "text": "Model evaluation, structured output, product requirements and controlled cases.",
+    "url": "/case-studies/trustai/"
+  },
+  {
+    "title": "GDSC application portal",
+    "category": "software",
+    "text": "Team web software: login, registration, React, Express and MongoDB.",
+    "url": "/case-studies/gdsc/"
+  },
+  {
+    "title": "Community Garden analysis",
+    "category": "maps",
+    "text": "GIS layers, site comparison and map reasoning.",
+    "url": "/case-studies/garden/"
+  },
+  {
+    "title": "Dev Run",
+    "category": "software",
+    "text": "Browser game, JavaScript, input, simulation, animation and fullscreen.",
+    "url": "/case-studies/dev-run/"
+  },
+  {
+    "title": "Professional web work",
+    "category": "software",
+    "text": "Web interfaces, Python, SQL and integration experience.",
+    "url": "/case-studies/web-work/"
+  },
+  {
+    "title": "Field Notes",
+    "category": "software",
+    "text": "Requests, systems integration and model evaluation.",
+    "url": "/field-notes/"
+  },
+  {
+    "title": "How this site works",
+    "category": "security",
+    "text": "Consent, anonymous analytics, authentication research and testing.",
+    "url": "/how-it-works/"
+  },
+  {
+    "title": "Decision desk",
+    "category": "security",
+    "text": "Validation, permissions and failure boundaries.",
+    "url": "/engineering-notes/"
+  },
+  {
+    "title": "Evaluation lab",
+    "category": "ai",
+    "text": "Synthetic comparison and human review.",
+    "url": "/labs/evaluation/"
+  },
+  {
+    "title": "Map studio",
+    "category": "maps",
+    "text": "Synthetic weighted site selection.",
+    "url": "/labs/maps/"
+  },
+  {
+    "title": "Integration bench",
+    "category": "software",
+    "text": "API validation, transformation, retry and idempotency.",
+    "url": "/labs/integration/"
+  },
+  {
+    "title": "Experience and education",
+    "category": "software",
+    "text": "Professional history, MS Software Engineering and UofT HBSc.",
+    "url": "/start/"
+  },
+  {
+    "title": "Résumé overview",
+    "category": "software",
+    "text": "Public qualifications and work.",
+    "url": "/resume/"
+  }
+]
