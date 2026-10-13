@@ -172,10 +172,10 @@ export default [
   {
     id: "portfolio-analytics",
     factId: "portfolio",
-    title: "Optional analytics",
+    title: "Analytics and privacy",
     scope: "implementation account",
     statement:
-      "Optional, explicit events wait for analytics consent. GPC and DNT suppress collection. Withdrawal stops future capture. There is no session recording, broad autocapture or identity enrichment. The site remains usable when analytics is blocked.",
+      "Selected analytics events are on by default, with controls on the privacy page. GPC and DNT suppress collection. Withdrawal stops future capture. There is no session recording, broad autocapture or identity enrichment. The site remains usable when analytics is blocked.",
     href: "/how-it-works/",
     pattern: "analytics|collect|tracking|consent|recording|gpc|dnt",
     classification: "SUPPORTED",

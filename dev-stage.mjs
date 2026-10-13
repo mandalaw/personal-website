@@ -11,7 +11,7 @@ export function available(r,items,g=8){const header=document.querySelector('head
 export class Stage {
  constructor(launcher){this.launcher=launcher;this.mark=launcher.querySelector('.dev-character');this.x=0;this.y=0;this.chairX=0;this.plan=null;this.animations=new Set();this.version=0;this.chair=document.createElement('span');this.chair.className='dev-chair';this.chair.setAttribute('aria-hidden','true');this.chair.hidden=true;document.body.append(this.chair);this.chairReady=null;this.chairVisible=false;this.moving=false}
  async prepareChair(){if(!this.chairReady)this.chairReady=import('./images/characters/motion/chair.mjs?v=42ed6c75bc48').then(m=>{this.chair.append(new DOMParser().parseFromString(m.default,'image/svg+xml').documentElement)});return this.chairReady}
- layout(){const compact=compactViewport(),w=compact?44:76,h=compact?50:124,items=obstacles(),header=document.querySelector('header')?.getBoundingClientRect().bottom||64;
+ layout(){const compact=compactViewport(),w=compact?44:54,h=compact?50:88,items=obstacles(),header=document.querySelector('header')?.getBoundingClientRect().bottom||64;
   // Keep a whole motion corridor clear, including the separate chair. No text is crossed.
   if(this.plan&&this.plan.w===w&&this.plan.h===h&&available(box(this.plan.left,this.plan.top,this.plan.width,h),items)){if(!compact&&!this.chairVisible&&this.chairReady){this.chairPosition(this.waypoint('stow'));this.chairVisible=true;this.chair.style.opacity='1'}return true}
   const bottom=innerHeight-h-20,ys=[bottom,header+26,Math.round((header+bottom)/2),bottom-h-20];

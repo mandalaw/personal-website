@@ -1,6 +1,6 @@
-import { resolveFollowUp, publicContext } from "./conversation.mjs";
-import { executeQuestion } from "./executor.mjs";
-import { bindActions } from "./orchestration.mjs";
+import { resolveFollowUp, publicContext } from "./conversation.mjs?v=dd8905c88ff7";
+import { executeQuestion } from "./executor.mjs?v=6a55056f3bbe";
+import { bindActions } from "./orchestration.mjs?v=33aa6c3005c2";
 const element = (tag, text, className) => {
   const e = document.createElement(tag);
   if (text) e.textContent = text;
@@ -241,7 +241,7 @@ export function mount(
               : " evidence items. No model request.")
           : "The guide could not finish. Try again or open the Workshop.";
       } else {
-        const { compareJD, requirementLabel } = await import("./jd.mjs");
+        const { compareJD, requirementLabel } = await import("./jd.mjs?v=61555ca00e52");
         if (own !== generation || abort.signal.aborted) return;
         const compared = compareJD(q);
         if (!compared.ok) throw Error(compared.error);

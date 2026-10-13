@@ -192,7 +192,7 @@ validate exact keys + types + ranges
 require server-validated session
 apply request budget
 use event_id for idempotency
-write once or return a bounded error</pre><p class="quiet">The real server must enforce these boundaries independently. This illustration does not grant authorization.</p></details></div></div><div class="pipeline" id="pipeline"></div><ol id="pipeline-explanation"></ol>${link("Professional integration context", "/resume/")} · ${link("The original failure-handling lab", "/labs/integration/")}`;
+write once or return a bounded error</pre><p class="quiet">The real server must enforce these boundaries independently. This illustration does not grant authorization.</p></details></div></div><div class="pipeline" id="pipeline"></div><ol id="pipeline-explanation"></ol>${link("Professional integration context", "/professional-access/")} · ${link("The original failure-handling lab", "/labs/integration/")}`;
   const draw = () => {
     const r = pipeline($("#api-request").value, $("#api-scenario").value);
     scene(r.status < 300 ? "cable" : "error");
@@ -297,7 +297,7 @@ function transit(s) {
       "An optional portfolio-navigation experiment, separate from the original Dev Run. Move between buildings, then open the place you want to inspect.",
       "Cities organize the story, not employment claims or exact addresses. The full game and ordinary site navigation remain unchanged.",
     ) +
-    `<div class="controls"><button id="city-toronto">Toronto</button><button id="city-bay">Bay Area</button></div><div class="transit-world" tabindex="0" aria-label="Portfolio street. Use left and right arrows, then Enter to visit."><div class="transit-buildings" id="buildings"></div><div class="transit-dude" aria-hidden="true"><svg viewBox="0 0 220 370"><use href="/images/characters/guide/dev.svg#walk-right"></use></svg></div></div><div class="controls">${button("transit-prev", "← Previous building")}${button("transit-next", "Next building →")}<a class="primary" id="transit-enter" href="/resume/">Enter building</a></div><p id="transit-position" role="status"></p>${link("Play the original Dev Run", "/play/dev-run/")} · ${link("Read how the game works", "/case-studies/dev-run/")}`;
+    `<div class="controls"><button id="city-toronto">Toronto</button><button id="city-bay">Bay Area</button></div><div class="transit-world" tabindex="0" aria-label="Portfolio street. Use left and right arrows, then Enter to visit."><div class="transit-buildings" id="buildings"></div><div class="transit-dude" aria-hidden="true"><svg viewBox="0 0 220 370"><use href="/images/characters/guide/dev.svg#walk-right"></use></svg></div></div><div class="controls">${button("transit-prev", "← Previous building")}${button("transit-next", "Next building →")}<a class="primary" id="transit-enter" href="/professional-access/">Enter building</a></div><p id="transit-position" role="status"></p>${link("Play the original Dev Run", "/play/dev-run/")} · ${link("Read how the game works", "/case-studies/dev-run/")}`;
   const draw = () => {
     const list = stops[city];
     $("#buildings").innerHTML = list

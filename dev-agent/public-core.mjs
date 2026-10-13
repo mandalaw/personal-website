@@ -6,7 +6,7 @@ import {
   aliases,
   topics,
   evidenceVersion,
-} from "./catalog.mjs";
+} from "./catalog.mjs?v=fb787761583a";
 import {
   exact,
   text,
@@ -24,7 +24,7 @@ import {
   retrievalIntent,
   contactIntent,
   inquiryNavigation,
-} from "./intent.mjs";
+} from "./intent.mjs?v=2c6c29687acc";
 
 export const publicTools = Object.freeze({
   "career_graph.search": { args: ["query"], kind: "read" },

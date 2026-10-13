@@ -1,9 +1,9 @@
 import {RunTease} from './dev-run-tease.mjs?v=43c22f254e5d';
 import {Behavior,profiles} from './dev-behavior.mjs?v=6ee1b9d2c8fb';
 import {SceneClock,scenes} from './dev-scenes.mjs?v=4d1e80a23e09';
-import {Stage,obstacles,available,compactViewport} from './dev-stage.mjs?v=9ea7f164f68a';
-import {bank} from './dev-prompts.mjs?v=5113586eac2e';
-import * as Targets from './dev-targets.mjs?v=25d36af9a17d';
+import {Stage,obstacles,available,compactViewport} from './dev-stage.mjs?v=b83066dc0de8';
+import {bank} from './dev-prompts.mjs?v=c7a83cfc8c4c';
+import * as Targets from './dev-targets.mjs?v=976579f1c160';
 import * as Motion from './dev-motion.mjs?v=3ca54d15331d';
 'use strict';
 (() => {
@@ -12,6 +12,7 @@ import * as Motion from './dev-motion.mjs?v=3ca54d15331d';
  const mark=launcher.querySelector('.dev-character'),cue=launcher.querySelector('.guide-launch-label'),quietButton=document.getElementById('dev-quiet'),reduced=matchMedia('(prefers-reduced-motion:reduce)');
  const behavior=new Behavior(performance.now()),clock=new SceneClock(),stage=new Stage(launcher);
  const prompt=document.createElement('div');prompt.className='dev-prompt';prompt.hidden=true;prompt.setAttribute('role','group');prompt.setAttribute('aria-label','A small shortcut');document.body.append(prompt);
+ let scrollTimer=0,scrolling=false;
  let timer=0,raf=0,keyboard=false,held=false,quiet=false,lastInput=performance.now(),paused=false,lastContext='',nextTarget=0,target=null,nextLayout=0,shortAction=null,promptUntil=0,count=0,clickCount=0,lastClick=0,reaction=null,lastReaction=0,lastMicroAt=0,readingNextSpeech=performance.now()+30000;
  try{quiet=localStorage.getItem('mandalaw-companion-quiet')==='1';count=Math.max(0,Number(sessionStorage.getItem('mandalaw-live-cues'))||0);behavior.speechRecent=JSON.parse(sessionStorage.getItem('mandalaw-live-lines')||'[]').filter(x=>typeof x==='string').slice(-48)}catch{}
  const reading=()=>/^\/(resume|case-studies)\//.test(location.pathname);
@@ -21,11 +22,11 @@ import * as Motion from './dev-motion.mjs?v=3ca54d15331d';
  const protectedInput=()=>held||document.activeElement?.matches('input,select,textarea')||keyboard&&document.activeElement===launcher;
  function context(){const p=location.pathname,id=root.dataset.scrollCurrent||'about';if(root.dataset.page==='not-found'||p.includes('404'))return'LOST';if(p.includes('/visuals'))return'VISUALS';if(p.includes('/resume'))return'RESUME';if(p.includes('trustai'))return'TRUSTAI';if(p.includes('garden'))return'GIS';if(p.includes('/case-studies/'))return'PORTFOLIO';if(id==='portfolio')return root.dataset.activeProject==='trustai'?'TRUSTAI':root.dataset.activeProject==='gdsc'?'GDSC':['garden','routeability'].includes(root.dataset.activeProject)?'GIS':'PORTFOLIO';return({about:'ENTRY',experience:'ABOUT',services:'WORKBENCH',playground:'SIDE_QUESTS',contact:'CONTACT','site-footer':'FOOTER'})[id]||'ENTRY'}
  const sceneContext=()=>context()==='ENTRY'?'ENTRY_'+(root.dataset.entryMode||'a').toUpperCase():context();
- function state(value){root.dataset.devState=value}
+ function state(value){if(root.dataset.devState!==value)root.dataset.devState=value}
  function hidePrompt(){prompt.hidden=true;promptUntil=0;launcher.dataset.cueVisible='false';launcher.dataset.cueTopic=''}
  function cancel(){clock.cancel();stage.cancel(true);Motion.pose(mark,'stand');root.dataset.devPose='stand';shortAction=null;behavior.interrupted(performance.now());root.dataset.devScene='';root.dataset.devBeat='';hidePrompt()}
  function panelPose(){const panel=document.querySelector('#pocket-guide .dev-character');if(!panel)return;let name=root.dataset.guideGreetingPose||window.PortfolioData?.guide.find(x=>x.id===root.dataset.guideTopic)?.pose||'sit';if(name.startsWith('chair-'))name=name==='chair-think'?'sit-think':'sit';Motion.pose(panel,name)}
- function layout(){raf=0;const ctx=context();root.dataset.devContext=ctx;if(ctx!==lastContext){cancel();lastContext=ctx;Motion.pose(mark,'stand');nextTarget=0}
+ function layout(){raf=0;if(scrolling){stage.hide();state('SCROLL_REST');return}const ctx=context();root.dataset.devContext=ctx;if(ctx!==lastContext){cancel();lastContext=ctx;Motion.pose(mark,'stand');nextTarget=0}
   if(root.dataset.guideOpen==='true'){stage.hide();panelPose();state('OPEN');return}
   if(root.dataset.guideHidden==='true'||document.hidden||modal()||transition()){stage.hide();hidePrompt();state('HIDDEN');return}
   const previous=stage.plan;if(!stage.layout()){state('HIDDEN');return}if(previous&&previous!==stage.plan){clock.cancel();behavior.interrupted(performance.now())}
@@ -50,15 +51,15 @@ import * as Motion from './dev-motion.mjs?v=3ca54d15331d';
  }
  prompt.addEventListener('click',e=>{const b=e.target.closest('button[data-topic]');if(!b)return;const topic=b.dataset.topic;hidePrompt();if(topic==='play-devrun'){location.assign('/play/dev-run/');return}if(topic==='dismiss'){launcher.focus({preventScroll:true});return}window.PocketGuide?.open(topic,launcher)});
  prompt.addEventListener('keydown',e=>{if(e.key==='Escape'){hidePrompt();launcher.focus({preventScroll:true})}});
- function activity(event){if(event?.type==='pointermove')return;lastInput=performance.now();if(!event?.target?.closest?.('.dev-prompt'))hidePrompt();if(['resize','section-settled','deck-commit'].includes(event?.type)){cancel();schedule()}}
+ function activity(event){if(event?.type==='pointermove')return;lastInput=performance.now();if(!event?.target?.closest?.('.dev-prompt'))hidePrompt();if(['resize','section-settled','deck-commit'].includes(event?.type)){if(!scrolling)cancel();schedule()}}
  function queueReaction(event){if(event.target?.closest('.dev-prompt,#pocket-guide'))return;const item=Targets.match(event.target,context());if(item){reaction={item,at:performance.now()+300};if(item.id==='devrun')runHover=true}}
  function preference(value){if(quiet===!!value)return;quiet=!!value;root.dataset.devQuiet=String(quiet);quietButton?.setAttribute('aria-pressed',String(quiet));try{localStorage.setItem('mandalaw-companion-quiet',quiet?'1':'0')}catch{}cancel();if(quiet)Motion.stopAll();schedule()}
  function engage(){runInteractions++;cancel();const now=performance.now();clickCount=now-lastClick<20000?clickCount+1:1;lastClick=now;const i=Math.min(clickCount-1,4);if(runInteractions===2&&!runTease.played)return{line:'There’s a game in here. Want to run it?',pose:'point-right',topic:'devrun'};return {line:['Hey.','Yep?','Still here.','The projects are good too.','All right. One secret.'][i],pose:['wave','curious','shrug','present','peek-right'][i],topic:i===4?'secrets':'help'}}
  function pause(now){if(!paused){clock.pause(now);stage.pause();paused=true}}
  function resume(now){if(paused){clock.resume(now);stage.resume();paused=false}}
  function visibleMicro(){return [...document.querySelectorAll('main .dev-micro,footer .dev-micro')].find(el=>{const r=el.getBoundingClientRect();return r.width&&r.top>64&&r.bottom<innerHeight})}
- function tick(){timer=0;const now=performance.now(),hard=calm()||document.hidden||modal()||transition()||root.dataset.guideHidden==='true',input=protectedInput()||now-lastInput<750,read=reading();
-  if(now>=nextLayout&&!stage.moving&&!clock.name)layout();
+ function tick(){timer=0;const now=performance.now(),hard=calm()||scrolling||document.hidden||modal()||transition()||root.dataset.guideHidden==='true',input=protectedInput()||now-lastInput<750,read=reading();
+  if(!scrolling&&now>=nextLayout&&!stage.moving&&!clock.name)layout();
   if(promptUntil&&now>=promptUntil&&!prompt.contains(document.activeElement))hidePrompt();
   if(hard||input){pause(now);if(hard)hidePrompt();if(calm())Motion.stopAll();
    else if(!document.hidden&&!input&&!transition()&&root.dataset.sceneOpen==='true'){
@@ -88,7 +89,7 @@ import * as Motion from './dev-motion.mjs?v=3ca54d15331d';
  for(const name of ['pointerup','pointercancel'])document.addEventListener(name,e=>{held=false;activity(e)},{passive:true});
  document.addEventListener('keydown',e=>{keyboard=true;activity(e)},true);document.addEventListener('focusin',activity);document.addEventListener('focusout',()=>{lastInput=performance.now()});
  document.addEventListener('pointerover',queueReaction,{passive:true});document.addEventListener('focusin',queueReaction);document.addEventListener('click',queueReaction);
- addEventListener('scroll',()=>{hidePrompt();schedule()},{passive:true});addEventListener('resize',activity);visualViewport?.addEventListener('resize',activity);document.addEventListener('section-settled',activity);document.addEventListener('deck-commit',activity);
+ addEventListener('scroll',()=>{lastInput=performance.now();hidePrompt();if(!scrolling){scrolling=true;pause(lastInput);stage.hide();state('SCROLL_REST')}clearTimeout(scrollTimer);scrollTimer=setTimeout(()=>{scrolling=false;nextLayout=0;schedule()},240)},{passive:true});addEventListener('resize',activity);visualViewport?.addEventListener('resize',activity);document.addEventListener('section-settled',activity);document.addEventListener('deck-commit',activity);
  quietButton?.addEventListener('click',()=>preference(!quiet));quietButton?.setAttribute('aria-pressed',String(quiet));
  new MutationObserver(records=>{if(records.some(r=>['data-guide-open','data-scene-open','data-guide-hidden','data-motion'].includes(r.attributeName))){cancel();if(modal()||calm())Motion.stopAll();if(root.dataset.sceneOpen==='true'){const figure=document.querySelector('.scene-guide'),kind=document.getElementById('scene-panel')?.dataset.scene;const pose=kind==='game'?'game-piece':({trustai:'tablet',gdsc:'terminal',garden:'map',routeability:'map',original:'archive',othello:'game-piece'})[root.dataset.activeProject]||'wave';Motion.pose(figure,pose)}}if(records.some(r=>r.attributeName==='data-theme')){reaction={item:chooseTarget('theme'),at:performance.now()+350};if(!reaction.item)reaction=null}schedule()}).observe(root,{attributes:true,attributeFilter:['data-theme','data-guide-open','data-guide-topic','data-scene-open','data-guide-hidden','data-scroll-state','data-scroll-current','data-active-project','data-motion','data-entrance-state','data-entry-mode','data-entry-transition']});
  const menu=document.querySelector('.menu-icon');if(menu)new MutationObserver(()=>{cancel();schedule()}).observe(menu,{attributes:true,attributeFilter:['aria-expanded']});

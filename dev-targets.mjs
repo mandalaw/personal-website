@@ -14,7 +14,7 @@ export const targets=Object.freeze([
  {id:'archive',selector:'a[href="/case-studies/original-portfolio/"]',contexts:['SIDE_QUESTS','FOOTER','PORTFOLIO'],pose:'archive',prompt:'Old me lives there.',priority:3},
  {id:'email',selector:'a[href="mailto:dev@mandalawi.ca"]',contexts:['CONTACT','FOOTER','RESUME'],pose:'envelope',prompt:'Say hi.',priority:5,effect:'plane'},
  {id:'resume-email',selector:'a[href="mailto:dev@mandalawi.ca?subject=Resume%20request"]',contexts:['RESUME'],pose:'handoff',prompt:'Ask for the PDF.',priority:4},
- {id:'resume',selector:'a[href="/resume/"]',contexts:['ENTRY','ABOUT','CONTACT','FOOTER','LOST'],pose:'handoff',prompt:'Straight to business?',priority:3},
+ {id:'resume',selector:'a[href="/professional-access/"]',contexts:['ENTRY','ABOUT','CONTACT','FOOTER','LOST'],pose:'handoff',prompt:'Straight to business?',priority:3},
  {id:'build',selector:'[data-cap="build"],[data-entry-tool="build"]',contexts:['ENTRY','WORKBENCH'],pose:'terminal',prompt:'Open the toolbox.',priority:4},
  {id:'connect',selector:'[data-cap="connect"],[data-entry-tool="connect"]',contexts:['ENTRY','WORKBENCH'],pose:'cable',prompt:'Connect a few things.',priority:4},
  {id:'test',selector:'[data-cap="test"],[data-entry-tool="test"]',contexts:['ENTRY','WORKBENCH'],pose:'tablet',prompt:'Check the result.',priority:4},

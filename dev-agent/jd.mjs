@@ -1,4 +1,4 @@
-import { byId } from "./catalog.mjs";
+import { byId } from "./catalog.mjs?v=fb787761583a";
 import { normalized, instructionLike } from "./contracts.mjs";
 import { degreePattern, educationAssessment } from "./degree.mjs";
 

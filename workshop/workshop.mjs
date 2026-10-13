@@ -7,7 +7,7 @@ import {
   packet,
   search,
   graphLayout,
-} from "./evidence-core.mjs";
+} from "./evidence-core.mjs?v=aa6c2449610d";
 import {
   esc,
   $,
@@ -61,14 +61,23 @@ const pose = {
   terminal: "laptop",
   inquiry: "envelope",
 };
-function dude(id) {
-  const d = $(".workshop-dude");
-  d.dataset.pose = pose[id] || "stand";
-  $("use", d).setAttribute(
-    "href",
-    "/images/characters/guide/dev.svg#" + (pose[id] || "stand"),
-  );
+let stationPreview=null;
+let poseAnimations=[];
+function paintDude(next) {
+  const d=$('.workshop-dude'), current=$('svg:not(.pose-outgoing)',d);
+  if(d.dataset.pose===next)return;
+  poseAnimations.forEach(a=>a.cancel());poseAnimations=[];
+  d.querySelectorAll('.pose-outgoing').forEach(n=>n.remove());
+  const reduced=matchMedia('(prefers-reduced-motion:reduce)').matches||document.documentElement.dataset.motion==='reduce';
+  const previous=current.cloneNode(true);previous.classList.add('pose-outgoing');
+  d.dataset.pose=next;$('use',current).setAttribute('href','/images/characters/guide/dev.svg#'+next);
+  if(reduced)return;
+  d.append(previous);
+  const exit=previous.animate([{opacity:1},{opacity:0}],{duration:180,easing:'ease-out'});
+  const enter=current.animate([{opacity:0},{opacity:1}],{duration:180,easing:'ease-out'});
+  poseAnimations=[exit,enter];exit.finished.then(()=>previous.remove()).catch(()=>previous.remove());
 }
+function dude(id) {if(!stationPreview)paintDude('stand');}
 function setTheme(v) {
   document.documentElement.dataset.theme = v;
   $("#theme").setAttribute(
@@ -135,7 +144,7 @@ function drawMissions() {
       "A SHORT TOUR",
       "What are you trying to figure out?",
       "Choose a question. Take two to five evidence stops, then decide where to go next.",
-      "These are fixed routes through supported work. No tracking or inferred personalization.",
+      "These are fixed routes through supported work. No inferred personalization; you choose the route.",
     ) +
     `<div class="mission-menu">${missions.map((m) => button("", m.title + " ↗", `data-mission="${m.id}"`)).join("")}</div><div id="mission-content"></div>`;
   $$("[data-mission]").forEach(
@@ -151,7 +160,7 @@ function drawMissions() {
 function drawStop() {
   const n = graph.nodes.find((n) => n.id === mission.stops[step]);
   $("#mission-content").innerHTML =
-    `<hr><p class="eyebrow">${esc(mission.title)} · STOP ${step + 1} OF ${mission.stops.length}</p><div class="mission-progress" aria-hidden="true">${mission.stops.map((_, i) => `<span class="${i <= step ? "done" : ""}"></span>`).join("")}</div><div class="mission-stage">${evidence(n, graph)}<div class="controls">${button("mission-prev", "Previous", step === 0 ? "disabled" : "")}${step < mission.stops.length - 1 ? button("mission-next", "Next evidence stop →") : link(mission.next === "resume" ? "Open résumé" : "Keep exploring", mission.next === "resume" ? "/resume/" : "#" + mission.next)}</div></div>`;
+    `<hr><p class="eyebrow">${esc(mission.title)} · STOP ${step + 1} OF ${mission.stops.length}</p><div class="mission-progress" aria-hidden="true">${mission.stops.map((_, i) => `<span class="${i <= step ? "done" : ""}"></span>`).join("")}</div><div class="mission-stage">${evidence(n, graph)}<div class="controls">${button("mission-prev", "Previous", step === 0 ? "disabled" : "")}${step < mission.stops.length - 1 ? button("mission-next", "Next evidence stop →") : link(mission.next === "resume" ? "Request résumé" : "Keep exploring", mission.next === "resume" ? "/professional-access/" : "#" + mission.next)}</div></div>`;
   on("#mission-next", "click", () => {
     step++;
     drawStop();
@@ -163,7 +172,7 @@ function drawStop() {
     drawStop();
   });
   on("#mission-save", "click", async () => {
-    const mod = await import("./member.mjs");
+    const mod = await import("./member.mjs?v=56513603dd94");
     await mod.remember("mission", mission.id);
   });
 }
@@ -372,7 +381,7 @@ function drawCareer() {
       "EXPERIENCE & EDUCATION",
       "The work behind the tools.",
       "Software, professional systems work and spatial analysis meet here. Each story keeps its original scope.",
-      "Full role descriptions and date ranges are also available in the résumé overview. Team projects remain separate from employment.",
+      "Full role descriptions and date ranges are also available in the professional overview. Team projects remain separate from employment.",
     ) +
     graph.nodes
       .filter((n) => ["ROLE", "EDUCATION"].includes(n.type))
@@ -381,7 +390,7 @@ function drawCareer() {
           `<div class="career-line"><span>${esc(n.period || "")}</span><div>${evidence(n, graph)}</div></div>`,
       )
       .join("") +
-    link("Full résumé overview", "/resume/");
+    link("Full professional overview", "/professional-access/");
 }
 function drawNotes() {
   const notes = graph.nodes.filter((n) => n.type === "FIELD_NOTE");
@@ -425,7 +434,7 @@ function drawNotes() {
         (b.onclick = async () => {
           try {
             await (
-              await import("./member.mjs")
+              await import("./member.mjs?v=56513603dd94")
             ).remember("note", b.dataset.saveNote);
           } catch (e) {
             status(e.message);
@@ -460,7 +469,7 @@ function drawPacket() {
       "Choose the interests that matter. This packet is assembled from the same evidence graph, with the contribution boundaries intact.",
       "Public browser and print views need no account. No private document is published.",
     ) +
-    `<fieldset class="no-print"><legend>Interests</legend><div class="controls">${["backend", "ai", "gis", "frontend", "data", "integration"].map((t) => `<label class="check-row"><input type="checkbox" name="interest" value="${t}" ${selectedInterests.includes(t) ? "checked" : ""}>${esc(t.toUpperCase())}</label>`).join("")}</div></fieldset><div class="controls">${button("packet-print", "Print / save as PDF")}${link("Résumé overview", "/resume/")}</div><p class="quiet no-print">For a clean PDF, turn off browser headers and footers in the print options.</p><div id="packet-output"></div>`;
+    `<fieldset class="no-print"><legend>Interests</legend><div class="controls">${["backend", "ai", "gis", "frontend", "data", "integration"].map((t) => `<label class="check-row"><input type="checkbox" name="interest" value="${t}" ${selectedInterests.includes(t) ? "checked" : ""}>${esc(t.toUpperCase())}</label>`).join("")}</div></fieldset><div class="controls">${button("packet-print", "Print / save as PDF")}${link("Professional overview", "/professional-access/")}</div><p class="quiet no-print">For a clean PDF, turn off browser headers and footers in the print options.</p><div id="packet-output"></div>`;
   const draw = () => {
     selectedInterests = $$("input[name=interest]:checked").map((n) => n.value);
     if (!selectedInterests.length) {
@@ -470,7 +479,7 @@ function drawPacket() {
     }
     const items = packet(graph, selectedInterests);
     $("#packet-output").innerHTML =
-      `<article class="packet-sheet"><header><p class="eyebrow">SELECTED WORK · ${selectedInterests.join(" / ").toUpperCase()}</p><h2>Ahmed Mandalawi</h2><p>Software developer · systems integration · geospatial work</p><p>${link("Résumé", "/resume/")} · ${link("Email", "mailto:dev@mandalawi.ca")} · ${link("LinkedIn", "https://www.linkedin.com/in/devmandalaw")}</p></header>${items.map((n) => `<section class="packet-entry">${evidence(n, graph)}<p class="quiet packet-reasons">${n.reasons.map((x) => esc(x.topic) + ": " + esc(x.statement)).join("<br>")}</p></section>`).join("")}<p class="quiet">Selected public evidence. Team contributions remain attributed as team work. No client documents or private contact details are included.</p></article>`;
+      `<article class="packet-sheet"><header><p class="eyebrow">SELECTED WORK · ${selectedInterests.join(" / ").toUpperCase()}</p><h2>Ahmed Mandalawi</h2><p>Software developer · systems integration · geospatial work</p><p>${link("Résumé", "/professional-access/")} · ${link("Email", "mailto:dev@mandalawi.ca")} · ${link("LinkedIn", "https://www.linkedin.com/in/devmandalaw")}</p></header>${items.map((n) => `<section class="packet-entry">${evidence(n, graph)}<p class="quiet packet-reasons">${n.reasons.map((x) => esc(x.topic) + ": " + esc(x.statement)).join("<br>")}</p></section>`).join("")}<p class="quiet">Selected public evidence. Team contributions remain attributed as team work. No client documents or private contact details are included.</p></article>`;
   };
   $$("input[name=interest]").forEach(
     (n) =>
@@ -482,7 +491,7 @@ function drawPacket() {
   on("#packet-print", "click", () => window.print());
   on("#packet-save", "click", async () => {
     if (!selectedInterests.length) throw Error("Choose an interest first.");
-    await (await import("./member.mjs")).remember("packet", selectedInterests);
+    await (await import("./member.mjs?v=56513603dd94")).remember("packet", selectedInterests);
   });
   draw();
 }
@@ -521,8 +530,8 @@ async function render() {
     try {
       const mod = await import(
         ["passport", "inquiry", "resources"].includes(active)
-          ? "./member.mjs"
-          : "./labs.mjs"
+          ? "./member.mjs?v=56513603dd94"
+          : "./labs.mjs?v=f6b43f2f8fa7"
       );
       if (token === generation) await mod.render(active, station, graph);
     } catch {
@@ -588,3 +597,29 @@ addEventListener("afterprint", () => {
     if (a.isConnected) a.setAttribute("href", href);
   printLinks = [];
 });
+
+// One preview owner for the original scene and its compact station menu.
+const heroDude=$('.workshop-dude'), stationLinks=[...document.querySelectorAll('.workbench a,.station-rail a')];
+let previewTimer=0,leaveTimer=0;
+function previewStation(link){
+ const id=link.hash.slice(1);if(!Object.hasOwn(names,id))return;
+ clearTimeout(leaveTimer);
+ if(stationPreview?.hash===link.hash){stationPreview=link;return;}
+ stationPreview=link;heroDude.dataset.selection=id;
+ stationLinks.forEach(a=>a.toggleAttribute('data-preview',a.hash===link.hash));
+ const object=stationLinks.find(a=>a.closest('.workbench')&&a.hash===link.hash)||link;
+ const b=object.getBoundingClientRect(),r=heroDude.getBoundingClientRect();
+ paintDude(b.left+b.width/2<r.left+r.width/2?'point-left':'point-right');
+}
+function restPreview(){clearTimeout(previewTimer);clearTimeout(leaveTimer);leaveTimer=setTimeout(()=>{stationPreview=null;heroDude.removeAttribute('data-selection');stationLinks.forEach(a=>a.removeAttribute('data-preview'));paintDude('stand')},180)}
+for(const a of stationLinks){
+ a.addEventListener('pointerenter',e=>{if(e.pointerType==='touch')return;clearTimeout(previewTimer);clearTimeout(leaveTimer);previewTimer=setTimeout(()=>previewStation(a),90)});
+ a.addEventListener('pointerleave',()=>{if(document.activeElement!==a)restPreview()});
+ a.addEventListener('focus',()=>{clearTimeout(previewTimer);previewStation(a)});
+ a.addEventListener('blur',restPreview);
+ a.addEventListener('pointerdown',e=>{if(e.pointerType==='touch')previewStation(a)},{passive:true});
+ a.addEventListener('click',()=>{clearTimeout(previewTimer);previewStation(a);$('.station-menu').open=false});
+}
+const stationMenu=$('.station-menu');
+stationMenu.addEventListener('keydown',e=>{if(e.key==='Escape'&&stationMenu.open){stationMenu.open=false;$('summary',stationMenu).focus();restPreview();}});
+document.addEventListener('pointerdown',e=>{if(stationMenu.open&&!stationMenu.contains(e.target)){stationMenu.open=false;restPreview();}},{passive:true});

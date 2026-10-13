@@ -1,4 +1,4 @@
-import graph from "../workshop/graph-data.mjs";
+import graph from "../workshop/graph-data.mjs?v=309dec988448";
 
 // Authored evidence is the only source of career statements. A model may choose
 // IDs; it may not replace these statements, classifications or destinations.
@@ -99,8 +99,8 @@ export const actions = Object.freeze({
     station: "packet",
   },
   resume: {
-    label: "Read the public résumé overview",
-    href: "/resume/",
+    label: "Read the public professional overview",
+    href: "/professional-access/",
     pose: "drawer",
   },
   access: {

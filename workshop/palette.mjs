@@ -1,6 +1,6 @@
-import { search } from "./evidence-core.mjs";
+import { search } from "./evidence-core.mjs?v=aa6c2449610d";
 import { esc } from "./ui.mjs";
-import graph from "./graph-data.mjs";
+import graph from "./graph-data.mjs?v=309dec988448";
 const stations = Object.entries({
   missions: "Recruiter missions",
   graph: "Career graph",
@@ -52,7 +52,7 @@ const draw = () => {
           `<p><a style="color:#912b37;display:inline-block;min-height:32px" href="${esc(node.href)}">${esc(node.label)}</a><br><small>${esc(node.type)}</small></p>`,
       )
       .join("") +
-    '<p><a style="color:#912b37" href="/workshop/">Open The Workshop</a> · <a style="color:#912b37" href="/resume/">Résumé</a> · <a style="color:#912b37" href="/#contact">Contact</a></p>';
+    '<p><a style="color:#912b37" href="/workshop/">Open The Workshop</a> · <a style="color:#912b37" href="/professional-access/">Résumé access</a> · <a style="color:#912b37" href="/#contact">Contact</a></p>';
 };
 dialog.querySelector("#global-close").onclick = () => dialog.close();
 let previousFocus;

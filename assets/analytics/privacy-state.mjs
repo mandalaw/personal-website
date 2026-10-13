@@ -1,4 +1,4 @@
-export const STATES=Object.freeze(['UNDECIDED','ACCEPTED','DECLINED','WITHDRAWN','PRIVACY_SIGNAL_SUPPRESSED']);
+export const STATES=Object.freeze(['DEFAULT_ON','UNDECIDED','ACCEPTED','DECLINED','WITHDRAWN','PRIVACY_SIGNAL_SUPPRESSED']);
 export const CHOICE_KEY='mandalaw.analytics.choice.v1',SESSION_KEY='mandalaw.analytics.session.v2',BROWSER_KEY='mandalaw.analytics.browser.v1',QA_KEY='mandalaw.analytics.qa.v1';
 const uuidPattern=/^[0-9a-f]{8}-[0-9a-f]{4}-[47][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/;
 const idleLimit=30*60*1000,sessionLimit=24*60*60*1000,choiceLimit=180*86400000;
@@ -8,16 +8,16 @@ export function sessionUUID(now,random=crypto.randomUUID()){
  return `${time.slice(0,8)}-${time.slice(8)}-7${random.slice(15,18)}-${random.slice(19)}`;
 }
 export class PrivacyState {
- constructor({storage,session,signals=()=>({}),clock=()=>Date.now(),uuid=()=>crypto.randomUUID(),changed=()=>{}}={}){
-  Object.assign(this,{storage,session,signals,clock,uuid,changed});this.state='UNDECIDED';this.epoch=0;this.id=null;this.last=0;this.started=0;this.revision=0;this.initial=true;this.sequence=0;this.refresh();this.initial=false;
+ constructor({storage,session,defaultOn=false,signals=()=>({}),clock=()=>Date.now(),uuid=()=>crypto.randomUUID(),changed=()=>{}}={}){
+  Object.assign(this,{storage,session,defaultOn,signals,clock,uuid,changed});this.state='UNDECIDED';this.epoch=0;this.id=null;this.last=0;this.started=0;this.revision=0;this.initial=true;this.sequence=0;this.refresh();this.initial=false;
  }
- read(){try{const c=JSON.parse(this.storage.getItem(CHOICE_KEY));return c&&['ACCEPTED','DECLINED','WITHDRAWN'].includes(c.state)&&Number.isFinite(c.at)&&this.clock()-c.at<choiceLimit&&this.clock()>=c.at?c:null;}catch{return null;}}
+ read(){try{const c=JSON.parse(this.storage.getItem(CHOICE_KEY));return c&&['ACCEPTED','DECLINED','WITHDRAWN'].includes(c.state)&&Number.isFinite(c.at)&&(c.state!=='ACCEPTED'||this.clock()-c.at<choiceLimit)&&this.clock()>=c.at?c:null;}catch{return null;}}
  blocked(){const s=this.signals();return !!(s.gpc||s.dnt);}
  refresh(){
   if(this.id&&(this.clock()-this.last>=idleLimit||this.clock()-this.started>=sessionLimit||this.clock()<this.last)){this.epoch++;this.clearSession();this.changed(this.state);}
-  const c=this.read(),next=this.failedChoice?'UNDECIDED':this.blocked()?'PRIVACY_SIGNAL_SUPPRESSED':c?.state||'UNDECIDED',revision=c?.at||0;
-  if(next!==this.state||revision!==this.revision){this.state=next;this.revision=revision;this.epoch++;if(!(this.initial&&next==='ACCEPTED'))this.clearSession();this.changed(next);}
-  if(next!=='ACCEPTED')this.clearIdentifiers();
+  const c=this.read(),next=this.failedChoice?'UNDECIDED':this.blocked()?'PRIVACY_SIGNAL_SUPPRESSED':c?.state||(this.defaultOn?'DEFAULT_ON':'UNDECIDED'),revision=c?.at||0;
+  if(next!==this.state||revision!==this.revision){this.state=next;this.revision=revision;this.epoch++;if(!(this.initial&&['ACCEPTED','DEFAULT_ON'].includes(next)))this.clearSession();this.changed(next);}
+  if(!['ACCEPTED','DEFAULT_ON'].includes(next))this.clearIdentifiers();
   if(next==='PRIVACY_SIGNAL_SUPPRESSED'&&c?.state==='ACCEPTED')this.write('WITHDRAWN');
   return this.state;
  }
@@ -25,7 +25,7 @@ export class PrivacyState {
  choose(state){if(!['ACCEPTED','DECLINED','WITHDRAWN'].includes(state))return false;if(!this.write(state)){this.failedChoice=true;this.state='UNDECIDED';this.epoch++;this.clearIdentifiers();this.changed(this.state);return false;}this.failedChoice=false;this.refresh();return this.state==='ACCEPTED';}
  clearSession(){this.id=null;this.last=0;this.started=0;this.sequence=0;try{this.session.removeItem(SESSION_KEY);this.session.removeItem('mandalaw.analytics.session.v1');}catch{}}
  clearIdentifiers(){this.clearSession();try{this.storage.removeItem(BROWSER_KEY);this.session.removeItem(QA_KEY);}catch{}}
- allowed(){return this.refresh()==='ACCEPTED';}
+ allowed(){return ['ACCEPTED','DEFAULT_ON'].includes(this.refresh());}
  browserId(){
   if(!this.allowed())return null;
   try{const saved=JSON.parse(this.storage.getItem(BROWSER_KEY));if(saved?.revision===this.revision&&uuidPattern.test(saved.id))return saved.id;

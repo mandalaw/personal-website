@@ -1,10 +1,10 @@
-import { selectProofDetails } from "./proof-details.mjs";
+import { selectProofDetails } from "./proof-details.mjs?v=210de4f933b2";
 import {
   planQuestion,
   validatePlan,
   materialize,
   tool,
-} from "./public-core.mjs";
+} from "./public-core.mjs?v=d1dfc7ade722";
 import { unique, limits } from "./contracts.mjs";
 
 // The planner can select capabilities, not code. These calls only resolve public

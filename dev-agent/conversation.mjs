@@ -1,4 +1,4 @@
-import { aliases, byId } from "./catalog.mjs";
+import { aliases, byId } from "./catalog.mjs?v=fb787761583a";
 import {
   normalized,
   instructionLike,
@@ -8,7 +8,7 @@ import {
   consequential,
   limits,
 } from "./contracts.mjs";
-import { planQuestion } from "./public-core.mjs";
+import { planQuestion } from "./public-core.mjs?v=d1dfc7ade722";
 
 // Memory contains reviewed public IDs and a small depth counter, never raw chat.
 const followUp =

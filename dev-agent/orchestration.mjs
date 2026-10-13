@@ -1,4 +1,4 @@
-import {actions} from './catalog.mjs';
+import {actions} from './catalog.mjs?v=fb787761583a';
 const scenes=Object.freeze({graph:'inspect',career:'shelf',arena:'output',maps:'inspect',api:'cable',design:'notebook',notes:'drawer',missions:'walk',packet:'carry',interview:'shelf'});
 export function authoredAction(id){
   if(typeof id!=='string'||!Object.hasOwn(actions,id))return null;

@@ -186,8 +186,8 @@ export function terminal(g, raw) {
   if (ids[q]) return { nodes: nodes(ids[q]) };
   if (q === "resume")
     return {
-      lines: ["The résumé overview is public."],
-      links: [{ label: "Résumé", href: "/resume/" }],
+      lines: ["The professional overview is public."],
+      links: [{ label: "Résumé", href: "/professional-access/" }],
     };
   if (q === "contact")
     return {

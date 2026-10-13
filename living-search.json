@@ -38,7 +38,7 @@
   {
     "title": "How this site works",
     "category": "security",
-    "text": "Consent, anonymous analytics, authentication research and testing.",
+    "text": "Privacy choices, anonymous analytics, authentication research and testing.",
     "url": "/how-it-works/"
   },
   {
@@ -72,9 +72,9 @@
     "url": "/start/"
   },
   {
-    "title": "Résumé overview",
+    "title": "Professional overview",
     "category": "software",
     "text": "Public qualifications and work.",
-    "url": "/resume/"
+    "url": "/start/"
   }
 ]

@@ -1,5 +1,5 @@
 import { $, esc, evidence, theme } from "./ui.mjs";
-import { answer, compareJD } from "./guide-core.mjs";
+import { answer, compareJD } from "./guide-core.mjs?v=966626e075bf";
 theme();
 function ask(q) {
   const d = answer(q);

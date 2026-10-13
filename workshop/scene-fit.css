@@ -1,0 +1,97 @@
+/* Responsive constraints for the original, absolutely positioned Workshop scene.
+   The authored object artwork, rotations, materials and depth remain in workshop.css. */
+:root{--ws-header-height:91px;font-family:Kumbh,Arial,sans-serif}
+.workshop-overview{min-height:calc(100svh - var(--ws-header-height));display:flex;flex-direction:column;justify-content:center;padding:18px 0 20px;gap:12px}
+.workshop-intro{padding:0;gap:32px;align-items:center}
+.workshop-intro h1{font-size:clamp(36px,min(4.7vw,7vh),64px);margin:10px 0 14px}
+.workshop-intro p{font-size:clamp(13px,1.15vw,16px);line-height:1.5;margin:8px 0 14px}
+.workshop-intro .eyebrow{font-size:11px;line-height:1.4;margin:0 0 10px}
+.intro-aside{width:32%;max-width:320px;flex-shrink:0;text-align:right}
+.handwritten{font-size:clamp(19px,2vw,26px);margin:0 18px 16px}
+.intro-aside .primary{font-size:13px;padding:10px 14px;min-height:44px}
+.access-context{position:relative;margin-top:10px;font-size:12px;color:var(--muted)}
+.access-context summary{cursor:pointer;padding:4px 0}
+.access-context p{position:absolute;right:0;top:100%;z-index:8;width:280px;max-width:80vw;padding:14px;background:var(--panel);border:1px solid var(--line);border-radius:10px;box-shadow:var(--shadow);text-align:left;font-size:13px;margin:2px 0}
+.workbench{height:clamp(265px,43svh,390px);flex:none;margin:0;border-bottom:0}
+.equipment strong{font-size:11px;line-height:1.35;margin-top:10px}
+.monitor{bottom:78px}
+.equipment-screen{padding:12px;border-width:7px;border-bottom-width:12px}
+.mini-network{height:clamp(50px,10svh,86px);font-size:20px}
+.equipment-screen>span:last-child{font-size:8px;letter-spacing:.1em}
+.blueprint{bottom:48px}
+.map-paper{height:clamp(86px,16svh,132px)}
+.terminal-object{top:18px}
+.notebook{top:24px}
+.notebook>span{padding:18px 10px 15px 18px;font-size:19px}
+.notebook small{margin-top:12px}
+.server-object{bottom:61px}
+.server-object i{padding:7px 0;font-size:12px}
+.workshop-dude,.workshop-dude[data-pose]{left:58%;bottom:15px;width:72px;height:122px;transform:none;transition:none;z-index:3}
+.workshop-dude svg{position:absolute;inset:0;filter:drop-shadow(0 6px 4px #0002)}
+.bench-caption{bottom:10px;font-size:17px}
+/* Highlight the original rotated object; do not flatten its authored angle. */
+.workbench .equipment{--object-angle:0deg;transform:rotate(var(--object-angle));transition:transform .24s ease,filter .24s ease}
+.workbench .blueprint{--object-angle:-7deg}
+.workbench .terminal-object{--object-angle:3deg}
+.workbench .notebook{--object-angle:7deg}
+.workbench .equipment:hover,.workbench .equipment:focus-visible,.workbench .equipment[data-preview]{transform:translateY(-4px) rotate(var(--object-angle));filter:drop-shadow(0 8px 7px #0003)}
+.workbench .equipment[data-preview] strong{color:var(--coral)}
+.station-menu{position:relative;align-self:center;z-index:7;margin:0;max-width:100%;font-size:13px}
+.station-menu>summary{cursor:pointer;list-style:none;display:flex;justify-content:space-between;gap:22px;align-items:center;min-height:44px;padding:8px 18px;border:1px solid var(--line);border-radius:24px;background:var(--panel);box-shadow:0 3px 8px #0001}
+.station-menu>summary::-webkit-details-marker{display:none}
+.station-menu>summary span{transition:transform .2s ease}
+.station-menu[open]>summary span{transform:rotate(90deg)}
+.station-menu .station-rail{position:absolute;bottom:calc(100% + 8px);left:50%;transform:translateX(-50%);width:min(600px,calc(100vw - 40px));display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0;padding:12px;border:1px solid var(--line);border-radius:16px;background:var(--panel);box-shadow:0 12px 36px #0003}
+.station-menu:not([open]) .station-rail{display:none}
+.station-menu .station-rail a{min-height:44px;padding:8px 10px;font-size:12px;border-radius:8px}
+.station-menu .station-rail a:hover,.station-menu .station-rail a:focus-visible,.station-menu .station-rail a[data-preview]{background:var(--soft);color:var(--ink)}
+.station{scroll-margin-top:16px}
+@media(min-width:601px) and (max-height:720px){
+ .workshop-overview{padding-block:12px;gap:8px}.workshop-intro h1{font-size:36px;margin:5px 0 8px}.workshop-intro p{margin:5px 0;font-size:13px}.workshop-intro .eyebrow{margin:0;font-size:10px}.workbench{height:270px}.handwritten{font-size:19px;margin-bottom:8px}.mini-network{height:48px}.notebook>span{font-size:16px;padding:14px 8px 12px 13px}.notebook small{margin-top:7px}.equipment-screen{padding:8px}.map-paper{height:85px}.workshop-dude,.workshop-dude[data-pose]{width:59px;height:100px}
+}
+@media(min-width:601px) and (max-width:900px){.ws-header{gap:10px;padding:16px 20px}.wordmark{font-size:22px}.ws-tools button{font-size:12px;padding:8px}.ws-header nav{gap:12px}.ws-header nav a{font-size:12px}.workshop-intro h1{font-size:40px}.intro-aside{width:38%}.workbench{height:340px}.equipment strong{font-size:10px}.notebook small{font-size:9px}.terminal-object>span{font-size:10px;padding:9px}.workshop-dude,.workshop-dude[data-pose]{left:57%;width:67px;height:113px}}
+@media(max-width:600px){
+ :root{--ws-header-height:93px}main{padding:0 16px}
+ .ws-header{height:93px;display:grid;grid-template-columns:1fr auto;grid-template-rows:40px 28px;gap:5px 10px;padding:8px 16px 12px}.wordmark{font-size:22px;gap:7px}.wordmark span{font-size:12px;padding:8px 4px}.ws-header nav{grid-column:1;grid-row:2;order:initial;width:auto;gap:16px;justify-content:flex-start}.ws-header nav a{font-size:11px;min-height:28px}.ws-tools{grid-column:2;grid-row:1/3;display:grid;grid-template-columns:auto auto;gap:4px;margin:0}.ws-tools button{font-size:11px;min-height:40px;padding:6px 9px}.ws-tools .agent-launcher{grid-column:1/-1;min-height:27px;height:27px;padding:3px 7px}
+ .workshop-overview{padding:16px 0 18px;gap:12px}
+ .workshop-intro{display:block;padding:0}
+ .workshop-intro h1{font-size:clamp(27px,8.2vw,36px);margin:6px 0 10px}
+ .workshop-intro p{font-size:13px;line-height:1.45;margin:0 0 12px}
+ .workshop-intro .eyebrow{font-size:9px;margin:0 0 6px}
+ .intro-aside{width:100%;max-width:none;display:grid;grid-template-columns:1fr 1.5fr;gap:4px 12px;align-items:center}
+ .handwritten{display:block;font-size:17px;line-height:1.25;margin:0;transform:rotate(-4deg)}
+ .intro-aside .primary{font-size:11px;line-height:1.3;padding:8px 10px;gap:8px;justify-content:center}
+ .access-context{grid-column:1/-1;justify-self:end;font-size:10px;margin:0}.access-context summary{padding:0;min-height:18px}
+ .workbench{height:clamp(230px,36svh,330px)}
+ .monitor{width:42%;left:3%;top:17px;bottom:auto}.equipment-screen{border-width:5px;border-bottom-width:8px;padding:8px}.mini-network{height:55px;font-size:17px}.equipment-screen>span:last-child{font-size:6px}.monitor:after{bottom:23px;height:15px}
+ .terminal-object{left:auto;right:3%;width:43%;top:14px}.terminal-object>span{font-size:10px;padding:8px;line-height:1.5}
+ .blueprint{left:4%;width:35%;bottom:30px}.map-paper{height:76px;border-width:5px}.map-paper b{font-size:10px}.map-paper i{border-width:13px;inset:-30px 10px}
+ .notebook{width:29%;right:24%;top:44%}.notebook>span{font-size:15px;padding:13px 6px 12px 10px;border-left-width:5px;box-shadow:3px 3px #e5dcd0}.notebook small{font-size:8px;line-height:1.25;margin-top:8px}
+ .server-object{display:block;width:23%;right:2%;bottom:25px;top:auto}.server-object>span{border-width:3px;padding:5px}.server-object i{font-size:9px;padding:5px 0}
+ .equipment strong{font-size:10px;line-height:1.25;margin-top:7px;letter-spacing:0}
+ .workshop-dude,.workshop-dude[data-pose]{left:40%;bottom:4px;width:45px;height:76px;z-index:3}
+ .bench-caption{left:4%;bottom:4px;font-size:12px}.desk-line{bottom:20px;height:10px;border-bottom-width:3px}.pegboard{inset:0 0 14px}
+ .station-menu .station-rail{width:calc(100vw - 32px);padding:7px;grid-template-columns:repeat(2,minmax(0,1fr))}.station-menu .station-rail a{font-size:12px}
+}
+@media(max-width:600px) and (max-height:700px){
+ .workshop-overview{padding:8px 0;gap:6px}.workshop-intro h1{font-size:26px;line-height:1.05;margin:4px 0 7px}.workshop-intro p{font-size:12px;line-height:1.35;margin:0 0 8px}.workshop-intro .eyebrow{font-size:8px;margin:0}.handwritten{font-size:14px}.intro-aside{gap:0 8px}.intro-aside .primary{font-size:10px}.access-context summary{min-height:16px}.workbench{height:226px}.mini-network{height:42px;font-size:15px}.equipment-screen{padding:6px}.notebook{top:39%;width:27%;right:26%}.notebook>span{font-size:13px;padding:10px 5px 9px 8px}.notebook small{font-size:7px;margin-top:5px}.map-paper{height:60px}.server-object i{padding:3px 0}.workshop-dude,.workshop-dude[data-pose]{width:36px;height:61px;left:39%;bottom:3px}.equipment strong{font-size:9px}.station-menu>summary{font-size:12px;min-height:44px}
+}
+@media(prefers-reduced-motion:reduce){.workbench .equipment,.workbench .equipment:hover,.workbench .equipment[data-preview]{transition:none;transform:rotate(var(--object-angle))}.station-menu>summary span{transition:none}}
+html[data-motion=reduce] .workbench .equipment{transition:none;transform:rotate(var(--object-angle))}
+/* Keep secondary access context in the same compact control row. */
+.workshop-controls{display:flex;justify-content:center;align-items:center;gap:18px;min-height:44px}
+.workshop-controls .access-context{margin:0;font-size:11px}
+.workshop-controls .access-context summary{min-height:44px;display:flex;align-items:center;cursor:pointer}
+.workshop-controls .access-context p{top:auto;bottom:100%}
+@media(min-width:601px) and (max-height:800px){.blueprint .map-paper{height:105px}}
+@media(max-width:600px){
+ .workshop-dude,.workshop-dude[data-pose]{left:38.5%;width:37px;height:62px;bottom:4px}
+ .workshop-controls{gap:14px}.workshop-controls .access-context{font-size:10px}.workshop-controls .access-context p{right:0;max-width:calc(100vw - 32px)}
+ .workshop-intro>div>p:not(.eyebrow) br{display:none}
+}
+@media(max-width:600px) and (max-height:700px){
+ .workbench{height:234px}.mini-network{height:38px}.workshop-dude,.workshop-dude[data-pose]{left:39%;width:33px;height:56px;bottom:3px}
+ .workshop-controls{gap:10px}.station-menu>summary{padding-inline:12px}
+}
+@media(max-width:600px){.workshop-dude,.workshop-dude[data-pose]{left:35%}.bench-caption{left:auto;right:4%}}
+@media(max-width:600px) and (max-height:700px){.terminal-object{top:3px}.terminal-object>span{font-size:9px;line-height:1.4;padding:6px}.notebook{top:41%}}

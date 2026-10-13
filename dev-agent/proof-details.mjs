@@ -1,4 +1,4 @@
-import source from "./proof-data.mjs";
+import source from "./proof-data.mjs?v=1115578c3c87";
 import {
   normalized,
   instructionLike,
@@ -7,7 +7,7 @@ import {
   unsupportedPremise,
   consequential,
 } from "./contracts.mjs";
-import { retrievalIntent } from "./intent.mjs";
+import { retrievalIntent } from "./intent.mjs?v=2c6c29687acc";
 export const proofDetails = Object.freeze(
   source.map((row) => Object.freeze(row)),
 );

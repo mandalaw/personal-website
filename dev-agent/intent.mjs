@@ -1,4 +1,4 @@
-import { aliases, topics } from "./catalog.mjs";
+import { aliases, topics } from "./catalog.mjs?v=fb787761583a";
 
 // This only narrows retrieval/navigation. Security and unsupported-claim checks
 // must run on the original question, before any excluded wording is removed.

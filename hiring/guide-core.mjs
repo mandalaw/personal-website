@@ -1,5 +1,5 @@
-import graph from "../workshop/graph-data.mjs";
-import { evidenceFor, packet, topics } from "../workshop/evidence-core.mjs";
+import graph from "../workshop/graph-data.mjs?v=309dec988448";
+import { evidenceFor, packet, topics } from "../workshop/evidence-core.mjs?v=aa6c2449610d";
 export const toolNames = [
   "career_graph.search",
   "projects.lookup",

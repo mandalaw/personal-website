@@ -6,7 +6,7 @@
   const previews = [...document.querySelectorAll('.deck-preview')];
   const keys = panels.map(panel => panel.dataset.project);
   const core = document.querySelector('.deck-core');
-  const compact = matchMedia('(max-width:999px),(max-height:679px),(pointer:coarse),(max-width:1099px) and (max-height:739px)');
+  const compact = matchMedia('(max-width:1099px),(max-height:679px),(pointer:coarse)');
   const reduce = matchMedia('(prefers-reduced-motion:reduce)');
   const state = {phase:'IDLE', current:Math.max(0, keys.indexOf(location.hash.replace('#project-', ''))), target:null, direction:1, queued:null, generation:0};
   let animations = [], resizeFrame;
@@ -25,9 +25,11 @@
   function phase(value) { state.phase = value; publish(); }
   // Visibility, identity, rail and both side previews commit together, before the next paint.
   function commit(index, historyMode = 'replace') {
+    if(panels[state.current]?.contains(document.activeElement))picker?.focus({preventScroll:true});
     state.current = index;
     root.dataset.deckMode = compact.matches ? 'compact' : 'layered';
-    panels.forEach((panel, i) => { panel.hidden = !compact.matches && i !== index; panel.inert = panel.hidden; });
+    if(typeof picker!=='undefined')picker.value=String(index);
+    panels.forEach((panel, i) => { panel.hidden = i !== index; panel.inert = panel.hidden; });
     links.forEach((link, i) => i === index ? link.setAttribute('aria-current','true') : link.removeAttribute('aria-current'));
     document.querySelector('.deck-position').textContent = `${String(index + 1).padStart(2,'0')} / ${String(panels.length).padStart(2,'0')}`;
     previews.forEach(button => {
@@ -63,7 +65,7 @@
     image.loading = 'eager';
     try { await image.decode(); } catch { /* Native alt text remains available on a failed image. */ }
     if (generation !== state.generation) return;
-    if (compact.matches || reduced()) { settle(index, historyMode); return; }
+    if (reduced()) { settle(index, historyMode); return; }
     const outgoing = panels[state.current], incoming = panels[index], direction = state.direction;
     phase('TRANSITION_OUT');
     await Promise.all([
@@ -98,9 +100,9 @@
   function settle(index, historyMode = 'replace') { cancelMotion(); state.target = null; phase('REORDER'); commit(index,historyMode); phase('IDLE'); drain(); }
   function choose(index, focus = true) {
     if (index < 0 || index >= panels.length) return;
-    if (focus) links[index].focus({preventScroll:true});
+    if (focus) picker.focus({preventScroll:true});
     if (state.phase !== 'IDLE') { state.queued = index; publish(); return; }
-    if (compact.matches || reduced()) { settle(index,'push'); if (compact.matches) {if(window.SectionScroll)window.SectionScroll.project(index);else panels[index].scrollIntoView({behavior:reduced()?'instant':'smooth',block:'start'}); panels[index].focus({preventScroll:true});} }
+    if (reduced()) { settle(index,'push'); }
     else run(index);
   }
   links.forEach((link,index) => {
@@ -117,7 +119,7 @@
     const intended = state.queued ?? state.target ?? state.current;
     state.queued = null;
     settle(intended);
-    if (compact.matches) {core.style.height = ''; return;}
+    // Reserve the tallest card so switching does not move the surrounding document.
     // Measure inert, invisible copies; never expose or restyle the real cards.
     let height = 0;
     panels.forEach(panel => {
@@ -127,7 +129,7 @@
       measure.classList.add('deck-measure'); core.append(measure);
       height = Math.max(height, measure.getBoundingClientRect().height); measure.remove();
     });
-    core.style.height = Math.ceil(height) + 'px';
+    core.style.setProperty('--deck-height',Math.ceil(height)+'px');
   }
   addEventListener('popstate',() => {if(window.SectionScroll)return;const index=keys.indexOf(location.hash.replace('#project-',''));if(index>=0){state.queued=null;settle(index);}});
   compact.addEventListener('change',fit); reduce.addEventListener('change',fit);
@@ -143,5 +145,20 @@
     },
     settle: (index) => {state.queued=null;settle(Math.max(0,Math.min(panels.length-1,index)),'none');}
   });
+  const controls=document.createElement('div');controls.className='deck-controls';controls.innerHTML='<button type="button" aria-label="Previous project">← Previous</button><p aria-live="polite" aria-atomic="true"></p><button type="button" aria-label="Next project">Next →</button>';
+  const picker=document.createElement('select');picker.className='deck-picker';picker.setAttribute('aria-label','Choose a project');
+  keys.forEach((key,i)=>{const option=document.createElement('option');option.value=String(i);option.textContent=`${i+1} / ${keys.length} · ${links[i].querySelector('.project-name').textContent}`;picker.append(option);});
+  controls.querySelector('p').after(picker);picker.addEventListener('change',()=>choose(Number(picker.value),false));
+  core.after(controls);const buttons=controls.querySelectorAll('button');
+  const moveBy=delta=>choose((state.current+delta+keys.length)%keys.length,false);
+  buttons[0].onclick=()=>moveBy(-1);buttons[1].onclick=()=>moveBy(1);
+  core.setAttribute('role','region');core.setAttribute('aria-roledescription','carousel');core.setAttribute('aria-label','Selected projects');
+  let swipe=null,suppressClickUntil=0;
+  core.addEventListener('pointerdown',e=>{if(e.pointerType==='touch'||e.pointerType==='pen')swipe={x:e.clientX,y:e.clientY};},{passive:true});
+  core.addEventListener('pointerup',e=>{if(!swipe)return;const dx=e.clientX-swipe.x,dy=e.clientY-swipe.y;swipe=null;if(Math.abs(dx)>=48&&Math.abs(dx)>Math.abs(dy)*1.5){suppressClickUntil=performance.now()+500;moveBy(dx<0?1:-1);}},{passive:true});
+  core.addEventListener('click',e=>{if(performance.now()<suppressClickUntil){e.preventDefault();e.stopImmediatePropagation();}},true);
+  core.addEventListener('pointercancel',()=>swipe=null);
+  core.addEventListener('keydown',e=>{if(e.target.matches('input,textarea,select'))return;if(['ArrowLeft','ArrowRight'].includes(e.key)){e.preventDefault();buttons[e.key==='ArrowLeft'?0:1].focus({preventScroll:true});moveBy(e.key==='ArrowLeft'?-1:1);}});
+  document.addEventListener('deck-commit',()=>controls.querySelector('p').textContent=(state.current+1)+' of '+keys.length+' · '+links[state.current].querySelector('.project-name').textContent);
   root.classList.add('showcase-ready'); fit();
 })();

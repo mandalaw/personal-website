@@ -1,6 +1,7 @@
 'use strict';
 (() => {
   const root=document.documentElement,header=document.querySelector('header'),deck=window.ProjectDeck;
+  root.dataset.sectionInput='native';
   if(!header||!deck||typeof SectionIntent==='undefined')return; // Native document is the failure fallback.
   const q=new URLSearchParams(location.search),reduce=matchMedia('(prefers-reduced-motion:reduce)');
   const curves={
@@ -63,6 +64,7 @@
   function findNested(target){for(let el=target;el&&el!==document.body;el=el.parentElement){if(el.matches?.('input,textarea,select,[contenteditable="true"],dialog,[data-native-scroll]'))return {element:el,always:true};if(/auto|scroll/.test(getComputedStyle(el).overflowY)&&el.scrollHeight>el.clientHeight+2)return {element:el,always:false};}return null;}
   function nestedCanScroll(target,direction,time){if(time-nestedTime>150||nestedTarget!==target){nested=findNested(target);nestedTarget=target;}nestedTime=time;if(!nested)return false;return nested.always||(direction>0?nested.element.scrollTop+nested.element.clientHeight<nested.element.scrollHeight-2:nested.element.scrollTop>1);}
   addEventListener('wheel',event=>{
+    if(root.dataset.sectionInput==='native')return;
     if(!ready||event.defaultPrevented||event.ctrlKey||event.metaKey||event.altKey||!event.deltaY||Math.abs(event.deltaX)>Math.abs(event.deltaY)*.9)return;
     const now=performance.now(),direction=Math.sign(event.deltaY),delta=event.deltaY*(event.deltaMode===1?16:event.deltaMode===2?room:1);
     if(nestedCanScroll(event.target,direction,now))return;
@@ -82,13 +84,13 @@
     if(event.key==='Home'||event.key==='End')go(event.key==='Home'?0:registry.length-1,{source:'keyboard',focus:true});else step(dir,'keyboard');
   });
   // Capturing starts only for fitted pages, one finger, dominant vertical movement, away from edges/controls.
-  addEventListener('touchstart',event=>{touch=null;if(!ready||event.touches.length!==1||visualViewport?.scale>1||event.target.closest('a,button,input,textarea,select,[contenteditable]'))return;const t=event.touches[0];if(t.clientX<24||t.clientX>innerWidth-24)return;touch={x:t.clientX,y:t.clientY,handled:false,target:event.target};},{passive:true});
+  addEventListener('touchstart',event=>{touch=null;if(root.dataset.sectionInput==='native')return;if(!ready||event.touches.length!==1||visualViewport?.scale>1||event.target.closest('a,button,input,textarea,select,[contenteditable]'))return;const t=event.touches[0];if(t.clientX<24||t.clientX>innerWidth-24)return;touch={x:t.clientX,y:t.clientY,handled:false,target:event.target};},{passive:true});
   addEventListener('touchmove',event=>{if(!touch||event.touches.length!==1){touch=null;return;}const t=event.touches[0],dx=touch.x-t.clientX,dy=touch.y-t.clientY;if(touch.handled){if(event.cancelable)event.preventDefault();return;}if(Math.abs(dx)>Math.abs(dy)){touch=null;return;}if(Math.abs(dy)<12)return;const dir=Math.sign(dy);if(nativeRoom(dir)||nestedCanScroll(touch.target,dir,performance.now())||!event.cancelable){touch=null;return;}event.preventDefault();touch.handled=true;if(!busy())step(dir,'touch');},{passive:false});
   for(const type of ['touchend','touchcancel'])addEventListener(type,()=>{touch=null;},{passive:true});
   // Tab escapes to native focus behavior; never snap users back after focus scrolls.
   document.addEventListener('keydown',event=>{if(event.key==='Tab'&&busy())go(state.targetSectionIndex??state.currentSectionIndex,{source:'focus escape',instant:true,historyMode:'none'});},true);
   function destination(hash){const id=hash.replace(/^#/,''),project=deck.snapshot().keys.indexOf(id.replace(/^project-/,''));if(id.startsWith('project-')&&project>=0)return {index:registry.findIndex(s=>s.id==='portfolio'),project,id};const index=registry.findIndex(s=>s.id===id);return index>=0?{index,id}:null;}
-  function route(hash,{instant=false,source='nav',historyMode='push',focus=false}={}){const target=destination(hash);if(!target)return false;if(target.project!==undefined)deck.settle(target.project);let top=null;if(target.project!==undefined&&deck.snapshot().compact){const el=document.getElementById(target.id);top=el.getBoundingClientRect().top+scrollY-headerHeight;}go(target.index,{source,instant,historyMode,focus,hash:target.id,top});return true;}
+  function route(hash,{instant=false,source='nav',historyMode='push',focus=false}={}){const target=destination(hash);if(!target)return false;if(target.project!==undefined)deck.settle(target.project);let top=null;go(target.index,{source,instant,historyMode,focus,hash:target.id,top});return true;}
   document.addEventListener('click',event=>{const link=event.target.closest('a[href^="#"]');if(!link||event.defaultPrevented||event.ctrlKey||event.metaKey||event.shiftKey||event.altKey)return;if(destination(link.hash)){event.preventDefault();intent.reset();route(link.hash,{focus:true});}});
   addEventListener('popstate',()=>{intent.reset();route(location.hash||'#about',{source:'history',historyMode:'none',instant:true});});
   addEventListener('hashchange',()=>{if(!busy())route(location.hash,{source:'hash',historyMode:'none',instant:true});});

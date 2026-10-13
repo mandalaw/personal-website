@@ -16,7 +16,7 @@ const launch = async (returnFocus = document.activeElement) => {
   try {
     if (!palette) {
       loading = true;
-      palette = await import("./palette.mjs");
+      palette = await import("./palette.mjs?v=faf24c6c310f");
     }
     palette.openSearch(returnFocus);
   } catch {
