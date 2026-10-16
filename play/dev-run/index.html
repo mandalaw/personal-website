@@ -27,7 +27,7 @@
       name="viewport"
       content="width=device-width,initial-scale=1,viewport-fit=cover"
     />
-    <meta name="theme-color" content="#1c2231" />
+    <link rel="manifest" href="./dev-run.webmanifest"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="Dev Run"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="theme-color" content="#1c2231" />
     <title>Dev Run — Toronto to the Bay | DEV mandalaw</title>
     <meta
       name="description"
@@ -37,8 +37,8 @@
     <link rel="icon" href="/favicon.svg" />
     <script src="/theme-boot.js"></script>
     <link rel="stylesheet" href="./game.css?v=173649a683db" />
-    <link rel="stylesheet" href="./immersive.css?v=c6a5cb8969cf">
-    <script type="module" src="./main.mjs?v=5fc91266888e"></script>
+    <link rel="stylesheet" href="./immersive.css?v=c1362dee7a42">
+    <script type="module" src="./main.mjs?v=4774e579c620"></script>
   <link rel="stylesheet" href="/assets/analytics/privacy.css?v=9518ae293e56">
 <link rel="stylesheet" href="/account-ui/shell.css?v=6bc4edcb2844"><script type="module" src="/account-ui/shell.mjs?v=603353377e29"></script><link rel="stylesheet" href="/account-ui/auth-panel.css"></head>
   <body class="dev-run-page">
@@ -124,7 +124,7 @@
               </p>
             </div>
           </div>
-          <div class="play-guide" id="play-guide" role="dialog" aria-modal="true" aria-labelledby="guide-title" hidden><div><h2 id="guide-title" tabindex="-1">Rotate for the full run.</h2><p class="guide-message"></p><div class="guide-keys" aria-label="Controls"><span>← → Move</span><span>↑ Jump</span><span>↓ Slide</span></div><button id="guide-go" class="primary">Play anyway</button><button id="guide-exit" type="button">Back to page</button></div></div>
+          <div class="play-guide" id="play-guide" role="dialog" aria-modal="true" aria-labelledby="guide-title" hidden><div><h2 id="guide-title" tabindex="-1">Rotate for the full run.</h2><p class="guide-message"></p><div class="guide-keys" aria-label="Controls"><span>← → Move</span><span>↑ Jump</span><span>↓ Slide</span></div><aside id="immersion-help" hidden><p id="immersion-help-text"></p><button type="button" id="dismiss-immersion-help">Got it · don’t show again</button></aside><button id="guide-go" class="primary">Play anyway</button><button id="guide-exit" type="button">Back to page</button></div></div>
           <div
             class="chapter-banner"
             id="chapter"

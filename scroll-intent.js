@@ -1,33 +1,37 @@
 'use strict';
-// Event-pattern classifier, not an accumulated-distance gate. Hardware labels are estimates.
+// Deterministic gesture ownership. DOM/animation are handled by section-scroll.js.
 class SectionIntent {
-  static profiles = {
-    light: {noise:.65, impulse:5, pair:1.3, velocity:.055, release:125},
-    balanced: {noise:.9, impulse:9, pair:2, velocity:.08, release:145},
-    firm: {noise:1.2, impulse:15, pair:3.5, velocity:.12, release:165}
-  };
-  constructor(mode='balanced') {this.mode=mode;this.reset();}
-  reset() {this.last=-Infinity;this.samples=[];this.used=false;this.direction=0;this.peak=0;this.type='unknown';}
-  feed(delta, time, {locked=false, unit=0}={}) {
-    const p=SectionIntent.profiles[this.mode],mag=Math.abs(delta),dir=Math.sign(delta),gap=time-this.last,prev=this.samples.at(-1);
-    if (!mag) return {direction:0,reason:'zero',type:this.type};
-    this.type=unit?'mouse notch':Number.isInteger(mag)&&mag>=80?'wheel / strong impulse':mag<18?'trackpad / high-resolution wheel':'trackpad / wheel';
-    const reversed=this.direction&&dir!==this.direction;
-    const silent=gap>p.release;
-    const recent=this.samples.slice(-2);
-    const valley=recent.length>=2&&recent.every(s=>s.mag<Math.max(3,this.peak*.22));
-    const renewed=valley&&prev&&mag>=Math.max(p.impulse,prev.mag*3)&&mag>prev.mag+3;
-    if(!locked&&(silent||reversed||renewed)) {this.used=false;if(silent||reversed){this.samples=[];this.peak=0;}}
-    const last=this.samples.at(-1),dt=last?time-last.time:Infinity;
-    this.last=time;this.samples.push({mag,dir,time});this.samples=this.samples.slice(-6);this.peak=Math.max(this.peak,mag);
-    if(locked){this.used=true;return {direction:0,reason:'travel lock',type:this.type};}
-    if(mag<p.noise)return {direction:0,reason:'noise',type:this.type};
-    if(this.used)return {direction:0,reason:'momentum tail',type:this.type};
-    const impulse=unit!==0||mag>=p.impulse;
-    const pair=last&&last.dir===dir&&dt>0&&dt<=70&&last.mag>=p.noise&&mag>=p.pair&&mag/dt>=p.velocity&&mag>=last.mag*.78;
-    if(!impulse&&!pair)return {direction:0,reason:'observing onset',type:this.type};
-    this.used=true;this.direction=dir;
-    return {direction:dir,reason:reversed?'reversal':renewed?'renewed impulse':impulse?'clear impulse':'coherent pair',type:this.type};
+  constructor({threshold=18,quiet=220,afterArrival=80}={}) {
+    this.threshold=threshold;this.quiet=quiet;this.afterArrival=afterArrival;
+    this.phase='IDLE_LOCKED';this.lastInput=-Infinity;this.arrived=-Infinity;
+    this.accum=0;this.direction=0;this.touchActive=false;this.nativeGesture=false;
+  }
+  advance(now) {
+    if(this.touchActive)return;
+    if(this.phase==='MOMENTUM_GUARD'&&now-this.lastInput>=this.quiet&&now-this.arrived>=this.afterArrival)this.reset();
+    else if(this.phase!=='TRANSITIONING'&&now-this.lastInput>=this.quiet){this.nativeGesture=false;if(this.phase==='GESTURE_DETECTED')this.reset();}
+  }
+  reset(){this.phase='IDLE_LOCKED';this.accum=0;this.direction=0;this.nativeGesture=false;}
+  feed(delta,now,{unit=0}={}) {
+    this.advance(now);const direction=Math.sign(delta);if(!direction)return {commit:false,reason:'zero'};
+    this.lastInput=now;
+    if(this.phase==='TRANSITIONING'||this.phase==='MOMENTUM_GUARD')return {commit:false,reason:'owned-gesture'};
+    if(this.nativeGesture)return {commit:false,reason:'native-boundary-tail'};
+    if(Math.abs(delta)<.5)return {commit:false,reason:'noise'};
+    if(this.direction&&direction!==this.direction)this.accum=0;
+    this.direction=direction;this.accum+=delta;this.phase='GESTURE_DETECTED';
+    if(unit===0&&Math.abs(this.accum)<this.threshold)return {commit:false,reason:'threshold'};
+    this.begin(direction,now);return {commit:true,direction,reason:'deliberate-onset'};
+  }
+  begin(direction,now){this.phase='TRANSITIONING';this.direction=direction;this.lastInput=now;this.accum=0;this.nativeGesture=false;}
+  arrive(now){this.phase='MOMENTUM_GUARD';this.arrived=now;}
+  observeNative(now){this.advance(now);this.nativeGesture=true;this.lastInput=now;}
+  release(now){this.touchActive=false;this.lastInput=now;}
+  remaining(now){return Math.max(0,this.quiet-(now-this.lastInput),this.phase==='MOMENTUM_GUARD'?this.afterArrival-(now-this.arrived):0);}
+  static touchDirection(dx,dy,elapsed){
+    if(Math.abs(dx)>Math.abs(dy)*1.15)return 0;
+    const distance=Math.abs(dy),velocity=distance/Math.max(1,elapsed);
+    return distance>=32||(distance>=18&&velocity>=.45)?Math.sign(dy):0;
   }
 }
 if(typeof module!=='undefined')module.exports=SectionIntent;

@@ -36,3 +36,12 @@
 .is-immersive:has(#world[data-status="won"]) .touch-controls,.is-immersive:has(#world[data-status="won"]) .next-row,.is-immersive:has(#world[data-status="won"]) .chapter-banner{visibility:hidden}
 
 .immersive-entry:disabled{opacity:.5;cursor:wait}
+
+/* Visible viewport follows Safari chrome; safe areas stay with the controls. */
+.game-frame.is-immersive{top:var(--play-top,0px);bottom:auto}
+.play-guide{padding:max(16px,env(safe-area-inset-top)) max(16px,env(safe-area-inset-right)) max(16px,env(safe-area-inset-bottom)) max(16px,env(safe-area-inset-left));overflow-y:auto;overscroll-behavior:contain}
+#immersion-help[hidden]{display:none!important}
+#immersion-help{max-width:420px;margin:6px auto;padding:8px 12px;border:1px solid #c6ddd333;border-radius:12px;background:#ffffff08}
+#immersion-help p{font-size:12px;line-height:1.45;margin:0}
+#immersion-help button{min-height:44px;font-size:12px;margin-top:4px;padding:6px 12px;background:transparent;color:inherit}
+@media(max-height:450px) and (orientation:landscape){.play-guide{place-content:start center}.play-guide .guide-keys{display:none}#immersion-help{max-width:600px}}

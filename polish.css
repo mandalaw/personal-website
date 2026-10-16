@@ -367,3 +367,53 @@ html[data-concept=c].showcase-ready .deck-preview{top:calc((100% - 54px - 220px)
  html[data-theme] #portfolio .project-category{margin-top:3px}
  html[data-theme] #portfolio .project-details h3{margin:4px 0}
 }
+
+/* Pass 38.1: native input plus one settled transition. Browser snap must not
+   race the adjacent-section settle or pull a small gesture backward first. */
+html[data-scroll-engine=ready]:has(#portfolio){scroll-snap-type:none!important;scroll-padding-top:var(--header-height,72px);overflow-anchor:auto}
+html[data-theme] main>section[data-section-fit=fit]{scroll-snap-align:start!important;scroll-snap-stop:always}
+html[data-theme] main>section[data-section-fit=tall]{scroll-snap-align:none!important;scroll-snap-stop:normal}
+@media(prefers-reduced-motion:reduce){html[data-scroll-engine=ready]:has(#portfolio){scroll-snap-type:none!important}}
+html[data-motion=reduce][data-scroll-engine=ready]:has(#portfolio){scroll-snap-type:none!important}
+/* Keep the portrait, title and copy on one balanced laptop composition. */
+@media(min-width:701px) and (max-width:1440px){
+ html[data-theme] #experience .about-room{grid-template-columns:minmax(200px,.72fr) minmax(0,1.28fr);max-width:1040px;gap:clamp(24px,4vw,52px);align-items:center}
+ html[data-theme] #experience .about-portrait{max-width:330px;justify-self:center;width:100%;position:relative;padding-bottom:38px}
+ html[data-theme] #experience #about-picture{max-height:320px;aspect-ratio:3/2}
+ html[data-theme] #experience #about-picture img{width:100%;height:100%;object-fit:cover}
+ html[data-theme] #experience .character-about{--character-size:100px;width:100px;height:100px;position:absolute;right:0;bottom:-18px;margin:0}
+ html[data-theme] #experience .about-one{max-width:36em}
+ html[data-theme] #experience>h2{align-self:center}
+}
+/* Labels have a reserved lane below each staggered object, including short phones. */
+@media(max-width:799px){
+ html[data-entry-ready=true] #about .entry-stage{height:222px;min-height:222px}
+ html[data-entry-ready=true] #about .entry-mode .entry-dock{grid-template-columns:repeat(3,56px);gap:46px 24px;translate:0 -20px}
+ html[data-theme] #about .entry-object{width:56px!important;height:56px!important;min-width:0;padding:12px!important}
+ html[data-theme] #about .entry-object .object-label{font-size:11px;line-height:1.35;top:calc(100% + 7px);opacity:1;white-space:nowrap}
+ html[data-theme] #about .entry-switcher{margin:4px 0 6px;gap:4px;min-height:44px}
+ html[data-theme] #about .entry-switcher button{min-width:44px;min-height:44px}
+ html[data-theme] #about .entry-profession{max-width:29em;text-wrap:balance;padding-inline:6px}
+ html[data-theme] #about .entry-career{gap:4px 16px;flex-wrap:wrap;justify-content:center}
+ html[data-theme] #about .entry-career .conversion-link{min-height:44px}
+ html[data-theme] #about .identity-whisper{min-height:44px}
+ html[data-theme] #about .entry-world-room{gap:4px}
+}
+@media(max-width:600px) and (max-height:700px){
+ html[data-theme] #about .entry-dude-link{height:76px;width:150px}
+ html[data-entry-ready=true] #about .entry-stage{height:200px;min-height:200px}
+ html[data-entry-ready=true] #about .entry-mode .entry-dock{grid-template-columns:repeat(3,48px);gap:42px 24px;translate:0 -20px}
+ html[data-theme] #about .entry-object{width:48px!important;height:48px!important;min-width:0;padding:9px!important}
+ html[data-theme] #about .entry-tools .entry-object{width:48px!important;height:48px!important}
+ html[data-theme] #about .entry-switcher{margin-block:0}
+}
+
+@media(min-width:800px) and (max-height:450px){
+ html[data-entry-ready=true] #about .entry-stage{height:265px}
+ html[data-theme] #about .entry-world-room{grid-template-rows:45px 265px}
+ html[data-theme] #about .entry-switcher{margin-top:12px!important}
+}
+
+/* Pass 38.1B: one controller owns eligible sectional motion. No browser snap race. */
+html[data-section-input=controlled],html[data-section-input=controlled] body{scroll-behavior:auto!important;scroll-snap-type:none!important;overflow-anchor:none;overscroll-behavior-y:none}
+html[data-section-input=controlled][data-scroll-engine=ready] main>section{scroll-snap-align:none!important;scroll-snap-stop:normal}

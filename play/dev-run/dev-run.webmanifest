@@ -1,0 +1,11 @@
+{
+  "id": "/play/dev-run/",
+  "name": "Dev Run — DEV mandalaw",
+  "short_name": "Dev Run",
+  "start_url": "/play/dev-run/",
+  "scope": "/play/dev-run/",
+  "display": "standalone",
+  "background_color": "#1b2836",
+  "theme_color": "#1c2231",
+  "icons": [{"src": "/favicon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any"}]
+}

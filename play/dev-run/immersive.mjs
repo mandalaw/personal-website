@@ -1,7 +1,11 @@
 import { ImmersiveState } from './viewport.mjs?v=c77ee2bc882e';
 export function createImmersive({shell,canvas,entry,onStart,onSuspend,onResume,onPause,onResize,status,signal}) {
   const state=new ImmersiveState(), panel=document.getElementById('play-guide'), exitButton=document.getElementById('exit-immersive');
-  let saved=null, epoch=0, native=false, orientationOwned=false, resumeAfter=false, allowPortrait=false, timer=0, resizing=false, lastSize='', first=true;
+  const standalone=()=>matchMedia('(display-mode: standalone)').matches||navigator.standalone===true;
+  const appleTouch=/iPhone|iPad|iPod/.test(navigator.userAgent)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);
+  const help=document.getElementById('immersion-help'),helpText=document.getElementById('immersion-help-text');
+  let helpSeen=false;try{helpSeen=localStorage.getItem('dev-run-immersion-help-seen')==='1';}catch{}
+  let saved=null, epoch=0, native=false, orientationOwned=false, resumeAfter=false, allowPortrait=false, timer=0, resizing=false, lastSize='', first=true, chromeFrame=0;
   try{first=localStorage.getItem('dev-run-controls-seen')!=='1';}catch{}
   const fullscreenElement=()=>document.fullscreenElement||document.webkitFullscreenElement;
   const change=next=>{state.set(next);shell.dataset.immersive=state.value;};
@@ -22,18 +26,23 @@ export function createImmersive({shell,canvas,entry,onStart,onSuspend,onResume,o
     for(const [e,v]of [[document.body,old.body],[document.documentElement,old.html]])if(v===null)e.removeAttribute('style');else e.setAttribute('style',v);
     window.scrollTo({left:old.x,top:old.y,behavior:'instant'});old.focus?.focus({preventScroll:true});
   }
-  function remember(){first=false;try{localStorage.setItem('dev-run-controls-seen','1');}catch{}}
+  function remember(){if(!help.hidden){helpSeen=true;try{localStorage.setItem('dev-run-immersion-help-seen','1');}catch{}}first=false;try{localStorage.setItem('dev-run-controls-seen','1');}catch{}}
   function guide(rotate){
     change(rotate?'ROTATE_PROMPT':'PAUSED');onSuspend();panel.hidden=false;
     panel.querySelector('h2').textContent=rotate?'Rotate for the full run.':'Two thumbs. One run.';
     panel.querySelector('.guide-message').textContent=rotate?'More room to see what’s coming. Portrait works too.':'Hold a direction. Tap Jump with your other thumb. Build momentum, then Slide.';
     document.getElementById('guide-go').textContent=rotate?'Play anyway':'Let’s go';
+    help.hidden=!appleTouch||native||helpSeen;
+    helpText.textContent=standalone()?'You’re playing from the Home Screen. Rotate your device for a wider view. If it stays upright, check Portrait Orientation Lock in Control Center.':'Safari may keep its browser controls visible. For more room, use Share → Add to Home Screen, then open Dev Run there. On newer iOS versions, keep Open as Web App on. For landscape, rotate your device; if it stays upright, check Portrait Orientation Lock in Control Center.';
     panel.querySelector('h2').focus({preventScroll:true});
   }
   function continuePlay(){allowPortrait=portrait();remember();panel.hidden=true;change('IMMERSIVE');measure();if(resumeAfter)onResume();else sync(status());canvas.focus({preventScroll:true});}
   function measure(){
+    const viewport=window.visualViewport;
     const landscape=innerWidth>=innerHeight;shell.dataset.layout=landscape?'landscape':'portrait';
-    shell.style.setProperty('--play-height',(window.visualViewport?.height||innerHeight)+'px');
+    shell.style.setProperty('--play-height',(viewport?.height||innerHeight)+'px');
+    shell.style.setProperty('--play-top',(viewport?.offsetTop||0)+'px');
+    shell.dataset.displayMode=standalone()?'standalone':'browser';
     onResize();const b=canvas.getBoundingClientRect();lastSize=[Math.round(b.width),Math.round(b.height),landscape].join(':');
   }
   async function enter(){
@@ -44,18 +53,23 @@ export function createImmersive({shell,canvas,entry,onStart,onSuspend,onResume,o
     try{if(request)await request;}catch{/* The fixed shell is the supported fallback. */}
     if(token!==epoch){if(fullscreenElement()===shell){try{await (document.exitFullscreen?.()||document.webkitExitFullscreen?.());}catch{}}return;}
     native=fullscreenElement()===shell;shell.dataset.presentation=native?'fullscreen':'immersive';if(!native)if(typeof window!=='undefined')window.dispatchEvent(new CustomEvent('portfolio-game',{detail:{name:'devrun_fullscreen_rejected',props:{reason:'unavailable'}}}));if(typeof window!=='undefined')window.dispatchEvent(new CustomEvent('portfolio-game',{detail:{name:'devrun_fullscreen_entered',props:{presentation:native?'native':'immersive'}}}));shell.dataset.orientation='manual';
-    if(native&&screen.orientation?.lock){try{await screen.orientation.lock('landscape');orientationOwned=true;shell.dataset.orientation='locked';}catch{/* Manual rotation remains available. */}}
+    if((native||standalone())&&screen.orientation?.lock){try{await screen.orientation.lock('landscape');orientationOwned=true;shell.dataset.orientation='locked';}catch{/* Manual rotation remains available. */}}
     if(token!==epoch){if(orientationOwned){try{screen.orientation.unlock();}catch{}orientationOwned=false;}return;}
-    measure();if(portrait())guide(true);else if(first)guide(false);else{change('IMMERSIVE');if(resumeAfter)onResume();else sync(status());canvas.focus({preventScroll:true});}
+    measure();if(portrait())guide(true);else if(first||(appleTouch&&!native&&!helpSeen))guide(false);else{change('IMMERSIVE');if(resumeAfter)onResume();else sync(status());canvas.focus({preventScroll:true});}
   }
   async function exit(){
-    if(!state.active||state.value==='EXITING')return;const wasPresented=['fullscreen','immersive'].includes(shell.dataset.presentation),previousPresentation=native?'native':'immersive';++epoch;change('EXITING');clearTimeout(timer);resizing=false;panel.hidden=true;onSuspend();
+    if(!state.active||state.value==='EXITING')return;const wasPresented=['fullscreen','immersive'].includes(shell.dataset.presentation),previousPresentation=native?'native':'immersive';++epoch;change('EXITING');clearTimeout(timer);cancelAnimationFrame(chromeFrame);chromeFrame=0;resizing=false;panel.hidden=true;onSuspend();
     if(orientationOwned){try{screen.orientation.unlock();}catch{}orientationOwned=false;}
     if(fullscreenElement()===shell){try{const fn=document.exitFullscreen||document.webkitExitFullscreen;if(fn)await fn.call(document);}catch{}}
     if(wasPresented&&typeof window!=='undefined')window.dispatchEvent(new CustomEvent('portfolio-game',{detail:{name:'devrun_fullscreen_exited',props:{presentation:previousPresentation}}}));native=false;restorePage();change('PAGE');shell.dataset.presentation='page';shell.dataset.layout='page';onResize();onPause('Your run is paused.');entry.focus({preventScroll:true});
   }
   function resize(){
     if(state.value==='ENTERING'||state.value==='EXITING')return;
+    if(state.active&&lastSize&&lastSize.split(':')[2]===String(innerWidth>=innerHeight)&&Math.abs(canvas.getBoundingClientRect().width-Number(lastSize.split(':')[0]))<2){
+      // Browser chrome changes only the visible height: resize the surface without
+      // repeatedly pausing the run or reopening the orientation guide.
+      cancelAnimationFrame(chromeFrame);chromeFrame=requestAnimationFrame(()=>{chromeFrame=0;measure();});return;
+    }
     const b=canvas.getBoundingClientRect(),size=[Math.round(b.width),Math.round(b.height),innerWidth>=innerHeight].join(':');
     const viewportHeight=String(window.visualViewport?.height||innerHeight);
     if(size===lastSize&&(!state.active||shell.style.getPropertyValue('--play-height')===viewportHeight+'px'))return;
@@ -67,12 +81,13 @@ export function createImmersive({shell,canvas,entry,onStart,onSuspend,onResume,o
       shell.dataset.resize='IDLE';
     },100);
   }
+  document.getElementById('dismiss-immersion-help').addEventListener('click',()=>{helpSeen=true;help.hidden=true;try{localStorage.setItem('dev-run-immersion-help-seen','1');}catch{}document.getElementById('guide-go').focus();},{signal});
   entry.addEventListener('click',enter,{signal});exitButton.addEventListener('click',exit,{signal});
   document.getElementById('guide-go').addEventListener('click',continuePlay,{signal});
   document.getElementById('guide-exit').addEventListener('click',exit,{signal});
   for(const event of ['fullscreenchange','webkitfullscreenchange'])document.addEventListener(event,()=>{if(native&&fullscreenElement()!==shell&&state.value!=='EXITING')exit();else if(state.active&&state.value!=='ENTERING')resize();},{signal});
   window.addEventListener('resize',resize,{signal});window.visualViewport?.addEventListener('resize',resize,{signal});screen.orientation?.addEventListener('change',resize,{signal});
   shell.addEventListener('keydown',e=>{if(!state.active)return;if(e.key==='Escape'&&!panel.hidden){e.preventDefault();e.stopPropagation();exit();return;}if(e.key==='Tab'){const a=focusables();if(!a.length)return;const first=a[0],last=a.at(-1);if(e.shiftKey&&document.activeElement===first){e.preventDefault();last.focus();}else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus();}}},{signal});
-  signal.addEventListener('abort',()=>{clearTimeout(timer);if(orientationOwned){try{screen.orientation.unlock();}catch{}}restorePage();},{once:true});
+  signal.addEventListener('abort',()=>{clearTimeout(timer);cancelAnimationFrame(chromeFrame);if(orientationOwned){try{screen.orientation.unlock();}catch{}}restorePage();},{once:true});
   return {enter,exit,resize,sync,get active(){return state.active;},get transitioning(){return ['ENTERING','EXITING'].includes(state.value)||resizing;},get state(){return state.value;}};
 }

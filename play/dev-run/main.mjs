@@ -1,6 +1,6 @@
 import { createDiscovery } from './discovery.mjs?v=b845c79e3f52';
 import { createCompanion } from "./companion.mjs?v=49210b0f4a70";
-import { createImmersive } from "./immersive.mjs?v=e050d774128b";
+import { createImmersive } from "./immersive.mjs?v=45c8866cb350";
 import { CEREMONY_SECONDS } from "./ceremony.mjs?v=bb109e40cf33";
 import { speedFor, sceneFor, LONG_WAY, JOURNEY } from "./course.mjs?v=1b77db058418";
 import { Game } from "./engine.mjs?v=446630c70980";
