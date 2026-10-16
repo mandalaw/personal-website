@@ -172,7 +172,7 @@ function drawStop() {
     drawStop();
   });
   on("#mission-save", "click", async () => {
-    const mod = await import("./member.mjs?v=da1072e29c5e");
+    const mod = await import("./member.mjs?v=56513603dd94");
     await mod.remember("mission", mission.id);
   });
 }
@@ -434,7 +434,7 @@ function drawNotes() {
         (b.onclick = async () => {
           try {
             await (
-              await import("./member.mjs?v=da1072e29c5e")
+              await import("./member.mjs?v=56513603dd94")
             ).remember("note", b.dataset.saveNote);
           } catch (e) {
             status(e.message);
@@ -491,7 +491,7 @@ function drawPacket() {
   on("#packet-print", "click", () => window.print());
   on("#packet-save", "click", async () => {
     if (!selectedInterests.length) throw Error("Choose an interest first.");
-    await (await import("./member.mjs?v=da1072e29c5e")).remember("packet", selectedInterests);
+    await (await import("./member.mjs?v=56513603dd94")).remember("packet", selectedInterests);
   });
   draw();
 }
@@ -530,7 +530,7 @@ async function render() {
     try {
       const mod = await import(
         ["passport", "inquiry", "resources"].includes(active)
-          ? "./member.mjs?v=da1072e29c5e"
+          ? "./member.mjs?v=56513603dd94"
           : "./labs.mjs?v=f6b43f2f8fa7"
       );
       if (token === generation) await mod.render(active, station, graph);

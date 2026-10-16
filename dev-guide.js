@@ -1,4 +1,3 @@
-import {personalGreeting} from './account-ui/visitor.mjs';
 import {RunTease} from './dev-run-tease.mjs?v=43c22f254e5d';
 import {Behavior,profiles} from './dev-behavior.mjs?v=6ee1b9d2c8fb';
 import {SceneClock,scenes} from './dev-scenes.mjs?v=4d1e80a23e09';
@@ -55,7 +54,7 @@ import * as Motion from './dev-motion.mjs?v=3ca54d15331d';
  function activity(event){if(event?.type==='pointermove')return;lastInput=performance.now();if(!event?.target?.closest?.('.dev-prompt'))hidePrompt();if(['resize','section-settled','deck-commit'].includes(event?.type)){if(!scrolling)cancel();schedule()}}
  function queueReaction(event){if(event.target?.closest('.dev-prompt,#pocket-guide'))return;const item=Targets.match(event.target,context());if(item){reaction={item,at:performance.now()+300};if(item.id==='devrun')runHover=true}}
  function preference(value){if(quiet===!!value)return;quiet=!!value;root.dataset.devQuiet=String(quiet);quietButton?.setAttribute('aria-pressed',String(quiet));try{localStorage.setItem('mandalaw-companion-quiet',quiet?'1':'0')}catch{}cancel();if(quiet)Motion.stopAll();schedule()}
- function engage(){runInteractions++;cancel();const now=performance.now();clickCount=now-lastClick<20000?clickCount+1:1;lastClick=now;const i=Math.min(clickCount-1,4);if(runInteractions===2&&!runTease.played)return{line:'There’s a game in here. Want to run it?',pose:'point-right',topic:'devrun'};return {line:personalGreeting()||['Hey.','Yep?','Still here.','The projects are good too.','All right. One secret.'][i],pose:['wave','curious','shrug','present','peek-right'][i],topic:i===4?'secrets':'help'}}
+ function engage(){runInteractions++;cancel();const now=performance.now();clickCount=now-lastClick<20000?clickCount+1:1;lastClick=now;const i=Math.min(clickCount-1,4);if(runInteractions===2&&!runTease.played)return{line:'There’s a game in here. Want to run it?',pose:'point-right',topic:'devrun'};return {line:['Hey.','Yep?','Still here.','The projects are good too.','All right. One secret.'][i],pose:['wave','curious','shrug','present','peek-right'][i],topic:i===4?'secrets':'help'}}
  function pause(now){if(!paused){clock.pause(now);stage.pause();paused=true}}
  function resume(now){if(paused){clock.resume(now);stage.resume();paused=false}}
  function visibleMicro(){return [...document.querySelectorAll('main .dev-micro,footer .dev-micro')].find(el=>{const r=el.getBoundingClientRect();return r.width&&r.top>64&&r.bottom<innerHeight})}
