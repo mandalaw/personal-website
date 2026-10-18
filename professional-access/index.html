@@ -11,8 +11,9 @@
     />
     <title>Professional access · DEV mandalaw</title>
     <link rel="stylesheet" href="/hiring/hiring.css" />
+    <link rel="stylesheet" href="/professional-access/access.css?v=6fec670025fa" />
     <script src="/theme-boot.js"></script>
-  <script type="module" src="/professional-access/access.mjs"></script><link rel="stylesheet" href="/public-integration.css"><link rel="stylesheet" href="/assets/analytics/privacy.css?v=9518ae293e56"><link rel="stylesheet" href="/account-ui/shell.css?v=6bc4edcb2844"><script type="module" src="/account-ui/shell.mjs?v=603353377e29"></script><link rel="stylesheet" href="/account-ui/auth-panel.css"></head>
+  <script type="module" src="/professional-access/access.mjs?v=81aba4f0c7c7"></script><link rel="stylesheet" href="/public-integration.css"><link rel="stylesheet" href="/assets/analytics/privacy.css?v=9518ae293e56"><link rel="stylesheet" href="/account-ui/shell.css?v=6bc4edcb2844"><script type="module" src="/account-ui/shell.mjs?v=603353377e29"></script><link rel="stylesheet" href="/account-ui/auth-panel.css"></head>
   <body>
     <a class="skip" href="#main">Skip to content</a>
     <header>
@@ -24,7 +25,24 @@
       </nav>
       <button id="theme" aria-label="Change color theme">◐</button>
     </header>
-    <main class="access-main" id="main"><p class="eyebrow">PROFESSIONAL ACCESS</p><h1>A closer look at my work.</h1><p>The professional overview, project stories and Workshop are open to everyone. I share my full résumé directly for professional conversations rather than leaving a permanent public download.</p><div class="card" id="private-access" hidden><h2>Full professional résumé</h2><p>Use a verified account or an invited recruiter link. The professional overview and project stories stay open to everyone.</p><p><a class="primary" id="private-resume">View Full Professional Résumé 🔒</a></p><p><a id="private-account">Your Workshop account</a> · <a id="private-invitation">Have a recruiter access link?</a></p></div><div class="card"><h2>Request the full résumé</h2><p>Tell me a little about the opportunity and I’ll send the relevant material.</p><p><a class="primary" href="mailto:dev@mandalawi.ca?subject=Full%20r%C3%A9sum%C3%A9%20request">Email Ahmed</a></p><p><a href="https://www.linkedin.com/in/devmandalaw">Connect on LinkedIn</a></p></div><p id="access-unavailable">Account and recruiter-link access are not available on this public release. If you were given an invitation, email me and I’ll help you directly.</p><p><a href="/recruiter-room/">Read the professional overview</a> · <a href="/workshop/#packet">Build a public reading packet</a> · <a href="/recruiter-room/">Explore selected work</a></p></main>
+    <main class="access-main" id="main">
+      <p class="eyebrow">PROFESSIONAL ACCESS</p>
+      <h1>A closer look at my work.</h1>
+      <p>The professional overview, project stories and Workshop are open to everyone. For my full résumé, sign in or use a recruiter access code I’ve shared with you.</p>
+      <div class="card" id="private-access">
+        <h2>Full professional résumé</h2>
+        <p id="resume-guest">Sign in with Google, GitHub or LinkedIn. No new password.</p>
+        <p id="resume-ready" role="status" hidden>You’re signed in. Your résumé is ready.</p>
+        <div class="actions">
+          <a class="button primary" id="resume-signin" data-open-account="signin" href="https://accounts.mandalawi.ca/sign-in/?return=%2Fprofessional-access%2F">Sign in to view résumé</a>
+          <a class="button primary" id="resume-download" href="https://accounts.mandalawi.ca/api/platform/resources/resume" hidden>Download résumé</a>
+          <a class="button secondary" id="resume-invitation" href="https://accounts.mandalawi.ca/access/?return=%2Fprofessional-access%2F">Use a recruiter code</a>
+        </div>
+        <p>Already have a private access link? Open that link directly. No account needed.</p>
+      </div>
+      <p>Prefer email? <a href="mailto:dev@mandalawi.ca?subject=Full%20r%C3%A9sum%C3%A9%20request">Tell me a little about the role.</a> I can share a role-specific résumé after reviewing the job description.</p>
+      <p><a href="/recruiter-room/">Read the professional overview</a> · <a href="/workshop/#packet">Build a public reading packet</a> · <a href="/recruiter-room/">Explore selected work</a></p>
+    </main>
     <footer>
       <a href="/workshop/">Back to the Workshop</a
       ><a href="/career-guide/">Evidence guide</a

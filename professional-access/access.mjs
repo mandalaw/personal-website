@@ -1,14 +1,36 @@
-import{theme}from'/hiring/ui.mjs';
-import{privatePlatform}from'./platform-config.mjs';
+import {theme} from '/hiring/ui.mjs';
+import {ACCOUNT_ORIGIN, accountLink, safeContext} from '/account-ui/context.mjs';
+import {privatePlatform} from './platform-config.mjs';
 theme();
-// This is a link to the private origin, never a cross-origin identity request.
-const expected=['google','github','linkedin'];
-try{
- const u=new URL(privatePlatform.origin);
- const ready=privatePlatform.enabled===true&&u.protocol==='https:'&&u.origin===privatePlatform.origin&&u.origin==='https://accounts.mandalawi.ca'&&privatePlatform.providers.length===3&&expected.every(p=>privatePlatform.providers.includes(p));
- if(ready){
-  for(const[id,path]of[['private-resume','/access/'],['private-account','/account/'],['private-invitation','/access/']])document.getElementById(id).href=u.origin+path;
-  document.getElementById('private-access').hidden=false;
-  document.getElementById('access-unavailable').hidden=true;
- }
-}catch{/* Keep the working email option when private access is not released. */}
+
+const controls = document.getElementById('private-access');
+const signin = document.getElementById('resume-signin');
+const download = document.getElementById('resume-download');
+const invitation = document.getElementById('resume-invitation');
+const guest = document.getElementById('resume-guest');
+const ready = document.getElementById('resume-ready');
+const enabled = privatePlatform.enabled === true && privatePlatform.origin === ACCOUNT_ORIGIN;
+
+if (controls && signin && download && invitation && guest && ready) {
+  controls.hidden = !enabled;
+  const updateLinks = () => {
+    const context = safeContext(location.pathname + location.hash);
+    signin.href = accountLink('/sign-in/', context);
+    invitation.href = accountLink('/access/', context);
+  };
+  updateLinks();
+  new MutationObserver(updateLinks).observe(document.documentElement, {attributes:true, attributeFilter:['data-theme']});
+  addEventListener('hashchange', updateLinks);
+
+  // Mirror the existing header's validated résumé capability, never infer permission from a name or role.
+  // The protected endpoint remains the authorization boundary, including expiry and revocation.
+  document.addEventListener('dev-account-state', event => {
+    const headerDownload = document.querySelector('.account-cluster .account-resume');
+    const available = enabled && event.detail?.authenticated === true && headerDownload?.hidden === false;
+    signin.hidden = available;
+    guest.hidden = available;
+    download.hidden = !available;
+    ready.hidden = !available;
+  });
+  document.dispatchEvent(new Event('dev-account-state-request'));
+}

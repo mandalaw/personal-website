@@ -1,0 +1,9 @@
+/* Map this existing document theme to the unchanged shared account components. */
+html {
+  --surface-gradient: var(--panel);
+  --surface-high: var(--panel);
+  --surface-low: var(--accentbg);
+  --edge: var(--line);
+  --signature: var(--accent);
+  --focus: var(--accent);
+}
