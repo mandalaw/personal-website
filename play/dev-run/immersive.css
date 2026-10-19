@@ -45,3 +45,22 @@
 #immersion-help p{font-size:12px;line-height:1.45;margin:0}
 #immersion-help button{min-height:44px;font-size:12px;margin-top:4px;padding:6px 12px;background:transparent;color:inherit}
 @media(max-height:450px) and (orientation:landscape){.play-guide{place-content:start center}.play-guide .guide-keys{display:none}#immersion-help{max-width:600px}}
+
+/* Pass 40.3: game-only launch and short landscape fit. No simulated rotation. */
+.homescreen-guide{max-width:720px;margin:0 0 18px;padding:10px 14px;border:1px solid #f3a48a55;border-radius:12px;color:inherit;font:13px/1.5 system-ui,sans-serif}
+.homescreen-guide summary{cursor:pointer;min-height:44px;display:flex;align-items:center;font-weight:650}
+.homescreen-guide p{margin:8px 0}.homescreen-guide summary:focus-visible{outline:3px solid #f3a48a;outline-offset:4px}
+.game-frame.is-immersive .game-screen{padding-bottom:max(16px,var(--safe-bottom))}
+@media(max-height:450px) and (orientation:landscape){
+ .game-frame.is-immersive{grid-template-rows:calc(48px + var(--safe-top)) 3px minmax(0,1fr)}
+ .is-immersive .hud{gap:7px;padding-top:calc(2px + var(--safe-top));padding-bottom:2px}
+ .is-immersive .hud-time,.is-immersive .hud-tools{display:none}
+ .is-immersive .touch-controls{--target:clamp(44px,17dvh,64px)}
+ .is-immersive .next-row{top:calc(51px + var(--safe-top))}
+ .is-immersive .game-screen .screen-card{padding:0 10px}
+ .is-immersive .game-screen h2{font-size:24px;line-height:1.05}
+ .is-immersive .screen-card>p:not(.eyebrow),.is-immersive .screen-card .performance-note{display:none}
+ .is-immersive .play-guide{place-content:safe center;gap:0}
+ .is-immersive .play-guide h2{font-size:22px;margin-bottom:4px}
+ .is-immersive .play-guide p{margin:4px auto}
+}

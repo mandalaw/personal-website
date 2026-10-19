@@ -27,7 +27,7 @@
       name="viewport"
       content="width=device-width,initial-scale=1,viewport-fit=cover"
     />
-    <link rel="manifest" href="./dev-run.webmanifest"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="Dev Run"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="theme-color" content="#1c2231" />
+    <link rel="manifest" href="./dev-run.webmanifest?v=56c531351a45"><link rel="apple-touch-icon" sizes="180x180" href="./assets/app-icon-180.png"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="Dev Run"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="theme-color" content="#1c2231" />
     <title>Dev Run — Toronto to the Bay | DEV mandalaw</title>
     <meta
       name="description"
@@ -37,8 +37,8 @@
     <link rel="icon" href="/favicon.svg" />
     <script src="/theme-boot.js"></script>
     <link rel="stylesheet" href="./game.css?v=173649a683db" />
-    <link rel="stylesheet" href="./immersive.css?v=c1362dee7a42">
-    <script type="module" src="./main.mjs?v=4774e579c620"></script>
+    <link rel="stylesheet" href="./immersive.css?v=1f627a554400">
+    <script type="module" src="./main.mjs?v=099e3f70bb17"></script>
   <link rel="stylesheet" href="/assets/analytics/privacy.css?v=9518ae293e56">
 <link rel="stylesheet" href="/account-ui/shell.css?v=6bc4edcb2844"><script type="module" src="/account-ui/shell.mjs?v=603353377e29"></script><link rel="stylesheet" href="/account-ui/auth-panel.css"></head>
   <body class="dev-run-page">
@@ -60,6 +60,12 @@
         </div>
         <button class="immersive-entry" id="enter-immersive" type="button" disabled>⛶ Fullscreen / immersive</button>
       </div>
+      <details class="homescreen-guide" id="homescreen-guide" hidden>
+        <summary>iPhone: play without Safari’s browser bars</summary>
+        <p>In Safari, choose <strong>Share → Add to Home Screen</strong>. Keep <strong>Open as Web App</strong> on if shown, then open <strong>Dev Run</strong> from its new icon.</p>
+        <p>Turn the phone sideways for landscape. If it stays upright, turn off Portrait Orientation Lock in Control Center. This page cannot override that setting or force Safari’s toolbar away.</p>
+        <p>No install download or account needed. Internet is required; Home Screen scores may be separate from Safari scores.</p>
+      </details>
       <div class="game-frame" id="game" data-status="title" data-immersive="PAGE" data-layout="page">
         <div class="hud" aria-label="Game status">
           <button class="run-companion" id="run-companion" type="button" aria-label="Ask Dev about the controls" aria-expanded="false" aria-controls="companion-panel"><canvas id="companion-art" width="90" height="150" aria-hidden="true"></canvas></button>

@@ -1,11 +1,25 @@
 {
   "id": "/play/dev-run/",
-  "name": "Dev Run — DEV mandalaw",
+  "name": "Dev Run \u2014 DEV mandalaw",
   "short_name": "Dev Run",
-  "start_url": "/play/dev-run/",
+  "start_url": "/play/dev-run/?launch=homescreen",
   "scope": "/play/dev-run/",
   "display": "standalone",
   "background_color": "#1b2836",
   "theme_color": "#1c2231",
-  "icons": [{"src": "/favicon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any"}]
+  "icons": [
+    {
+      "src": "./assets/app-icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "./assets/app-icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ],
+  "orientation": "landscape"
 }

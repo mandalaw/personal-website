@@ -5,6 +5,9 @@ export function createImmersive({shell,canvas,entry,onStart,onSuspend,onResume,o
   const appleTouch=/iPhone|iPad|iPod/.test(navigator.userAgent)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);
   const help=document.getElementById('immersion-help'),helpText=document.getElementById('immersion-help-text');
   let helpSeen=false;try{helpSeen=localStorage.getItem('dev-run-immersion-help-seen')==='1';}catch{}
+  const homeGuide=document.getElementById('homescreen-guide');
+  if(homeGuide)homeGuide.hidden=!/iPhone/.test(navigator.userAgent);
+  let launchReady=false;
   let saved=null, epoch=0, native=false, orientationOwned=false, resumeAfter=false, allowPortrait=false, timer=0, resizing=false, lastSize='', first=true, chromeFrame=0;
   try{first=localStorage.getItem('dev-run-controls-seen')!=='1';}catch{}
   const fullscreenElement=()=>document.fullscreenElement||document.webkitFullscreenElement;
@@ -30,13 +33,13 @@ export function createImmersive({shell,canvas,entry,onStart,onSuspend,onResume,o
   function guide(rotate){
     change(rotate?'ROTATE_PROMPT':'PAUSED');onSuspend();panel.hidden=false;
     panel.querySelector('h2').textContent=rotate?'Rotate for the full run.':'Two thumbs. One run.';
-    panel.querySelector('.guide-message').textContent=rotate?'More room to see what’s coming. Portrait works too.':'Hold a direction. Tap Jump with your other thumb. Build momentum, then Slide.';
+    panel.querySelector('.guide-message').textContent=rotate?(appleTouch?'Turn your iPhone sideways. If it stays upright, turn off Portrait Orientation Lock in Control Center. You can also play in portrait.':'More room to see what’s coming. Portrait works too.'):'Hold a direction. Tap Jump with your other thumb. Build momentum, then Slide.';
     document.getElementById('guide-go').textContent=rotate?'Play anyway':'Let’s go';
     help.hidden=!appleTouch||native||helpSeen;
-    helpText.textContent=standalone()?'You’re playing from the Home Screen. Rotate your device for a wider view. If it stays upright, check Portrait Orientation Lock in Control Center.':'Safari may keep its browser controls visible. For more room, use Share → Add to Home Screen, then open Dev Run there. On newer iOS versions, keep Open as Web App on. For landscape, rotate your device; if it stays upright, check Portrait Orientation Lock in Control Center.';
+    helpText.textContent=standalone()?'You’re playing from the Home Screen. Rotate your device for a wider view. If it stays upright, check Portrait Orientation Lock in Control Center.':'Safari may keep its browser controls visible. For a game-only view, use Share → Add to Home Screen (Open as Web App on), then launch Dev Run from its icon. Rotation may still need to be unlocked.';
     panel.querySelector('h2').focus({preventScroll:true});
   }
-  function continuePlay(){allowPortrait=portrait();remember();panel.hidden=true;change('IMMERSIVE');measure();if(resumeAfter)onResume();else sync(status());canvas.focus({preventScroll:true});}
+  function continuePlay(){allowPortrait=portrait();remember();panel.hidden=true;change('IMMERSIVE');measure();if(status()==='title')onStart();else if(resumeAfter)onResume();else sync(status());canvas.focus({preventScroll:true});}
   function measure(){
     const viewport=window.visualViewport;
     const landscape=innerWidth>=innerHeight;shell.dataset.layout=landscape?'landscape':'portrait';
@@ -45,17 +48,17 @@ export function createImmersive({shell,canvas,entry,onStart,onSuspend,onResume,o
     shell.dataset.displayMode=standalone()?'standalone':'browser';
     onResize();const b=canvas.getBoundingClientRect();lastSize=[Math.round(b.width),Math.round(b.height),landscape].join(':');
   }
-  async function enter(){
-    if(state.value!=='PAGE')return;if(typeof window!=='undefined')window.dispatchEvent(new CustomEvent('portfolio-game',{detail:{name:'devrun_fullscreen_requested',props:{}}}));const token=++epoch;change('ENTERING');allowPortrait=false;native=false;resumeAfter=['running','title','won'].includes(status());
-    lockPage();if(status()==='title')onStart();onSuspend();
+  async function enter({launch=false}={}){
+    if(state.value!=='PAGE')return;if(!launch&&typeof window!=='undefined')window.dispatchEvent(new CustomEvent('portfolio-game',{detail:{name:'devrun_fullscreen_requested',props:{}}}));const token=++epoch;change('ENTERING');allowPortrait=false;native=false;resumeAfter=!launch&&['running','title','won'].includes(status());
+    lockPage();if(!launch&&status()==='title')onStart();onSuspend();
     // Invoke within the original click activation, before awaiting anything.
-    let request;try{const method=shell.requestFullscreen||shell.webkitRequestFullscreen;if(method)request=Promise.resolve(method.call(shell,{navigationUI:'hide'}));}catch{}
+    let request;try{const method=shell.requestFullscreen||shell.webkitRequestFullscreen;if(method&&!launch)request=Promise.resolve(method.call(shell,{navigationUI:'hide'}));}catch{}
     try{if(request)await request;}catch{/* The fixed shell is the supported fallback. */}
     if(token!==epoch){if(fullscreenElement()===shell){try{await (document.exitFullscreen?.()||document.webkitExitFullscreen?.());}catch{}}return;}
-    native=fullscreenElement()===shell;shell.dataset.presentation=native?'fullscreen':'immersive';if(!native)if(typeof window!=='undefined')window.dispatchEvent(new CustomEvent('portfolio-game',{detail:{name:'devrun_fullscreen_rejected',props:{reason:'unavailable'}}}));if(typeof window!=='undefined')window.dispatchEvent(new CustomEvent('portfolio-game',{detail:{name:'devrun_fullscreen_entered',props:{presentation:native?'native':'immersive'}}}));shell.dataset.orientation='manual';
-    if((native||standalone())&&screen.orientation?.lock){try{await screen.orientation.lock('landscape');orientationOwned=true;shell.dataset.orientation='locked';}catch{/* Manual rotation remains available. */}}
+    native=fullscreenElement()===shell;shell.dataset.presentation=native?'fullscreen':'immersive';if(!launch&&!native)if(typeof window!=='undefined')window.dispatchEvent(new CustomEvent('portfolio-game',{detail:{name:'devrun_fullscreen_rejected',props:{reason:'unavailable'}}}));if(!launch&&typeof window!=='undefined')window.dispatchEvent(new CustomEvent('portfolio-game',{detail:{name:'devrun_fullscreen_entered',props:{presentation:native?'native':'immersive'}}}));shell.dataset.orientation='manual';
+    if(!launch&&(native||standalone())&&screen.orientation?.lock){try{await screen.orientation.lock('landscape');orientationOwned=true;shell.dataset.orientation='locked';}catch{/* Manual rotation remains available. */}}
     if(token!==epoch){if(orientationOwned){try{screen.orientation.unlock();}catch{}orientationOwned=false;}return;}
-    measure();if(portrait())guide(true);else if(first||(appleTouch&&!native&&!helpSeen))guide(false);else{change('IMMERSIVE');if(resumeAfter)onResume();else sync(status());canvas.focus({preventScroll:true});}
+    measure();if(launch){change('IMMERSIVE');shell.dataset.launch='homescreen';document.querySelector('#screen h2')?.focus({preventScroll:true});return;}if(portrait())guide(true);else if(first||(appleTouch&&!native&&!helpSeen))guide(false);else{change('IMMERSIVE');if(resumeAfter)onResume();else sync(status());canvas.focus({preventScroll:true});}
   }
   async function exit(){
     if(!state.active||state.value==='EXITING')return;const wasPresented=['fullscreen','immersive'].includes(shell.dataset.presentation),previousPresentation=native?'native':'immersive';++epoch;change('EXITING');clearTimeout(timer);cancelAnimationFrame(chromeFrame);chromeFrame=0;resizing=false;panel.hidden=true;onSuspend();
@@ -86,8 +89,8 @@ export function createImmersive({shell,canvas,entry,onStart,onSuspend,onResume,o
   document.getElementById('guide-go').addEventListener('click',continuePlay,{signal});
   document.getElementById('guide-exit').addEventListener('click',exit,{signal});
   for(const event of ['fullscreenchange','webkitfullscreenchange'])document.addEventListener(event,()=>{if(native&&fullscreenElement()!==shell&&state.value!=='EXITING')exit();else if(state.active&&state.value!=='ENTERING')resize();},{signal});
-  window.addEventListener('resize',resize,{signal});window.visualViewport?.addEventListener('resize',resize,{signal});screen.orientation?.addEventListener('change',resize,{signal});
+  window.addEventListener('resize',resize,{signal});window.visualViewport?.addEventListener('resize',resize,{signal});window.visualViewport?.addEventListener('scroll',resize,{signal});screen.orientation?.addEventListener('change',resize,{signal});
   shell.addEventListener('keydown',e=>{if(!state.active)return;if(e.key==='Escape'&&!panel.hidden){e.preventDefault();e.stopPropagation();exit();return;}if(e.key==='Tab'){const a=focusables();if(!a.length)return;const first=a[0],last=a.at(-1);if(e.shiftKey&&document.activeElement===first){e.preventDefault();last.focus();}else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus();}}},{signal});
   signal.addEventListener('abort',()=>{clearTimeout(timer);cancelAnimationFrame(chromeFrame);if(orientationOwned){try{screen.orientation.unlock();}catch{}}restorePage();},{once:true});
-  return {enter,exit,resize,sync,get active(){return state.active;},get transitioning(){return ['ENTERING','EXITING'].includes(state.value)||resizing;},get state(){return state.value;}};
+  return {enter,exit,resize,sync,launch(){if(launchReady||!standalone())return;launchReady=true;return enter({launch:true});},get active(){return state.active;},get transitioning(){return ['ENTERING','EXITING'].includes(state.value)||resizing;},get state(){return state.value;}};
 }
