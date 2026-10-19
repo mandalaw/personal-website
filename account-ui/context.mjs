@@ -11,3 +11,19 @@ export function safeContext(value) {
 export function themeValue(value){return value==='night'?'night':'day';}
 export function publicReturn(value,theme){const u=new URL(safeContext(value),PUBLIC_ORIGIN);u.searchParams.set('theme',themeValue(theme));return u.href;}
 export function accountLink(path='/account/',context='/') {const u=new URL(path,ACCOUNT_ORIGIN);u.searchParams.set('return',safeContext(context));u.searchParams.set('theme',themeValue(document.documentElement.dataset.theme));return u.href;}
+
+export function sectionContext(path,hash,section){
+ if(path==='/'&&section?.registry){const i=section.targetSectionIndex??section.currentSectionIndex;const id=section.registry[i]?.id;
+  if(id==='portfolio'){const deck=section.deck,key=deck?.keys?.[deck.target??deck.current];return safeContext('/#'+(key?'project-'+key:id));}
+  if(id&&id!=='site-footer')return safeContext('/#'+id);
+  if(id==='site-footer')return '/#contact';
+ }
+ return safeContext(path+hash);
+}
+export function currentContext(){return sectionContext(location.pathname,location.hash,window.SectionScroll?.snapshot());}
+
+export function accountContext(){
+ const q=new URLSearchParams(location.search);if(q.has('return'))return safeContext(q.get('return'));
+ try{const prior=JSON.parse(sessionStorage.getItem('dev-return'));if(prior&&Date.now()-prior.at>=0&&Date.now()-prior.at<900000)return safeContext(prior.to);}catch{}
+ return '/';
+}

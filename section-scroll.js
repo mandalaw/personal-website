@@ -9,10 +9,9 @@
   const nav=[...document.querySelectorAll('.nav-links a')];
   const state={currentSectionIndex:0,targetSectionIndex:null,direction:0,inputSource:'initial',transitionToken:0,accepted:0,completed:0,duration:0};
   const options={motion:'controlled',sensitivity:'balanced',portfolio:'section'};
-  let registry=[],headerHeight=0,room=0,maxY=0,ready=false,motion=null,frame=0,geometryFrame=0,guardTimer=0,scrollFrame=0,touch=null,nativeTouch=false,writing=false,focusMoving=false;
+  let registry=[],headerHeight=0,room=0,maxY=0,ready=false,motion=null,frame=0,geometryFrame=0,guardTimer=0,scrollFrame=0,touch=null,nativeTouch=false,writing=false,focusMoving=false; 
   const clamp=(x,a,b)=>Math.max(a,Math.min(b,x)),now=()=>performance.now();
   const reduced=()=>reduce.matches||root.dataset.motion==='reduce';
-  const ease=t=>1-Math.pow(1-t,3);
   function allowed(s,y){return s.overflow?clamp(y,s.start,s.end):s.start;}
   function error(){const s=registry[state.currentSectionIndex];return s?scrollY-allowed(s,scrollY):0;}
   function publish(){
@@ -36,39 +35,51 @@
   function targetY(m){const s=registry[m.index];return m.explicitTop!==null?clamp(m.explicitTop,0,maxY):m.edge==='end'?s.end:s.start;}
   function finish(){
     const m=motion;if(!m)return;motion=null;state.currentSectionIndex=m.index;state.targetSectionIndex=null;state.completed++;
-    intent.arrive(now());active(m.index);hash(m.hash||registry[m.index].id,m.historyMode);publish();
+    intent.arrive(now());active(m.index);hash(m.hash||registry[m.index].id,m.historyMode==='none'&&['wheel','touch','keyboard'].includes(state.inputSource)?'replace':m.historyMode);publish();
     if(m.focus){focusMoving=true;const el=registry[m.index].element;el.setAttribute('tabindex','-1');el.focus({preventScroll:true});focusMoving=false;}
     document.dispatchEvent(new CustomEvent('section-reveal',{detail:{section:registry[m.index].element}}));
     document.dispatchEvent(new CustomEvent('section-settled',{detail:snapshot()}));m.resolve(true);guard();
   }
-  function animate(time){
-    frame=0;if(!motion)return;const m=motion,p=m.duration?clamp((time-m.startTime)/m.duration,0,1):1;
-    write(m.from+(targetY(m)-m.from)*ease(p));
-    if(p===1)finish();else frame=requestAnimationFrame(animate);
+  // Cubic Hermite: carry the rendered velocity into a new destination, end at rest.
+  function sample(m,time,to=targetY(m)){
+    const p=m.duration?clamp((time-m.startTime)/m.duration,0,1):1,t=m.duration||1,d=to-m.from,v=m.velocity*t;
+    return {p,y:m.from+d*(3*p*p-2*p*p*p)+v*(p*p*p-2*p*p+p),velocity:(d*(6*p-6*p*p)+v*(3*p*p-4*p+1))/t};
+  }
+  function animate(time,generation){
+    if(!motion||motion.generation!==generation)return;frame=0;const result=sample(motion,time);
+    write(result.y);motion.renderedVelocity=result.velocity;
+    if(result.p===1)finish();else frame=requestAnimationFrame(t=>animate(t,generation));
   }
   function go(index,{source='nav',historyMode='none',instant=false,top=null,edge='start',focus=false,hash:routeHash=null}={}){
     if(!ready)return Promise.resolve(false);index=clamp(index,0,registry.length-1);
+    const carried=motion?.renderedVelocity||0;
     if(motion){motion.resolve(false);motion=null;cancelAnimationFrame(frame);}
     clearTimeout(guardTimer);const to=top!==null?top:edge==='end'?registry[index].end:registry[index].start;
     state.direction=Math.sign(to-scrollY);state.inputSource=source;state.targetSectionIndex=index;state.transitionToken++;state.accepted++;
-    state.duration=instant||reduced()?0:420;intent.begin(state.direction,now());publish();
-    return new Promise(resolve=>{motion={index,edge,explicitTop:top,from:scrollY,startTime:now(),duration:state.duration,deadline:now()+state.duration,historyMode,focus,hash:routeHash,resolve};
+    state.duration=instant||reduced()?0:clamp(220+120*Math.abs(to-scrollY)/room,220,480);intent.begin(state.direction,now());publish();
+    return new Promise(resolve=>{motion={index,edge,explicitTop:top,from:scrollY,startTime:now(),duration:state.duration,velocity:carried,renderedVelocity:carried,generation:state.transitionToken,deadline:now()+state.duration,historyMode,focus,hash:routeHash,resolve};
       // Reveal the incoming composition before its first moving frame, on the same deadline.
       document.dispatchEvent(new CustomEvent('section-enter',{detail:{section:registry[index].element,duration:state.duration}}));
       // Destination is committed in the input handler. There is no quiet timer before motion.
-      if(!state.duration){write(targetY(motion));finish();}else frame=requestAnimationFrame(animate);
+      if(!state.duration){write(targetY(motion));finish();}else{const generation=motion.generation;frame=requestAnimationFrame(t=>animate(t,generation));}
     });
   }
   function step(direction,source='keyboard'){
-    const next=clamp(state.currentSectionIndex+direction,0,registry.length-1);
-    if(next===state.currentSectionIndex){intent.begin(direction,now());intent.arrive(now());guard();return Promise.resolve(false);}
+    const base=state.targetSectionIndex??state.currentSectionIndex;
+    let next=clamp(base+direction,0,registry.length-1);
+    if(motion&&direction!==state.direction){
+      // Reverse from what is actually on screen, not a far-ahead queued destination.
+      const candidates=registry.filter(s=>direction<0?s.start<scrollY-1:s.start>scrollY+1);
+      next=candidates.length?(direction<0?candidates[candidates.length-1]:candidates[0]).index:(direction<0?0:registry.length-1);
+    }
+    if(next===base){if(!motion){intent.arrive(now());guard();}return Promise.resolve(false);}
     return go(next,{source,edge:direction<0&&registry[next].overflow?'end':'start',focus:source==='keyboard'});
   }
   function modal(){return !!document.querySelector('dialog[open],[aria-modal="true"]:not([hidden]),.nav-links.active');}
   function exemption(target,direction){
-    if(modal()||window.visualViewport?.scale>1)return true;
+    if(modal()||window.visualViewport?.scale>1||document.getSelection?.()?.isCollapsed===false)return true;
     for(let e=target;e&&e!==document.body;e=e.parentElement){
-      if(e.matches?.('input,textarea,select,[contenteditable],dialog,[role="dialog"],[role="slider"],[data-native-scroll],.game-frame,canvas,pre'))return true;
+      if(e.matches?.('input,textarea,select,[contenteditable],dialog,[role="dialog"],[role="slider"],[data-native-scroll],.account-menu,.game-frame,canvas,pre'))return true;
       const css=getComputedStyle(e);
       if(/auto|scroll/.test(css.overflowY)&&e.scrollHeight>e.clientHeight+2){
         const can=direction>0?e.scrollTop+e.clientHeight<e.scrollHeight-1:e.scrollTop>1;
@@ -81,42 +92,53 @@
   function wheel(e){
     if(!ready||e.defaultPrevented||e.ctrlKey||e.metaKey||e.altKey||Math.abs(e.deltaX)>=Math.abs(e.deltaY))return;
     const delta=e.deltaY*(e.deltaMode===1?16:e.deltaMode===2?room:1),direction=Math.sign(delta);if(!direction||exemption(e.target,direction))return;
-    nativeTouch=false;const time=now();intent.advance(time);
-    if(intent.phase==='TRANSITIONING'||intent.phase==='MOMENTUM_GUARD'){e.preventDefault();intent.feed(delta,time);guard();return;}
-    const s=registry[state.currentSectionIndex];
-    if(nativeRoom(direction)){
-      intent.observeNative(time);const boundary=direction>0?s.end:s.start;
+    nativeTouch=false;const time=now(),reading=!motion&&nativeRoom(direction);
+    const result=intent.feed(delta,time,{unit:e.deltaMode,native:reading});
+    if(reading){
+      const s=registry[state.currentSectionIndex],boundary=direction>0?s.end:s.start;
       if(Math.abs(delta)>Math.abs(boundary-scrollY)){e.preventDefault();write(boundary);}guard();return;
     }
-    e.preventDefault();const result=intent.feed(delta,time,{unit:e.deltaMode});state.inputSource='wheel';publish();
+    e.preventDefault();state.inputSource='wheel';publish();
     if(result.commit)step(result.direction,'wheel');else guard();
   }
   addEventListener('wheel',wheel,{passive:false});
+  // Touch has discrete contact boundaries; wheel quiet-time is not a touch rearm signal.
   addEventListener('touchstart',e=>{
     if(!ready||e.touches.length!==1){touch=null;intent.release(now());guard();return;}
-    const t=e.touches[0];touch={x:t.clientX,y:t.clientY,at:now(),target:e.target,axis:null,committed:false,native:false};nativeTouch=false;intent.advance(now());
+    const p=e.touches[0];touch=new TouchIntent(p.clientX,p.clientY,now());touch.target=e.target;
+    nativeTouch=false;if(!motion)intent.reset();
   },{passive:true});
   addEventListener('touchmove',e=>{
-    if(!touch||e.touches.length!==1){touch=null;intent.release(now());guard();return;}const p=e.touches[0],dx=p.clientX-touch.x,dy=touch.y-p.clientY,direction=Math.sign(dy);
-    if(touch.axis==='horizontal')return;
-    if(!touch.axis&&Math.abs(dx)>Math.abs(dy)*1.15&&Math.abs(dx)>6){touch.axis='horizontal';return;}
-    if(!direction||Math.abs(dx)>Math.abs(dy)||exemption(touch.target,direction))return;
-    touch.axis='vertical';intent.touchActive=true;
-    if(touch.committed||intent.phase==='TRANSITIONING'||intent.phase==='MOMENTUM_GUARD'){e.preventDefault();intent.lastInput=now();return;}
-    if(!touch.native&&nativeRoom(direction)){touch.native=true;nativeTouch=true;}
-    if(touch.native){
-      intent.observeNative(now());const s=registry[state.currentSectionIndex];if(!nativeRoom(direction)){e.preventDefault();write(direction>0?s.end:s.start);}return;
+    if(!touch||e.touches.length!==1){touch=null;intent.release(now());guard();return;}
+    const p=e.touches[0],direction=Math.sign(touch.y-p.clientY);
+    if(exemption(touch.target,direction)){touch.cancel();return;}
+    const wasCommitted=touch.committed;const result=touch.move(p.clientX,p.clientY,now());
+    if(result.native)return;
+    intent.touchActive=true;
+    if(touch.reading){
+      intent.observeNative(now());const s=registry[state.currentSectionIndex];
+      if(!nativeRoom(direction)){e.preventDefault();write(direction>0?s.end:s.start);}return;
     }
-    // Suppress drift from the first vertical move, before the deliberate threshold.
-    e.preventDefault();const decision=SectionIntent.touchDirection(dx,dy,now()-touch.at);
-    if(decision){touch.committed=true;step(decision,'touch');}
+    if(!motion&&!wasCommitted&&nativeRoom(direction)){touch.reading=true;nativeTouch=true;intent.observeNative(now());return;}
+    e.preventDefault();
+    if(result.commit){
+      step(result.direction,'touch');
+    }
   },{passive:false});
-  for(const type of ['touchend','touchcancel'])addEventListener(type,()=>{if(touch){intent.release(now());touch=null;guard();}},{passive:true});
+  for(const type of ['touchend','touchcancel'])addEventListener(type,()=>{
+    if(touch){intent.release(now());touch=null;guard();}
+  },{passive:true});
   function remeasure(){
     if(!ready)return;cancelAnimationFrame(geometryFrame);geometryFrame=requestAnimationFrame(()=>{
-      geometryFrame=0;measure();
-      if(motion){const time=now();motion.from=scrollY;motion.startTime=time;motion.duration=Math.max(0,motion.deadline-time);}
-      else if(!modal()&&!(window.visualViewport?.scale>1))write(allowed(registry[state.currentSectionIndex],scrollY));
+      geometryFrame=0;const previous=registry[state.currentSectionIndex],oldTarget=motion?targetY(motion):null;measure();
+      // Toolbar/observer notifications with unchanged geometry must not restart easing.
+      if(motion&&Math.abs(targetY(motion)-oldTarget)>1){const time=now();motion.from=scrollY;motion.velocity=motion.renderedVelocity;motion.startTime=time;motion.duration=Math.max(120,motion.deadline-time);motion.deadline=time+motion.duration;}
+      else if(!motion&&!modal()&&!(window.visualViewport?.scale>1)){
+        const s=registry[state.currentSectionIndex];
+        // Keep the same reading offset when content above a tall section loads.
+        const y=allowed(s,scrollY+(s.overflow&&previous?.overflow?s.start-previous.start:0));
+        if(Math.abs(scrollY-y)>1)write(y);
+      }
       publish();
     });
   }
@@ -133,8 +155,8 @@
     if(!ready||e.defaultPrevented||e.ctrlKey||e.metaKey||e.altKey||exemption(e.target,1)||e.target.closest('button,a,input,textarea,select,summary,[role="tab"],[role="slider"]'))return;
     if(!['PageDown','PageUp',' ','Home','End','ArrowDown','ArrowUp'].includes(e.key))return;
     const direction=['PageUp','ArrowUp'].includes(e.key)||(e.key===' '&&e.shiftKey)?-1:1;
-    nativeTouch=false;if(nativeRoom(direction)&&!['Home','End'].includes(e.key))return;
-    e.preventDefault();if(e.repeat||motion)return;
+    nativeTouch=false;if(!motion&&nativeRoom(direction)&&!['Home','End'].includes(e.key))return;
+    e.preventDefault();if(e.repeat)return;
     if(['Home','End'].includes(e.key))go(e.key==='Home'?0:registry.length-1,{source:'keyboard',focus:true});else step(direction);
   });
   function destination(value){if(value==='#main-content')return {index:0,id:'main-content'};const id=value.replace(/^#/,''),project=deck.snapshot().keys.indexOf(id.replace(/^project-/,''));if(id.startsWith('project-')&&project>=0)return {index:1,project,id};const index=ids.indexOf(id);return index>=0?{index,id}:null;}
@@ -155,6 +177,7 @@
   function start(){
     if(ready)return;measure();ready=true;history.scrollRestoration='manual';root.dataset.sectionInput='controlled';root.dataset.scrollEngine='ready';root.dataset.scrollReady='true';
     if(!location.hash||!route(location.hash,{source:'initial',historyMode:'none',instant:true})){write(registry[0].start);active(0);publish();}
+    delete root.dataset.sectionLanding;
     const observer=new ResizeObserver(remeasure);elements.forEach(e=>observer.observe(e));observer.observe(header);document.fonts.ready.then(remeasure);
   }
   // Initialize even in a background Safari tab; geometry updates remain event-driven.

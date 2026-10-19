@@ -28,3 +28,21 @@
 
 .canonical-header .menu-icon{padding:0}
 @media(max-width:360px){html body header .nav-container .brand-name .logo.logo{font-size:19px!important}}
+
+/* Stable identity slot: delayed avatar decode cannot change the button geometry. */
+.account-control .account-face{display:grid;place-items:center;width:24px;height:24px;flex:none;position:relative}
+.account-face .account-avatar{position:absolute;inset:0}
+.account-cluster .account-control{width:128px}.account-cluster[data-pending=true] .account-create{visibility:hidden}
+@media(max-width:900px){.account-cluster .account-control{width:92px}}
+@media(max-width:390px){.account-cluster .account-control{width:60px}}
+@media(max-width:360px){.account-cluster .account-control{width:38px}}
+@media(min-width:391px) and (max-width:900px){.account-cluster .account-control{width:106px}}
+@media(max-width:390px){.account-control[data-state=guest] .account-face{display:none}}
+@media(max-width:360px){.account-control[data-state=guest] .account-face{display:grid}}
+
+/* Routine account progress is announced without adding a floating message. Errors stay visible. */
+.account-cluster .account-notice[data-quiet="true"]{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap;border:0;box-shadow:none}
+
+/* OAuth handoff is not Home: preserve the common shell around the account dialog. */
+body[data-account-surface] #account-home{display:none!important}
+body[data-account-surface] #main-content{min-height:calc(100svh - 100px)}
